@@ -1,0 +1,14 @@
+section {
+  padding-top: 30px;
+}
+a {
+  color: #0033CC;
+  text-decoration: none;
+}
+a:hover {
+  color: #1111CC;
+  text-decoration: underline;
+}
+blockquote p {
+  font-size: 100%;
+}

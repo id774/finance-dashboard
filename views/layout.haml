@@ -1,0 +1,53 @@
+!!! 5
+%html
+  %head
+    %meta{:'http-equiv' => "Content-Type", :content => "text/html; charset=utf-8"}
+    %title sinatra-bootstrap
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    %link{ href: "#{@root}stylesheets/application.css", rel: "stylesheet" }/
+    %link{ href: "#{@root}stylesheets/bootstrap.css", rel: "stylesheet" }/
+    %link{ href: "#{@root}stylesheets/bootstrap-responsive.css", rel: "stylesheet" }/
+    %link{ href: "#{@root}stylesheets/style.css", rel: "stylesheet" }/
+    %script{:type => "text/javascript", :src => "/javascripts/application.js"}
+  %body(class='apps-index-page' data-spy="scroll" data-target=".subnav" data-offset="50")
+    %section{:id => "topbar"}
+      %div{:class=>'navbar navbar-fixed-top'}
+        .navbar-inner
+          .container
+            %a(class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse")
+              %span.icon-bar
+              %span.icon-bar
+              %span.icon-bar
+            %a{:class=>'brand',:href=>'http://id774.net'}
+              id774.net
+            %div{:class=>'nav-collapse'}
+              %ul.nav
+                %li
+                  %a{:href => "http://id774.net"} Home
+                %li
+                  %a{:href => "http://newscloud.id774.net/newscloud"} News
+                %li
+                  %a{:href => "http://blog.id774.net/post/"} Blog
+                %li
+                  %a{:href => "http://reblog.id774.net"} Tumblr
+                %li
+                  %a{:href => "https://twitter.com/twitt"} Twitter
+                %li
+                  %a{:href => "https://github.com/id774"} GitHub
+
+    = yield
+
+    %section{:id => "footer"}
+      .container
+        %footer{:class=>"footer"}
+          %hr
+          %p{:class=>"pull-right pager"}
+            %a{:href=>"http://id774.net"}
+              &larr; Home
+            %a{:href=> "/"}
+              &uarr; Top
+          %p
+            The public web contents published by me except for the quotation are licensed under the following condition.<br>
+            Code dual licensed under the <a href="http://www.gnu.org/copyleft/gpl.html">GPLv3</a>/<a href="http://www.gnu.org/copyleft/lesser.html">LGPLv3</a>. Documentation licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nd/3.0/">CC (BY-ND) 3.0</a>.

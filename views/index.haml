@@ -1,0 +1,41 @@
+%section{:id => "main"}
+  - if @contents.length > 0
+    .container
+      .content
+        .row
+          .span10.offset1
+            %table.table.table-striped
+              %thead
+                %tr
+                  %th ID
+                  %th Key
+                  %th Value
+                  %th Created at
+                  %th Updated at
+              %tbody
+                - @contents.each do |content|
+                  %tr
+                    %td
+                      =h content.id
+                    %td
+                      =h content.key
+                    %td
+                      =h content.value
+                    %td
+                      =h content.created_at.strftime "%Y/%m/%d %X"
+                    %td
+                      =h content.updated_at.strftime "%Y/%m/%d %X"
+
+            = paginate
+
+  .container
+    .content
+      .row
+        .span10.offset1
+          %form{:method => "post", :action => "#{@root}new"}
+            %input{:type => "text", :name => "key"}
+            %input{:type => "text", :name => "value"}
+            .form-actions
+              .input
+                %input{:type => "submit", :value => "送信する", :name => "commit", :class => 'btn btn-primary', :data => {disable_with: 'Sending...'}}
+
