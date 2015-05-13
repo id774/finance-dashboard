@@ -16,4 +16,5 @@ public/assets/*.css
 public/assets/*.js
 public/assets/*.gz
 public/assets/*.yml
+public/data
 .svn

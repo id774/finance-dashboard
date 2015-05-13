@@ -1,0 +1,37 @@
+%section{:id => "main"}
+- if @data.length > 0
+  .container
+    .content
+      .row
+        .span9
+          - image_file = '/data/chart_' + @params[:code] + '.png'
+          %img{:src => image_file}
+        .span3
+          %table.table.table-striped
+            %thead
+              %tr
+                %th 日付
+                %th 始値
+                %th 高値
+                %th 安値
+                %th 終値
+            %tbody
+              - @data.each_with_index do |array, i|
+                - if i < 15
+                  - date  = array[0]
+                  - open  = array[1]
+                  - high  = array[2]
+                  - low   = array[3]
+                  - close = array[4]
+                  - unless date == "Date"
+                    %tr
+                      %td
+                        =h date
+                      %td
+                        =h open
+                      %td
+                        =h high
+                      %td
+                        =h low
+                      %td
+                        =h close

@@ -4,6 +4,7 @@
 require 'rubygems'
 require 'sinatra/base'
 require 'haml'
+require 'csv'
 require './lib/storage'
 require './lib/paginate'
 require 'will_paginate'
@@ -30,24 +31,43 @@ class SinatraBootstrap < Sinatra::Base
   def initialize(app = nil, params = {})
     super(app)
     @storage = Storage.new
-    @root = Sinatra::Application.environment == :production ? '/sinatra-bootstrap/' : '/'
+    @root = Sinatra::Application.environment == :production ? '/finance-portal/' : '/'
   end
 
   def logger
     env['app.logger'] || env['rack.logger']
   end
 
+  def open_summary(filename)
+    array = []
+    open(filename) do |file|
+      file.each_line do |line|
+        array << line
+      end
+    end
+    return array
+  end
+
+  def open_csv(filename, &block)
+    array = []
+    CSV.foreach(filename) do |row|
+      array << [row[0], row[1], row[2], row[3], row[4]] unless row[0] == "Date"
+    end
+    return array
+  end
+
   get '/' do
-    @contents = Content.paginate(:page => params[:page]).order('updated_at desc')
+    filename = File.expand_path('public/data/summary.csv')
+    @data = open_summary(filename)
     haml :index
   end
 
-  post '/new' do
-    @content = Content.new
-    @content.key = params[:key]
-    @content.value = params[:value]
-    @content.save
-    redirect "#{@root}"
+  get '/:code' do
+    filename = 'public/data/ti_' + @params[:code] + '.csv'
+    filename = File.expand_path(filename)
+    @data = open_csv(filename).reverse
+    redirect '/' if @data.length == 0
+    haml :detail
   end
 
   run! if app_file == $0
