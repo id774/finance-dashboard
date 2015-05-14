@@ -1,0 +1,14 @@
+%a{:href => "http://stocks.finance.yahoo.co.jp/stocks/detail/?code=#{@params[:code]}"}
+  =h "Yahoo!"
+%a{:href => "http://shikiho.jp/tk/stock/info/#{@params[:code]}"}
+  =h "四季報"
+%a{:href => "http://kabuyoho.ifis.co.jp/index.php?sa=report&bcode=#{@params[:code]}"}
+  =h "IFIS"
+%a{:href => "http://kabubank.net/default.php?stock=#{@params[:code]}"}
+  =h "KabuBank"
+%a{:href => "http://kabu-sokuhou.com/brand/item/code___#{@params[:code]}"}
+  =h "株速報"
+%a{:href => "https://www.traders.co.jp/stocks_info/individual_info_basic.asp?SC=#{@params[:code]}"}
+  =h "Trader's"
+%a{:href => "http://minkabu.jp/stock/#{@params[:code]}/signal"}
+  =h "Signal"
