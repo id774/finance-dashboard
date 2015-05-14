@@ -3,18 +3,20 @@
   .container
     .content
       .row
-        .span10.offset1
+        .span6
+          未実装
+        .span6
           %table.table.table-striped
             %thead
               %tr
-                %th 銘柄コード
-                %th 銘柄名
+                %th 銘柄
+                %th 企業名
                 %th 始値
                 %th 高値
                 %th 安値
                 %th 終値
-                %th 前日比
-                %th 前日比 (率)
+                %th 比
+                %th 比率
             %tbody
               - @data.each do |line|
                 - code, open, high, low, close, diff, ratio, name = line.strip.split("\t")
@@ -24,7 +26,8 @@
                       %a{:href => code}
                         =h code
                     %td
-                      =h name
+                      %a{:href => code}
+                        =h name
                     %td
                       =h open
                     %td
@@ -36,4 +39,4 @@
                     %td
                       =h diff
                     %td
-                      =h ratio
+                      =h (ratio + "%")

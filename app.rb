@@ -48,11 +48,17 @@ class SinatraBootstrap < Sinatra::Base
     return array
   end
 
-  def open_csv(filename, &block)
+  def open_stock(filename, &block)
+    table = CSV.table(filename, encoding: "UTF-8")
+    keys = table.headers
+
     array = []
-    CSV.foreach(filename) do |row|
-      array << [row[0], row[1], row[2], row[3], row[4]] unless row[0] == "Date"
+    CSV.foreach(File.expand_path(filename), encoding: "UTF-8" ) do |row|
+      hashed_row = Hash[*keys.zip(row).flatten]
+      pri_key = hashed_row[:date]
+      array << hashed_row unless pri_key == "Date"
     end
+
     return array
   end
 
@@ -65,7 +71,7 @@ class SinatraBootstrap < Sinatra::Base
   get '/:code' do
     filename = 'public/data/ti_' + @params[:code] + '.csv'
     filename = File.expand_path(filename)
-    @data = open_csv(filename).reverse
+    @data = open_stock(filename)
     redirect '/' if @data.length == 0
     haml :detail
   end

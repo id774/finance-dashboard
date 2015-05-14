@@ -16,13 +16,14 @@
                 %th 安値
                 %th 終値
             %tbody
-              - @data.each_with_index do |array, i|
-                - if i < 15
-                  - date  = array[0]
-                  - open  = array[1]
-                  - high  = array[2]
-                  - low   = array[3]
-                  - close = array[4]
+              - limit = @data.length - 30
+              - @data.each_with_index do |row, i|
+                - if i >= limit
+                  - date  = row[:date]
+                  - open  = row[:open].to_i
+                  - high  = row[:high].to_i
+                  - low   = row[:low].to_i
+                  - close = row[:close].to_i
                   - unless date == "Date"
                     %tr
                       %td
