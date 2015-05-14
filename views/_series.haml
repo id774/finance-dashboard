@@ -1,0 +1,33 @@
+%table.table.table-striped
+  %thead
+    %tr
+      %th 日付
+      %th 始値
+      %th 高値
+      %th 安値
+      %th 終値
+      %th 出来高
+  %tbody
+    - limit = @data.length - 15
+    - @data.each_with_index do |row, i|
+      - if i >= limit
+        - date  = row[:date]
+        - open  = row[:open].to_i
+        - high  = row[:high].to_i
+        - low   = row[:low].to_i
+        - close = row[:adj_close].to_i
+        - volume = row[:volume].to_i
+        - unless date == "Date"
+          %tr
+            %td
+              =h date
+            %td
+              =h open
+            %td
+              =h high
+            %td
+              =h low
+            %td
+              =h close
+            %td
+              =h volume

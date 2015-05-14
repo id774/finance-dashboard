@@ -1,0 +1,34 @@
+%table.table.table-striped
+  %thead
+    %tr
+      %th 銘柄
+      %th 企業名
+      %th 始値
+      %th 高値
+      %th 安値
+      %th 終値
+      %th 比
+      %th 比率
+  %tbody
+    - @data.each do |line|
+      - code, open, high, low, close, diff, ratio, name = line.strip.split("\t")
+      - unless code == "Code"
+        %tr
+          %td
+            %a{:href => code}
+              =h code
+          %td
+            %a{:href => code}
+              =h name
+          %td
+            =h open
+          %td
+            =h high
+          %td
+            =h low
+          %td
+            =h close
+          %td
+            =h diff
+          %td
+            =h (ratio + "%")
