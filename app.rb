@@ -19,6 +19,10 @@ class SinatraBootstrap < Sinatra::Base
   include WillPaginate::Sinatra::Helpers
 
   helpers do
+    def number_with_delimiter(fixnum)
+      fixnum.to_s.gsub(/(\d)(?=(\d{3})+(?!\d))/, '\1,')
+    end
+
     def h(text)
       Rack::Utils.escape_html(text)
     end
