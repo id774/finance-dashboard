@@ -31,7 +31,7 @@ class SinatraBootstrap < Sinatra::Base
   def initialize(app = nil, params = {})
     super(app)
     @storage = Storage.new
-    @root = Sinatra::Application.environment == :production ? '/finance-portal/' : '/'
+    @root = Sinatra::Application.environment == :production ? '/finance-dashboard/' : '/'
   end
 
   def logger
