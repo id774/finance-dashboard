@@ -2,46 +2,6 @@
   %thead
     %tr
       %th DATE
-      %th SMA5
-      %th SMA25
-      %th SMA75
-      %th EWMA5
-      %th EWMA25
-      %th EWMA75
-      %th UPPER
-      %th MIDDLE
-      %th LOWER
-      %th RET
-  %tbody
-    - @data.last(3).each do |row|
-      %tr
-        %td
-          =h row[:date]
-        %td
-          =h row[:sma5].to_f.round(2)
-        %td
-          =h row[:sma25].to_f.round(2)
-        %td
-          =h row[:sma75].to_f.round(2)
-        %td
-          =h row[:ewma5].to_f.round(2)
-        %td
-          =h row[:ewma25].to_f.round(2)
-        %td
-          =h row[:ewma75].to_f.round(2)
-        %td
-          =h row[:upperband].to_f.round(2)
-        %td
-          =h row[:middleband].to_f.round(2)
-        %td
-          =h row[:lowerband].to_f.round(2)
-        %td
-          =h row[:ret_index].to_f.round(2)
-
-%table.table.table-striped
-  %thead
-    %tr
-      %th DATE
       %th RSI9
       %th RSI14
       %th MFI
@@ -58,6 +18,7 @@
       %th MOM10
       %th MOM25
       %th NATR
+      %th RET
   %tbody
     - @data.last(3).each do |row|
       %tr
@@ -95,3 +56,5 @@
           =h row[:mom25].to_f.round(2)
         %td
           =h row[:natr].to_f.round(2)
+        %td
+          =h row[:ret_index].to_f.round(2)
