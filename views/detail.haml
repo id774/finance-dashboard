@@ -5,9 +5,14 @@
       .row
         .span8
           = render(:haml, :'_chart')
-          = render(:haml, :'_ti')
 
         .span4
           = render(:haml, :'_series')
+
+  .container
+    .content
+      .row
+        .span12
+          = render(:haml, :'_ti')
 
 = render(:haml, :'_footer')

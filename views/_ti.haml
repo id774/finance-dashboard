@@ -1,8 +1,7 @@
-- row = @data.last
-
 %table.table.table-striped
   %thead
     %tr
+      %th DATE
       %th SMA5
       %th SMA25
       %th SMA75
@@ -14,31 +13,35 @@
       %th LOWER
       %th RET
   %tbody
-    %tr
-      %td
-        =h row[:sma5].to_f.round(2)
-      %td
-        =h row[:sma25].to_f.round(2)
-      %td
-        =h row[:sma75].to_f.round(2)
-      %td
-        =h row[:ewma5].to_f.round(2)
-      %td
-        =h row[:ewma25].to_f.round(2)
-      %td
-        =h row[:ewma75].to_f.round(2)
-      %td
-        =h row[:upperband].to_f.round(2)
-      %td
-        =h row[:middleband].to_f.round(2)
-      %td
-        =h row[:lowerband].to_f.round(2)
-      %td
-        =h row[:ret_index].to_f.round(2)
+    - @data.last(3).each do |row|
+      %tr
+        %td
+          =h row[:date]
+        %td
+          =h row[:sma5].to_f.round(2)
+        %td
+          =h row[:sma25].to_f.round(2)
+        %td
+          =h row[:sma75].to_f.round(2)
+        %td
+          =h row[:ewma5].to_f.round(2)
+        %td
+          =h row[:ewma25].to_f.round(2)
+        %td
+          =h row[:ewma75].to_f.round(2)
+        %td
+          =h row[:upperband].to_f.round(2)
+        %td
+          =h row[:middleband].to_f.round(2)
+        %td
+          =h row[:lowerband].to_f.round(2)
+        %td
+          =h row[:ret_index].to_f.round(2)
 
 %table.table.table-striped
   %thead
     %tr
+      %th DATE
       %th RSI9
       %th RSI14
       %th MFI
@@ -50,42 +53,45 @@
       %th FASTK
       %th FASTD
       %th MACD
-      %th SIGNAL
+      %th SIG
       %th HIST
       %th MOM10
       %th MOM25
       %th NATR
   %tbody
-    %tr
-      %td
-        =h row[:rsi9].to_f.round(2)
-      %td
-        =h row[:rsi14].to_f.round(2)
-      %td
-        =h row[:mfi].to_f.round(2)
-      %td
-        =h row[:roc].to_f.round(2)
-      %td
-        =h row[:cci].to_f.round(2)
-      %td
-        =h row[:ultosc].to_f.round(2)
-      %td
-        =h row[:slowk].to_f.round(2)
-      %td
-        =h row[:slowd].to_f.round(2)
-      %td
-        =h row[:fastk].to_f.round(2)
-      %td
-        =h row[:fastd].to_f.round(2)
-      %td
-        =h row[:macd].to_f.round(2)
-      %td
-        =h row[:macdsignal].to_f.round(2)
-      %td
-        =h row[:macdhist].to_f.round(2)
-      %td
-        =h row[:mom10].to_f.round(2)
-      %td
-        =h row[:mom25].to_f.round(2)
-      %td
-        =h row[:natr].to_f.round(2)
+    - @data.last(3).each do |row|
+      %tr
+        %td
+          =h row[:date]
+        %td
+          =h row[:rsi9].to_f.round(2)
+        %td
+          =h row[:rsi14].to_f.round(2)
+        %td
+          =h row[:mfi].to_f.round(2)
+        %td
+          =h row[:roc].to_f.round(2)
+        %td
+          =h row[:cci].to_f.round(2)
+        %td
+          =h row[:ultosc].to_f.round(2)
+        %td
+          =h row[:slowk].to_f.round(2)
+        %td
+          =h row[:slowd].to_f.round(2)
+        %td
+          =h row[:fastk].to_f.round(2)
+        %td
+          =h row[:fastd].to_f.round(2)
+        %td
+          =h row[:macd].to_f.round(2)
+        %td
+          =h row[:macdsignal].to_f.round(2)
+        %td
+          =h row[:macdhist].to_f.round(2)
+        %td
+          =h row[:mom10].to_f.round(2)
+        %td
+          =h row[:mom25].to_f.round(2)
+        %td
+          =h row[:natr].to_f.round(2)
