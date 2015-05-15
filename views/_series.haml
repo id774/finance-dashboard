@@ -8,26 +8,24 @@
       %th 終値
       %th 出来高
   %tbody
-    - limit = @data.length - 15
-    - @data.each_with_index do |row, i|
-      - if i >= limit
-        - date  = row[:date]
-        - open  = row[:open].to_i
-        - high  = row[:high].to_i
-        - low   = row[:low].to_i
-        - close = row[:adj_close].to_i
-        - volume = row[:volume].to_i
-        - unless date == "Date"
-          %tr
-            %td
-              =h date
-            %td
-              =h number_with_delimiter(open)
-            %td
-              =h number_with_delimiter(high)
-            %td
-              =h number_with_delimiter(low)
-            %td
-              =h number_with_delimiter(close)
-            %td
-              =h number_with_delimiter(volume)
+    - @data.last(15).each do |row|
+      - date  = row[:date]
+      - open  = row[:open].to_i
+      - high  = row[:high].to_i
+      - low   = row[:low].to_i
+      - close = row[:adj_close].to_i
+      - volume = row[:volume].to_i
+      - unless date == "Date"
+        %tr
+          %td
+            =h date
+          %td
+            =h number_with_delimiter(open)
+          %td
+            =h number_with_delimiter(high)
+          %td
+            =h number_with_delimiter(low)
+          %td
+            =h number_with_delimiter(close)
+          %td
+            =h number_with_delimiter(volume)
