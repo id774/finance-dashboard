@@ -10,25 +10,26 @@
       %th 比
       %th 比率
   %tbody
-    - @data.each do |line|
-      - code, open, high, low, close, diff, ratio, name = line.strip.split("\t")
-      - unless code == "Code"
-        %tr
-          %td
-            %a{:href => code}
-              =h code
-          %td
-            %a{:href => code}
-              =h name
-          %td
-            =h number_with_delimiter(open)
-          %td
-            =h number_with_delimiter(high)
-          %td
-            =h number_with_delimiter(low)
-          %td
-            =h number_with_delimiter(close)
-          %td
-            =h diff
-          %td
-            =h (ratio + "%")
+    - if @summary.length > 0
+      - @summary.each do |line|
+        - code, open, high, low, close, diff, ratio, name = line.strip.split("\t")
+        - unless code == "Code"
+          %tr
+            %td
+              %a{:href => code}
+                =h code
+            %td
+              %a{:href => code}
+                =h name
+            %td
+              =h number_with_delimiter(open)
+            %td
+              =h number_with_delimiter(high)
+            %td
+              =h number_with_delimiter(low)
+            %td
+              =h number_with_delimiter(close)
+            %td
+              =h diff
+            %td
+              =h (ratio + "%")

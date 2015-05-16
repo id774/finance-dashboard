@@ -42,7 +42,7 @@ class SinatraBootstrap < Sinatra::Base
     env['app.logger'] || env['rack.logger']
   end
 
-  def open_summary(filename)
+  def open_csv(filename)
     array = []
     open(filename) do |file|
       file.each_line do |line|
@@ -52,7 +52,7 @@ class SinatraBootstrap < Sinatra::Base
     return array
   end
 
-  def open_stock(filename, &block)
+  def open_data(filename, &block)
     table = CSV.table(filename, encoding: "UTF-8")
     keys = table.headers
 
@@ -67,15 +67,17 @@ class SinatraBootstrap < Sinatra::Base
   end
 
   get '/' do
+    filename = File.expand_path('public/data/stocks.txt')
+    @stocks = open_csv(filename)
     filename = File.expand_path('public/data/summary.csv')
-    @data = open_summary(filename)
+    @summary = open_csv(filename)
     haml :index
   end
 
   get '/:code' do
     filename = 'public/data/ti_' + @params[:code] + '.csv'
     filename = File.expand_path(filename)
-    @data = open_stock(filename)
+    @data = open_data(filename)
     redirect '/' if @data.length == 0
     haml :detail
   end

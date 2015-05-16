@@ -1,9 +1,10 @@
 %section{:id => "main"}
-- if @data.length > 0
   .container
     .content
       .row
-        .span7
+        .span4
           未実装
         .span5
           = render(:haml, :'_summary')
+        .span3
+          = render(:haml, :'_all')
