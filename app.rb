@@ -74,9 +74,10 @@ class SinatraBootstrap < Sinatra::Base
     haml :index
   end
 
-  get '/:code' do
+  get '/stock/:code' do
     filename = 'public/data/ti_' + @params[:code] + '.csv'
     filename = File.expand_path(filename)
+    redirect '/' unless File.exist?(filename)
     @data = open_data(filename)
     redirect '/' if @data.length == 0
     haml :detail
