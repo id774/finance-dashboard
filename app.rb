@@ -80,6 +80,7 @@ class SinatraBootstrap < Sinatra::Base
     redirect '/' unless File.exist?(filename)
     @data = open_data(filename)
     redirect '/' if @data.length == 0
+    @title = "#{@params[:code]} - Finance Dashboard"
     haml :detail
   end
 
