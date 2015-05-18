@@ -18,6 +18,8 @@ class SinatraBootstrap < Sinatra::Base
   # require './helpers/render_partial'
   include WillPaginate::Sinatra::Helpers
 
+  enable :sessions
+
   helpers do
     def number_with_delimiter(fixnum)
       fixnum.to_s.gsub(/(\d)(?=(\d{3})+(?!\d))/, '\1,')
@@ -69,8 +71,12 @@ class SinatraBootstrap < Sinatra::Base
   get '/' do
     filename = File.expand_path('public/data/stocks.txt')
     @stocks = open_csv(filename)
+
     filename = File.expand_path('public/data/summary.csv')
     @summary = open_csv(filename)
+
+    session[:recent] = [] unless session[:recent]
+    @recent = session[:recent].sort
     haml :index
   end
 
@@ -78,9 +84,17 @@ class SinatraBootstrap < Sinatra::Base
     filename = 'public/data/ti_' + @params[:code] + '.csv'
     filename = File.expand_path(filename)
     redirect '/' unless File.exist?(filename)
+
     @data = open_data(filename)
     redirect '/' if @data.length == 0
+
     @title = "#{@params[:code]} - Finance Dashboard"
+
+    session[:recent] = [] unless session[:recent]
+    session[:recent] << @params[:code]
+    session[:recent] = session[:recent].last(10).uniq
+
+    @recent = session[:recent].sort
     haml :detail
   end
 

@@ -26,6 +26,11 @@
             %div{:class=>'nav-collapse'}
               %ul.nav
                 %li
-                  %a{:href => "/"} Index
+                  %a{:href => "/"} Top
+                - if @recent
+                  - @recent.each do |code|
+                    %li
+                      %a{:href => "/stock/#{code}"}
+                        =h code
 
     = yield
