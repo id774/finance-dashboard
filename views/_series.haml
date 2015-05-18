@@ -8,7 +8,7 @@
       %th 終値
       %th 出来高
   %tbody
-    - @data.last(15).each do |row|
+    - @data.last(12).each do |row|
       - date  = row[:date]
       - open  = row[:open].to_i
       - high  = row[:high].to_i
