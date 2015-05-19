@@ -75,6 +75,12 @@ class SinatraBootstrap < Sinatra::Base
     filename = File.expand_path('public/data/summary.csv')
     @summary = open_csv(filename)
 
+    filename = File.expand_path('public/data/summary_15.csv')
+    @summary15 = open_csv(filename)
+
+    filename = File.expand_path('public/data/summary_30.csv')
+    @summary30 = open_csv(filename)
+
     session[:recent] = [] unless session[:recent]
     @recent = session[:recent].sort
     haml :index
