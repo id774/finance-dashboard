@@ -6,8 +6,8 @@
       %th 比
       %th 比率
   %tbody
-    - if @summary15.length > 0
-      - @summary15.each do |line|
+    - if @summary25.length > 0
+      - @summary25.each do |line|
         - code, open, high, low, close, diff, ratio, name = line.strip.split("\t")
         - unless code == "Code"
           %tr
