@@ -11,6 +11,7 @@ require 'will_paginate'
 require 'will_paginate/active_record'
 require 'will_paginate/view_helpers'
 require 'will_paginate/view_helpers/sinatra'
+require 'yaml'
 
 I18n.enforce_available_locales = false
 
@@ -19,6 +20,13 @@ class SinatraBootstrap < Sinatra::Base
   include WillPaginate::Sinatra::Helpers
 
   enable :sessions
+
+  @config = YAML.load_file('.config.yml')
+  username = @config['auth']['username']
+  password = @config['auth']['password']
+  use Rack::Auth::Basic do |user, pass|
+    user == username && pass == password
+  end
 
   helpers do
     def number_with_delimiter(fixnum)
