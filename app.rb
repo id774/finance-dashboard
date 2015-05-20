@@ -23,7 +23,7 @@ class SinatraBootstrap < Sinatra::Base
 
   configfile = '.config.yml'
   if File.exist?(configfile)
-  @config = YAML.load_file(configfile)
+    @config = YAML.load_file(configfile)
     username = @config['auth']['username']
     password = @config['auth']['password']
 
