@@ -21,11 +21,15 @@ class SinatraBootstrap < Sinatra::Base
 
   enable :sessions
 
-  @config = YAML.load_file('.config.yml')
-  username = @config['auth']['username']
-  password = @config['auth']['password']
-  use Rack::Auth::Basic do |user, pass|
-    user == username && pass == password
+  configfile = '.config.yml'
+  if File.exist?(configfile)
+  @config = YAML.load_file(configfile)
+    username = @config['auth']['username']
+    password = @config['auth']['password']
+
+    use Rack::Auth::Basic do |user, pass|
+      user == username && pass == password
+    end
   end
 
   helpers do
