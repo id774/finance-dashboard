@@ -5,25 +5,14 @@ require 'rubygems'
 require 'sinatra/base'
 require 'haml'
 require 'csv'
-require './lib/storage'
-require './lib/paginate'
-require 'will_paginate'
-require 'will_paginate/active_record'
-require 'will_paginate/view_helpers'
-require 'will_paginate/view_helpers/sinatra'
 require 'yaml'
 
-I18n.enforce_available_locales = false
-
 class SinatraBootstrap < Sinatra::Base
-  # require './helpers/render_partial'
-  include WillPaginate::Sinatra::Helpers
-
   enable :sessions
 
   configfile = '.config.yml'
   if File.exist?(configfile)
-    @config = YAML.load_file(configfile)
+  @config = YAML.load_file(configfile)
     username = @config['auth']['username']
     password = @config['auth']['password']
 
@@ -48,7 +37,6 @@ class SinatraBootstrap < Sinatra::Base
 
   def initialize(app = nil, params = {})
     super(app)
-    @storage = Storage.new
     @root = Sinatra::Application.environment == :production ? '/finance-dashboard/' : '/'
   end
 
