@@ -89,10 +89,10 @@ class SinatraBootstrap < Sinatra::Base
   get '/stock/:code' do
     filename = 'public/data/ti_' + @params[:code] + '.csv'
     filename = File.expand_path(filename)
-    redirect '/' unless File.exist?(filename)
+    redirect @root unless File.exist?(filename)
 
     @data = open_data(filename)
-    redirect '/' if @data.length == 0
+    redirect @root if @data.length == 0
 
     @title = "#{@params[:code]} - Finance Dashboard"
 
