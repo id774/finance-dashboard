@@ -21,16 +21,16 @@
               %span.icon-bar
               %span.icon-bar
               %span.icon-bar
-            %a{:class=>'brand',:href=>'/'}
+            %a{:class=>'brand',:href=>@root}
               Finance Dashboard
             %div{:class=>'nav-collapse'}
               %ul.nav
                 %li
-                  %a{:href => "/"} Top
+                  %a{:href => @root} Top
                 - if @recent
                   - @recent.each do |code|
                     %li
-                      %a{:href => "/stock/#{code}"}
+                      %a{:href => "#{@root}stock/#{code}"}
                         =h code
 
     = yield

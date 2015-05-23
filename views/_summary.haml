@@ -16,10 +16,10 @@
         - unless code == "Code"
           %tr
             %td
-              %a{:href => "/stock/#{code}"}
+              %a{:href => "#{@root}stock/#{code}"}
                 =h code
             %td
-              %a{:href => "/stock/#{code}"}
+              %a{:href => "#{@root}stock/#{code}"}
                 =h name
             %td
               =h number_with_delimiter(open)

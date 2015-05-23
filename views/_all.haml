@@ -9,5 +9,5 @@
           - @stocks.each do |line|
             - code, name = line.strip.split(",")
             - s = "#{code} #{name}"
-            %a{:href => "/stock/#{code}"}
+            %a{:href => "#{@root}stock/#{code}"}
               =h s
