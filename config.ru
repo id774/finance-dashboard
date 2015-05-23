@@ -4,6 +4,8 @@ require 'logger'
 require './lib/applog'
 require './app'
 
+Encoding.default_external = 'UTF-8'
+
 logdir = File.dirname(__FILE__) + "/log"
 logger = ::Logger.new(logdir + '/app.log')
 
