@@ -2,8 +2,7 @@
   .container
     %footer{:class=>"footer"}
       %hr
-      %p{:class=>"pull-right pager"}
-        %a{:href=>@root}
-          &uarr; Top
+      %p{:class=>"pull-right"}
+        = render(:haml, :'_links_r')
       %p
         = render(:haml, :'_links')
