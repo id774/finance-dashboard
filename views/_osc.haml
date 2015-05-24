@@ -2,22 +2,54 @@
   %thead
     %tr
       %th DATE
-      %th RSI9
-      %th RSI14
-      %th MFI
-      %th ROC
-      %th CCI
-      %th ULT
-      %th SLOWK
-      %th SLOWD
-      %th FASTK
-      %th FASTD
-      %th MACD
-      %th SIG
-      %th HIST
-      %th MOM10
-      %th MOM25
-      %th NATR
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/oscillator/rsi.html", :target => "_blank"}
+          =h "RSI9"
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/oscillator/rsi.html", :target => "_blank"}
+          =h "RSI14"
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/oscillator/mfi.html", :target => "_blank"}
+          =h "MFI"
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/oscillator/roc.html", :target => "_blank"}
+          =h "ROC"
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/oscillator/cci.html", :target => "_blank"}
+          =h "CCI"
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/oscillator/kyukyoku.html", :target => "_blank"}
+          =h "ULT"
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/oscillator/stokyasu.html", :target => "_blank"}
+          =h "SLOWK"
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/oscillator/stokyasu.html", :target => "_blank"}
+          =h "SLOWD"
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/oscillator/stokyasu.html", :target => "_blank"}
+          =h "FASTK"
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/oscillator/stokyasu.html", :target => "_blank"}
+          =h "FASTD"
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/trend/macd.html", :target => "_blank"}
+          =h "MACD"
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/trend/macd.html", :target => "_blank"}
+          =h "SIG"
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/trend/macd.html", :target => "_blank"}
+          =h "HIST"
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/oscillator/momen.html", :target => "_blank"}
+          =h "MOM10"
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/oscillator/momen.html", :target => "_blank"}
+          =h "MOM25"
+      %th
+        %a{:href => "http://traders.com/Documentation/FEEDbk_docs/2006/05/TradersTips/TradersTips.html", :target => "_blank"}
+          =h "NATR"
       %th RET
   %tbody
     - @data.last(3).each do |row|
