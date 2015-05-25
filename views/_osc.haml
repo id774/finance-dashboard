@@ -48,7 +48,7 @@
         %a{:href => "http://www.kabuciao.com/tech/oscillator/momen.html", :target => "_blank"}
           =h "MOM25"
       %th
-        %a{:href => "http://traders.com/Documentation/FEEDbk_docs/2006/05/TradersTips/TradersTips.html", :target => "_blank"}
+        %a{:href => "http://www.sevendata.co.jp/shihyou/technical/atr.html", :target => "_blank"}
           =h "NATR"
       %th RET
   %tbody
@@ -57,36 +57,126 @@
         %td
           =h row[:date]
         %td
-          =h row[:rsi9].to_f.round(2)
+          - if row[:rsi9].to_f >= 70
+            %div{style: 'color: red;'}
+              =h row[:rsi9].to_f.round(2)
+          - elsif row[:rsi9].to_f <= 30
+            %div{style: 'color: blue;'}
+              =h row[:rsi9].to_f.round(2)
+          - else
+            =h row[:rsi9].to_f.round(2)
         %td
-          =h row[:rsi14].to_f.round(2)
+          - if row[:rsi14].to_f >= 70
+            %div{style: 'color: red;'}
+              =h row[:rsi14].to_f.round(2)
+          - elsif row[:rsi14].to_f <= 30
+            %div{style: 'color: blue;'}
+              =h row[:rsi14].to_f.round(2)
+          - else
+            =h row[:rsi14].to_f.round(2)
         %td
-          =h row[:mfi].to_f.round(2)
+          - if row[:mfi].to_f >= 80
+            %div{style: 'color: red;'}
+              =h row[:mfi].to_f.round(2)
+          - elsif row[:mfi].to_f <= 20
+            %div{style: 'color: blue;'}
+              =h row[:mfi].to_f.round(2)
+          - else
+            =h row[:mfi].to_f.round(2)
         %td
-          =h row[:roc].to_f.round(2)
+          - if row[:roc].to_f >= 0
+            %div{style: 'color: red;'}
+              =h row[:roc].to_f.round(2)
+          - else
+            %div{style: 'color: blue;'}
+              =h row[:roc].to_f.round(2)
         %td
-          =h row[:cci].to_f.round(2)
+          - if row[:cci].to_f >= 100
+            %div{style: 'color: red;'}
+              =h row[:cci].to_f.round(2)
+          - elsif row[:cci].to_f <= -100
+            %div{style: 'color: blue;'}
+              =h row[:cci].to_f.round(2)
+          - else
+            =h row[:cci].to_f.round(2)
         %td
-          =h row[:ultosc].to_f.round(2)
+          - if row[:ultosc].to_f >= 70
+            %div{style: 'color: red;'}
+              =h row[:ultosc].to_f.round(2)
+          - elsif row[:ultosc].to_f <= 35
+            %div{style: 'color: blue;'}
+              =h row[:ultosc].to_f.round(2)
+          - else
+            =h row[:ultosc].to_f.round(2)
         %td
-          =h row[:slowk].to_f.round(2)
+          - if row[:slowk].to_f >= 80
+            %div{style: 'color: red;'}
+              =h row[:slowk].to_f.round(2)
+          - elsif row[:slowk].to_f <= 20
+            %div{style: 'color: blue;'}
+              =h row[:slowk].to_f.round(2)
+          - else
+            =h row[:slowk].to_f.round(2)
         %td
-          =h row[:slowd].to_f.round(2)
+          - if row[:slowd].to_f >= 80
+            %div{style: 'color: red;'}
+              =h row[:slowd].to_f.round(2)
+          - elsif row[:slowd].to_f <= 20
+            %div{style: 'color: blue;'}
+              =h row[:slowd].to_f.round(2)
+          - else
+            =h row[:slowd].to_f.round(2)
         %td
-          =h row[:fastk].to_f.round(2)
+          - if row[:fastk].to_f >= 80
+            %div{style: 'color: red;'}
+              =h row[:fastk].to_f.round(2)
+          - elsif row[:fastk].to_f <= 20
+            %div{style: 'color: blue;'}
+              =h row[:fastk].to_f.round(2)
+          - else
+            =h row[:fastk].to_f.round(2)
         %td
-          =h row[:fastd].to_f.round(2)
+          - if row[:fastd].to_f >= 80
+            %div{style: 'color: red;'}
+              =h row[:fastd].to_f.round(2)
+          - elsif row[:fastd].to_f <= 20
+            %div{style: 'color: blue;'}
+              =h row[:fastd].to_f.round(2)
+          - else
+            =h row[:fastd].to_f.round(2)
         %td
-          =h row[:macd].to_f.round(2)
+          - if row[:macd].to_f >= 0
+            %div{style: 'color: red;'}
+              =h row[:macd].to_f.round(2)
+          - else
+            %div{style: 'color: blue;'}
+              =h row[:macd].to_f.round(2)
         %td
           =h row[:macdsignal].to_f.round(2)
         %td
           =h row[:macdhist].to_f.round(2)
         %td
-          =h row[:mom10].to_f.round(2)
+          - if row[:mom10].to_f >= 0
+            %div{style: 'color: red;'}
+              =h row[:mom10].to_f.round(2)
+          - else
+            %div{style: 'color: blue;'}
+              =h row[:mom10].to_f.round(2)
         %td
-          =h row[:mom25].to_f.round(2)
+          - if row[:mom25].to_f >= 0
+            %div{style: 'color: red;'}
+              =h row[:mom25].to_f.round(2)
+          - else
+            %div{style: 'color: blue;'}
+              =h row[:mom25].to_f.round(2)
         %td
           =h row[:natr].to_f.round(2)
         %td
-          =h row[:ret_index].to_f.round(2)
+          - if row[:ret_index].to_f >= 1.2
+            %div{style: 'color: red;'}
+              =h row[:ret_index].to_f.round(2)
+          - elsif row[:ret_index].to_f <= 0.9
+            %div{style: 'color: blue;'}
+              =h row[:ret_index].to_f.round(2)
+          - else
+            =h row[:ret_index].to_f.round(2)
