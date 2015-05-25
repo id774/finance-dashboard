@@ -57,126 +57,140 @@
         %td
           =h row[:date]
         %td
-          - if row[:rsi9].to_f >= 70
+          - rsi9 = row[:rsi9].to_f
+          - if rsi9 >= 70
             %div{style: 'color: red;'}
-              =h row[:rsi9].to_f.round(2)
-          - elsif row[:rsi9].to_f <= 30
+              =h rsi9.round(2)
+          - elsif rsi9 <= 30
             %div{style: 'color: blue;'}
-              =h row[:rsi9].to_f.round(2)
+              =h rsi9.round(2)
           - else
-            =h row[:rsi9].to_f.round(2)
+            =h rsi9.round(2)
         %td
-          - if row[:rsi14].to_f >= 70
+          - rsi14 = row[:rsi14].to_f
+          - if rsi14 >= 70
             %div{style: 'color: red;'}
-              =h row[:rsi14].to_f.round(2)
-          - elsif row[:rsi14].to_f <= 30
+              =h rsi14.round(2)
+          - elsif rsi14 <= 30
             %div{style: 'color: blue;'}
-              =h row[:rsi14].to_f.round(2)
+              =h rsi14.round(2)
           - else
-            =h row[:rsi14].to_f.round(2)
+            =h rsi14.round(2)
         %td
-          - if row[:mfi].to_f >= 80
+          - mfi = row[:mfi].to_f
+          - if mfi >= 80
             %div{style: 'color: red;'}
-              =h row[:mfi].to_f.round(2)
-          - elsif row[:mfi].to_f <= 20
+              =h mfi.round(2)
+          - elsif mfi <= 20
             %div{style: 'color: blue;'}
-              =h row[:mfi].to_f.round(2)
+              =h mfi.round(2)
           - else
-            =h row[:mfi].to_f.round(2)
+            =h mfi.round(2)
         %td
-          - if row[:roc].to_f >= 0
+          - roc = row[:roc].to_f
+          - if roc >= 0
             %div{style: 'color: red;'}
-              =h row[:roc].to_f.round(2)
+              =h roc.round(2)
           - else
             %div{style: 'color: blue;'}
-              =h row[:roc].to_f.round(2)
+              =h roc.round(2)
         %td
-          - if row[:cci].to_f >= 100
+          - cci = row[:cci].to_f
+          - if cci >= 100
             %div{style: 'color: red;'}
-              =h row[:cci].to_f.round(2)
-          - elsif row[:cci].to_f <= -100
+              =h cci.round(2)
+          - elsif cci <= -100
             %div{style: 'color: blue;'}
-              =h row[:cci].to_f.round(2)
+              =h cci.round(2)
           - else
-            =h row[:cci].to_f.round(2)
+            =h cci.round(2)
         %td
-          - if row[:ultosc].to_f >= 70
+          - ultosc = row[:ultosc].to_f
+          - if ultosc >= 70
             %div{style: 'color: red;'}
-              =h row[:ultosc].to_f.round(2)
-          - elsif row[:ultosc].to_f <= 35
+              =h ultosc.round(2)
+          - elsif ultosc <= 35
             %div{style: 'color: blue;'}
-              =h row[:ultosc].to_f.round(2)
+              =h ultosc.round(2)
           - else
-            =h row[:ultosc].to_f.round(2)
+            =h ultosc.round(2)
         %td
-          - if row[:slowk].to_f >= 80
+          - slowk = row[:slowk].to_f
+          - if slowk >= 80
             %div{style: 'color: red;'}
-              =h row[:slowk].to_f.round(2)
-          - elsif row[:slowk].to_f <= 20
+              =h slowk.round(2)
+          - elsif slowk <= 20
             %div{style: 'color: blue;'}
-              =h row[:slowk].to_f.round(2)
+              =h slowk.round(2)
           - else
-            =h row[:slowk].to_f.round(2)
+            =h slowk.round(2)
         %td
-          - if row[:slowd].to_f >= 80
+          - slowd = row[:slowd].to_f
+          - if slowd >= 80
             %div{style: 'color: red;'}
-              =h row[:slowd].to_f.round(2)
-          - elsif row[:slowd].to_f <= 20
+              =h slowd.round(2)
+          - elsif slowd <= 20
             %div{style: 'color: blue;'}
-              =h row[:slowd].to_f.round(2)
+              =h slowd.round(2)
           - else
-            =h row[:slowd].to_f.round(2)
+            =h slowd.round(2)
         %td
-          - if row[:fastk].to_f >= 80
+          - fastk = row[:fastk].to_f
+          - if fastk >= 80
             %div{style: 'color: red;'}
-              =h row[:fastk].to_f.round(2)
-          - elsif row[:fastk].to_f <= 20
+              =h fastk.round(2)
+          - elsif fastk <= 20
             %div{style: 'color: blue;'}
-              =h row[:fastk].to_f.round(2)
+              =h fastk.round(2)
           - else
-            =h row[:fastk].to_f.round(2)
+            =h fastk.round(2)
         %td
-          - if row[:fastd].to_f >= 80
+          - fastd = row[:fastd].to_f
+          - if fastd >= 80
             %div{style: 'color: red;'}
-              =h row[:fastd].to_f.round(2)
-          - elsif row[:fastd].to_f <= 20
+              =h fastd.round(2)
+          - elsif fastd <= 20
             %div{style: 'color: blue;'}
-              =h row[:fastd].to_f.round(2)
+              =h fastd.round(2)
           - else
-            =h row[:fastd].to_f.round(2)
+            =h fastd.round(2)
         %td
-          - if row[:macd].to_f >= 0
+          - macd = row[:macd].to_f
+          - if macd >= 0
             %div{style: 'color: red;'}
-              =h row[:macd].to_f.round(2)
+              =h macd.round(2)
           - else
             %div{style: 'color: blue;'}
-              =h row[:macd].to_f.round(2)
+              =h macd.round(2)
         %td
           =h row[:macdsignal].to_f.round(2)
         %td
           =h row[:macdhist].to_f.round(2)
         %td
-          - if row[:mom10].to_f >= 0
+          - mom10 = row[:mom10].to_f
+          - if mom10 >= 0
             %div{style: 'color: red;'}
-              =h row[:mom10].to_f.round(2)
+              =h mom10.round(2)
           - else
             %div{style: 'color: blue;'}
-              =h row[:mom10].to_f.round(2)
+              =h mom10.round(2)
         %td
-          - if row[:mom25].to_f >= 0
+          - mom25 = row[:mom25].to_f
+          - if mom25 >= 0
             %div{style: 'color: red;'}
-              =h row[:mom25].to_f.round(2)
+              =h mom25.round(2)
           - else
             %div{style: 'color: blue;'}
-              =h row[:mom25].to_f.round(2)
+              =h mom25.round(2)
         %td
           =h row[:natr].to_f.round(2)
         %td
-          - if row[:ret_index].to_f >= 1.2
+          - ret_index = row[:ret_index].to_f
+          - if ret_index >= 1.2
             %div{style: 'color: red;'}
-              =h row[:ret_index].to_f.round(2)
-          - elsif row[:ret_index].to_f <= 0.9
+              =h ret_index.round(2)
+          - elsif ret_index <= 0.9
             %div{style: 'color: blue;'}
-              =h row[:ret_index].to_f.round(2)
+              =h ret_index.round(2)
           - else
-            =h row[:ret_index].to_f.round(2)
+            =h ret_index.round(2)
