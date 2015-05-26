@@ -1,7 +1,6 @@
 %table.table.table-striped
   %thead
     %tr
-      %th DATE
       %th
         %a{:href => "http://www.kabuciao.com/tech/oscillator/rsi.html", :target => "_blank"}
           =h "RSI9"
@@ -48,14 +47,15 @@
         %a{:href => "http://www.kabuciao.com/tech/oscillator/momen.html", :target => "_blank"}
           =h "MOM25"
       %th
+        %a{:href => "http://www.moneypartners.co.jp/support/tech/atr.html", :target => "_blank"}
+          =h "ATR"
+      %th
         %a{:href => "http://www.sevendata.co.jp/shihyou/technical/atr.html", :target => "_blank"}
           =h "NATR"
       %th RET
   %tbody
     - @data.last(3).each do |row|
       %tr
-        %td
-          =h row[:date]
         %td
           - rsi9 = row[:rsi9].to_f
           - if rsi9 >= 70
@@ -182,6 +182,8 @@
           - else
             %div{style: 'color: blue;'}
               =h mom25.round(2)
+        %td
+          =h row[:atr].to_f.round(2)
         %td
           =h row[:natr].to_f.round(2)
         %td
