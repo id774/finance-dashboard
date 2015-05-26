@@ -47,11 +47,11 @@
         %a{:href => "http://www.kabuciao.com/tech/oscillator/momen.html", :target => "_blank"}
           =h "MOM25"
       %th
+        %a{:href => "http://www.sevendata.co.jp/shihyou/jukyuu/volla.html", :target => "_blank"}
+          =h "VL"
+      %th
         %a{:href => "http://www.moneypartners.co.jp/support/tech/atr.html", :target => "_blank"}
           =h "ATR"
-      %th
-        %a{:href => "http://www.sevendata.co.jp/shihyou/technical/atr.html", :target => "_blank"}
-          =h "NATR"
       %th RET
   %tbody
     - @data.last(3).each do |row|
@@ -183,9 +183,14 @@
             %div{style: 'color: blue;'}
               =h mom25.round(2)
         %td
-          =h row[:atr].to_f.round(2)
+          - vl = row[:vl].to_f
+          - if vl >= 5
+            %div{style: 'color: red;'}
+              =h vl.round(2)
+          - else
+            =h vl.round(2)
         %td
-          =h row[:natr].to_f.round(2)
+          =h row[:atr].to_f.round(2)
         %td
           - ret_index = row[:ret_index].to_f
           - if ret_index >= 1.2
