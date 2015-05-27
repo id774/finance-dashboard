@@ -86,6 +86,11 @@ class SinatraBootstrap < Sinatra::Base
     haml :index
   end
 
+  get '/clear_recent' do
+    session[:recent] = []
+    redirect @root
+  end
+
   get '/stock/:code' do
     filename = 'public/data/ti_' + @params[:code] + '.csv'
     filename = File.expand_path(filename)
