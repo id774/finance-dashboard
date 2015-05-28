@@ -4,11 +4,11 @@
   =h "四季報"
 %a{:href => "http://kabuyoho.ifis.co.jp/index.php?sa=report&bcode=#{@params[:code]}", :target => "_blank"}
   =h "IFIS"
+%a{:href => "https://www.traders.co.jp/stocks_info/individual_info_basic.asp?SC=#{@params[:code]}", :target => "_blank"}
+  =h "Trader's"
 %a{:href => "http://kabutan.jp/stock/?code=#{@params[:code]}", :target => "_blank"}
   =h "株探"
 %a{:href => "http://kabu-sokuhou.com/brand/item/code___#{@params[:code]}", :target => "_blank"}
   =h "株速"
 %a{:href => "http://minkabu.jp/stock/#{@params[:code]}/signal", :target => "_blank"}
   =h "みん株"
-%a{:href => "https://www.traders.co.jp/stocks_info/individual_info_basic.asp?SC=#{@params[:code]}", :target => "_blank"}
-  =h "Trader's"
