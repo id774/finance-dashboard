@@ -24,14 +24,14 @@
   %tbody
     %tr
       %td
-        =h row[:sma5].to_f.round(2)
+        =h number_with_delimiter(row[:sma5].to_i)
       %td
-        =h row[:sma25].to_f.round(2)
+        =h number_with_delimiter(row[:sma25].to_i)
       %td
-        =h row[:sma75].to_f.round(2)
+        =h number_with_delimiter(row[:sma75].to_i)
       %td
-        =h row[:upperband].to_f.round(2)
+        =h number_with_delimiter(row[:upperband].to_i)
       %td
-        =h row[:middleband].to_f.round(2)
+        =h number_with_delimiter(row[:middleband].to_i)
       %td
-        =h row[:lowerband].to_f.round(2)
+        =h number_with_delimiter(row[:lowerband].to_i)
