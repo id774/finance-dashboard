@@ -12,7 +12,10 @@
           =h "MFI"
       %th
         %a{:href => "http://www.kabuciao.com/tech/oscillator/roc.html", :target => "_blank"}
-          =h "ROC"
+          =h "ROC10"
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/oscillator/roc.html", :target => "_blank"}
+          =h "ROC25"
       %th
         %a{:href => "http://www.kabuciao.com/tech/oscillator/cci.html", :target => "_blank"}
           =h "CCI"
@@ -41,17 +44,17 @@
         %a{:href => "http://www.kabuciao.com/tech/trend/macd.html", :target => "_blank"}
           =h "HIST"
       %th
-        %a{:href => "http://www.kabuciao.com/tech/oscillator/momen.html", :target => "_blank"}
-          =h "MOM10"
-      %th
-        %a{:href => "http://www.kabuciao.com/tech/oscillator/momen.html", :target => "_blank"}
-          =h "MOM25"
-      %th
         %a{:href => "http://www.sevendata.co.jp/shihyou/jukyuu/volla.html", :target => "_blank"}
           =h "VL"
       %th
         %a{:href => "http://www.moneypartners.co.jp/support/tech/atr.html", :target => "_blank"}
+          =h "TR"
+      %th
+        %a{:href => "http://www.moneypartners.co.jp/support/tech/atr.html", :target => "_blank"}
           =h "ATR"
+      %th
+        %a{:href => "http://www.moneypartners.co.jp/support/tech/atr.html", :target => "_blank"}
+          =h "NATR"
       %th RET
   %tbody
     - @data.last(3).each do |row|
@@ -77,7 +80,7 @@
           - else
             =h rsi14.round(2)
         %td
-          - mfi = row[:mfi].to_f
+          - mfi = row[:mfi14].to_f
           - if mfi >= 80
             %div{style: 'color: red;'}
               =h mfi.round(2)
@@ -87,23 +90,31 @@
           - else
             =h mfi.round(2)
         %td
-          - roc = row[:roc].to_f
-          - if roc >= 0
+          - roc10 = row[:roc10].to_f
+          - if roc10 >= 0
             %div{style: 'color: red;'}
-              =h roc.round(2)
+              =h roc10.round(2)
           - else
             %div{style: 'color: blue;'}
-              =h roc.round(2)
+              =h roc10.round(2)
         %td
-          - cci = row[:cci].to_f
-          - if cci >= 100
+          - roc25 = row[:roc25].to_f
+          - if roc25 >= 0
             %div{style: 'color: red;'}
-              =h cci.round(2)
-          - elsif cci <= -100
-            %div{style: 'color: blue;'}
-              =h cci.round(2)
+              =h roc25.round(2)
           - else
-            =h cci.round(2)
+            %div{style: 'color: blue;'}
+              =h roc25.round(2)
+        %td
+          - cci14 = row[:cci14].to_f
+          - if cci14 >= 100
+            %div{style: 'color: red;'}
+              =h cci14.round(2)
+          - elsif cci14 <= -100
+            %div{style: 'color: blue;'}
+              =h cci14.round(2)
+          - else
+            =h cci14.round(2)
         %td
           - ultosc = row[:ultosc].to_f
           - if ultosc >= 70
@@ -167,22 +178,6 @@
         %td
           =h row[:macdhist].to_f.round(2)
         %td
-          - mom10 = row[:mom10].to_f
-          - if mom10 >= 0
-            %div{style: 'color: red;'}
-              =h mom10.round(2)
-          - else
-            %div{style: 'color: blue;'}
-              =h mom10.round(2)
-        %td
-          - mom25 = row[:mom25].to_f
-          - if mom25 >= 0
-            %div{style: 'color: red;'}
-              =h mom25.round(2)
-          - else
-            %div{style: 'color: blue;'}
-              =h mom25.round(2)
-        %td
           - vl = row[:vl].to_f
           - if vl >= 5
             %div{style: 'color: red;'}
@@ -190,7 +185,11 @@
           - else
             =h vl.round(2)
         %td
+          =h row[:tr].to_f.round(2)
+        %td
           =h row[:atr].to_f.round(2)
+        %td
+          =h row[:natr].to_f.round(2)
         %td
           - ret_index = row[:ret_index].to_f
           - if ret_index >= 1.2
