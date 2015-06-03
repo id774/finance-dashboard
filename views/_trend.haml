@@ -1,5 +1,3 @@
-- row = @data.last
-
 %table.table.table-striped
   %thead
     %tr
@@ -22,16 +20,17 @@
         %a{:href => "http://www.kabuciao.com/tech/trend/bollin.html", :target => "_blank"}
           =h "LOWER"
   %tbody
-    %tr
-      %td
-        =h number_with_delimiter(row[:sma5].to_i)
-      %td
-        =h number_with_delimiter(row[:sma25].to_i)
-      %td
-        =h number_with_delimiter(row[:sma75].to_i)
-      %td
-        =h number_with_delimiter(row[:upperband].to_i)
-      %td
-        =h number_with_delimiter(row[:middleband].to_i)
-      %td
-        =h number_with_delimiter(row[:lowerband].to_i)
+    - @data.last(2).each do |row|
+      %tr
+        %td
+          =h number_with_delimiter(row[:sma5].to_i)
+        %td
+          =h number_with_delimiter(row[:sma25].to_i)
+        %td
+          =h number_with_delimiter(row[:sma75].to_i)
+        %td
+          =h number_with_delimiter(row[:upperband].to_i)
+        %td
+          =h number_with_delimiter(row[:middleband].to_i)
+        %td
+          =h number_with_delimiter(row[:lowerband].to_i)
