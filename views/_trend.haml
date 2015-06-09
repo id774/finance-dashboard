@@ -3,34 +3,39 @@
     %tr
       %th
         %a{:href => "http://www.kabuciao.com/tech/ido.html", :target => "_blank"}
-          =h "SMA5"
+          =h "MA5"
       %th
         %a{:href => "http://www.kabuciao.com/tech/ido.html", :target => "_blank"}
-          =h "SMA25"
+          =h "MA25"
       %th
         %a{:href => "http://www.kabuciao.com/tech/ido.html", :target => "_blank"}
-          =h "SMA75"
+          =h "MA75"
       %th
         %a{:href => "http://www.kabuciao.com/tech/trend/bollin.html", :target => "_blank"}
-          =h "UPPER"
+          =h "UP"
       %th
         %a{:href => "http://www.kabuciao.com/tech/trend/bollin.html", :target => "_blank"}
-          =h "MIDDLE"
+          =h "MID"
       %th
         %a{:href => "http://www.kabuciao.com/tech/trend/bollin.html", :target => "_blank"}
-          =h "LOWER"
+          =h "LOW"
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/trend/bollin.html", :target => "_blank"}
+          =h "SAR"
   %tbody
     - @data.last(2).each do |row|
       %tr
         %td
-          =h number_with_delimiter(row[:sma5].to_i)
+          =h number_with_delimiter(row[:ewma5].to_i)
         %td
-          =h number_with_delimiter(row[:sma25].to_i)
+          =h number_with_delimiter(row[:ewma25].to_i)
         %td
-          =h number_with_delimiter(row[:sma75].to_i)
+          =h number_with_delimiter(row[:ewma75].to_i)
         %td
           =h number_with_delimiter(row[:upperband].to_i)
         %td
           =h number_with_delimiter(row[:middleband].to_i)
         %td
           =h number_with_delimiter(row[:lowerband].to_i)
+        %td
+          =h number_with_delimiter(row[:sar].to_i)
