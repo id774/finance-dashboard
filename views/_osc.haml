@@ -44,6 +44,9 @@
         %a{:href => "http://www.kabuciao.com/tech/trend/macd.html", :target => "_blank"}
           =h "HIST"
       %th
+        %a{:href => "http://www.moneypartners.co.jp/support/tech/wir.html", :target => "_blank"}
+          =h "R%"
+      %th
         %a{:href => "http://www.sevendata.co.jp/shihyou/jukyuu/volla.html", :target => "_blank"}
           =h "VL"
       %th
@@ -55,7 +58,6 @@
       %th
         %a{:href => "http://www.moneypartners.co.jp/support/tech/atr.html", :target => "_blank"}
           =h "NATR"
-      %th RET
   %tbody
     - @data.last(3).each do |row|
       %tr
@@ -178,6 +180,16 @@
         %td
           =h row[:macdhist].to_f.round(2)
         %td
+          - willr14 = row[:willr14].to_f
+          - if willr14 >= -10
+            %div{style: 'color: red;'}
+              =h willr14.round(2)
+          - elsif willr14 <= -90
+            %div{style: 'color: blue;'}
+              =h willr14.round(2)
+          - else
+            =h willr14.round(2)
+        %td
           - vl = row[:vl].to_f
           - if vl >= 5
             %div{style: 'color: red;'}
@@ -190,13 +202,3 @@
           =h row[:atr].to_f.round(2)
         %td
           =h row[:natr].to_f.round(2)
-        %td
-          - ret_index = row[:ret_index].to_f
-          - if ret_index >= 1.2
-            %div{style: 'color: red;'}
-              =h ret_index.round(2)
-          - elsif ret_index <= 0.9
-            %div{style: 'color: blue;'}
-              =h ret_index.round(2)
-          - else
-            =h ret_index.round(2)
