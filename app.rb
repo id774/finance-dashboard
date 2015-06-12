@@ -38,6 +38,18 @@ class SinatraBootstrap < Sinatra::Base
   def initialize(app = nil, params = {})
     super(app)
     @root = Sinatra::Application.environment == :production ? '/finance-dashboard/' : '/'
+
+    filename = File.expand_path('public/data/stocks.txt')
+    @stocks = open_csv(filename)
+
+    filename = File.expand_path('public/data/summary.csv')
+    @summary = open_csv(filename)
+
+    filename = File.expand_path('public/data/summary_10.csv')
+    @summary10 = open_csv(filename)
+
+    filename = File.expand_path('public/data/summary_25.csv')
+    @summary25 = open_csv(filename)
   end
 
   def logger
@@ -69,18 +81,6 @@ class SinatraBootstrap < Sinatra::Base
   end
 
   get '/' do
-    filename = File.expand_path('public/data/stocks.txt')
-    @stocks = open_csv(filename)
-
-    filename = File.expand_path('public/data/summary.csv')
-    @summary = open_csv(filename)
-
-    filename = File.expand_path('public/data/summary_10.csv')
-    @summary10 = open_csv(filename)
-
-    filename = File.expand_path('public/data/summary_25.csv')
-    @summary25 = open_csv(filename)
-
     session[:recent] = [] unless session[:recent]
     @recent = session[:recent].sort
     haml :index
