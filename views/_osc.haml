@@ -59,7 +59,7 @@
         %a{:href => "http://www.moneypartners.co.jp/support/tech/atr.html", :target => "_blank"}
           =h "NATR"
   %tbody
-    - @data.last(3).each do |row|
+    - @data.last(4).each do |row|
       %tr
         %td
           - rsi9 = row[:rsi9].to_f
@@ -176,9 +176,21 @@
             %div{style: 'color: blue;'}
               =h macd.round(2)
         %td
-          =h row[:macdsignal].to_f.round(2)
+          - macdsignal = row[:macdsignal].to_f
+          - if macdsignal <= macd
+            %div{style: 'color: red;'}
+              =h macdsignal.round(2)
+          - else
+            %div{style: 'color: blue;'}
+              =h macdsignal.round(2)
         %td
-          =h row[:macdhist].to_f.round(2)
+          - macdhist = row[:macdhist].to_f
+          - if macdhist >= 0
+            %div{style: 'color: red;'}
+              =h macdhist.round(2)
+          - else
+            %div{style: 'color: blue;'}
+              =h macdhist.round(2)
         %td
           - willr14 = row[:willr14].to_f
           - if willr14 >= -10
