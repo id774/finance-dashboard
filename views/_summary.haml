@@ -3,6 +3,7 @@
     %tr
       %th 銘柄
       %th 企業名
+      %th 相関
       %th 始値
       %th 高値
       %th 安値
@@ -12,7 +13,7 @@
   %tbody
     - if @summary.length > 0
       - @summary.each do |line|
-        - code, open, high, low, close, diff, ratio, name = line.strip.split("\t")
+        - code, open, high, low, close, diff, ratio, corr, name = line.strip.split("\t")
         - unless code == "Code"
           %tr
             %td
@@ -21,6 +22,8 @@
             %td
               %a{:href => "#{@root}stock/#{code}"}
                 =h name
+            %td
+              =h corr
             %td
               =h number_with_delimiter(open)
             %td

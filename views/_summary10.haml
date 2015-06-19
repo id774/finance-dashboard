@@ -8,7 +8,7 @@
   %tbody
     - if @summary10.length > 0
       - @summary10.each do |line|
-        - code, open, high, low, close, diff, ratio, name = line.strip.split("\t")
+        - code, open, high, low, close, diff, ratio, corr, name = line.strip.split("\t")
         - unless code == "Code"
           %tr
             %td
