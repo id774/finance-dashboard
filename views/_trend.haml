@@ -9,16 +9,16 @@
           =h "MA25"
       %th
         %a{:href => "http://www.kabuciao.com/tech/ido.html", :target => "_blank"}
+          =h "MA50"
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/ido.html", :target => "_blank"}
           =h "MA75"
       %th
         %a{:href => "http://www.kabuciao.com/tech/trend/bollin.html", :target => "_blank"}
-          =h "UP"
+          =h "UPPER"
       %th
         %a{:href => "http://www.kabuciao.com/tech/trend/bollin.html", :target => "_blank"}
-          =h "MID"
-      %th
-        %a{:href => "http://www.kabuciao.com/tech/trend/bollin.html", :target => "_blank"}
-          =h "LOW"
+          =h "LOWER"
       %th
         %a{:href => "https://www.rakuten-sec.co.jp/web/fop/futures/chart_guide/09.html", :target => "_blank"}
           =h "SAR"
@@ -30,11 +30,11 @@
         %td
           =h number_with_delimiter(row[:ewma25].to_i)
         %td
+          =h number_with_delimiter(row[:ewma50].to_i)
+        %td
           =h number_with_delimiter(row[:ewma75].to_i)
         %td
           =h number_with_delimiter(row[:upperband].to_i)
-        %td
-          =h number_with_delimiter(row[:middleband].to_i)
         %td
           =h number_with_delimiter(row[:lowerband].to_i)
         %td
