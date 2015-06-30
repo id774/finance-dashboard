@@ -1,12 +1,21 @@
-## Financial Dashboard
+Finance Dashboard
+=================
 
-## How do I get started?
+**Sinatra based Dashboard for Finance Data**
 
-    cd public
-    ln -s /var/stock/data
+How do I get started?
+---------------------
 
-## How do I start the application?
+``` html
+cd public
+ln -s /var/stock/data
+```
 
-Start the app by running:
+How do I start the application?
+-------------------------------
 
-    foreman start
+Start the app by running.
+
+``` html
+foreman start
+```
