@@ -106,6 +106,18 @@ class SinatraBootstrap < Sinatra::Base
     session[:recent] = session[:recent].uniq.last(15)
 
     @recent = session[:recent].sort
+    haml :show
+  end
+
+  get '/stock/:code/detail' do
+    filename = 'public/data/ti_' + @params[:code] + '.csv'
+    filename = File.expand_path(filename)
+    redirect @root unless File.exist?(filename)
+
+    @data = open_data(filename)
+    redirect @root if @data.length == 0
+
+    @title = "#{@params[:code]} - Finance Dashboard"
     haml :detail
   end
 

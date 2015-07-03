@@ -3,17 +3,11 @@
   .container
     .content
       .row
-        .span8
-          = render(:haml, :'_chart')
-
         .span4
-          = render(:haml, :'_series')
-          = render(:haml, :'_trend')
-
-  .container
-    .content
-      .row
-        .span12
-          = render(:haml, :'_osc')
+          = render(:haml, :'_series_all')
+        .span4
+          = render(:haml, :'_trend_all')
+        .span4
+          = render(:haml, :'_osc_all')
 
 = render(:haml, :'_footer')

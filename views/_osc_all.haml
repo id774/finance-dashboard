@@ -1,0 +1,216 @@
+%table.table.table-striped
+  %thead
+    %tr
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/oscillator/rsi.html", :target => "_blank"}
+          =h "RSI9"
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/oscillator/rsi.html", :target => "_blank"}
+          =h "RSI14"
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/oscillator/mfi.html", :target => "_blank"}
+          =h "MFI"
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/oscillator/roc.html", :target => "_blank"}
+          =h "ROC10"
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/oscillator/roc.html", :target => "_blank"}
+          =h "ROC25"
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/oscillator/cci.html", :target => "_blank"}
+          =h "CCI"
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/oscillator/kyukyoku.html", :target => "_blank"}
+          =h "UO"
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/oscillator/stokyasu.html", :target => "_blank"}
+          =h "SLOWK"
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/oscillator/stokyasu.html", :target => "_blank"}
+          =h "SLOWD"
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/oscillator/stokyasu.html", :target => "_blank"}
+          =h "FASTK"
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/oscillator/stokyasu.html", :target => "_blank"}
+          =h "FASTD"
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/trend/macd.html", :target => "_blank"}
+          =h "MACD"
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/trend/macd.html", :target => "_blank"}
+          =h "SIG"
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/trend/macd.html", :target => "_blank"}
+          =h "HIST"
+      %th
+        %a{:href => "http://www.moneypartners.co.jp/support/tech/wir.html", :target => "_blank"}
+          =h "%R"
+      %th
+        %a{:href => "http://www.sevendata.co.jp/shihyou/jukyuu/volla.html", :target => "_blank"}
+          =h "VL"
+      %th
+        %a{:href => "http://www.moneypartners.co.jp/support/tech/atr.html", :target => "_blank"}
+          =h "TR"
+      %th
+        %a{:href => "http://www.moneypartners.co.jp/support/tech/atr.html", :target => "_blank"}
+          =h "ATR"
+      %th
+        %a{:href => "http://www.moneypartners.co.jp/support/tech/atr.html", :target => "_blank"}
+          =h "NATR"
+  %tbody
+    - @data.last(180).each do |row|
+      %tr
+        %td
+          - rsi9 = row[:rsi9].to_f
+          - if rsi9 >= 70
+            %div{style: 'color: red;'}
+              =h rsi9.round(2)
+          - elsif rsi9 <= 30
+            %div{style: 'color: blue;'}
+              =h rsi9.round(2)
+          - else
+            =h rsi9.round(2)
+        %td
+          - rsi14 = row[:rsi14].to_f
+          - if rsi14 >= 70
+            %div{style: 'color: red;'}
+              =h rsi14.round(2)
+          - elsif rsi14 <= 30
+            %div{style: 'color: blue;'}
+              =h rsi14.round(2)
+          - else
+            =h rsi14.round(2)
+        %td
+          - mfi = row[:mfi14].to_f
+          - if mfi >= 80
+            %div{style: 'color: red;'}
+              =h mfi.round(2)
+          - elsif mfi <= 20
+            %div{style: 'color: blue;'}
+              =h mfi.round(2)
+          - else
+            =h mfi.round(2)
+        %td
+          - roc10 = row[:roc10].to_f
+          - if roc10 >= 0
+            %div{style: 'color: red;'}
+              =h roc10.round(2)
+          - else
+            %div{style: 'color: blue;'}
+              =h roc10.round(2)
+        %td
+          - roc25 = row[:roc25].to_f
+          - if roc25 >= 0
+            %div{style: 'color: red;'}
+              =h roc25.round(2)
+          - else
+            %div{style: 'color: blue;'}
+              =h roc25.round(2)
+        %td
+          - cci14 = row[:cci14].to_f
+          - if cci14 >= 100
+            %div{style: 'color: red;'}
+              =h cci14.round(2)
+          - elsif cci14 <= -100
+            %div{style: 'color: blue;'}
+              =h cci14.round(2)
+          - else
+            =h cci14.round(2)
+        %td
+          - ultosc = row[:ultosc].to_f
+          - if ultosc >= 70
+            %div{style: 'color: red;'}
+              =h ultosc.round(2)
+          - elsif ultosc <= 35
+            %div{style: 'color: blue;'}
+              =h ultosc.round(2)
+          - else
+            =h ultosc.round(2)
+        %td
+          - slowk = row[:slowk].to_f
+          - if slowk >= 80
+            %div{style: 'color: red;'}
+              =h slowk.round(2)
+          - elsif slowk <= 20
+            %div{style: 'color: blue;'}
+              =h slowk.round(2)
+          - else
+            =h slowk.round(2)
+        %td
+          - slowd = row[:slowd].to_f
+          - if slowd >= 80
+            %div{style: 'color: red;'}
+              =h slowd.round(2)
+          - elsif slowd <= 20
+            %div{style: 'color: blue;'}
+              =h slowd.round(2)
+          - else
+            =h slowd.round(2)
+        %td
+          - fastk = row[:fastk].to_f
+          - if fastk >= 80
+            %div{style: 'color: red;'}
+              =h fastk.round(2)
+          - elsif fastk <= 20
+            %div{style: 'color: blue;'}
+              =h fastk.round(2)
+          - else
+            =h fastk.round(2)
+        %td
+          - fastd = row[:fastd].to_f
+          - if fastd >= 80
+            %div{style: 'color: red;'}
+              =h fastd.round(2)
+          - elsif fastd <= 20
+            %div{style: 'color: blue;'}
+              =h fastd.round(2)
+          - else
+            =h fastd.round(2)
+        %td
+          - macd = row[:macd].to_f
+          - if macd >= 0
+            %div{style: 'color: red;'}
+              =h macd.round(2)
+          - else
+            %div{style: 'color: blue;'}
+              =h macd.round(2)
+        %td
+          - macdsignal = row[:macdsignal].to_f
+          - if macdsignal <= macd
+            %div{style: 'color: red;'}
+              =h macdsignal.round(2)
+          - else
+            %div{style: 'color: blue;'}
+              =h macdsignal.round(2)
+        %td
+          - macdhist = row[:macdhist].to_f
+          - if macdhist >= 0
+            %div{style: 'color: red;'}
+              =h macdhist.round(2)
+          - else
+            %div{style: 'color: blue;'}
+              =h macdhist.round(2)
+        %td
+          - willr14 = row[:willr14].to_f
+          - if willr14 >= -10
+            %div{style: 'color: red;'}
+              =h willr14.round(2)
+          - elsif willr14 <= -90
+            %div{style: 'color: blue;'}
+              =h willr14.round(2)
+          - else
+            =h willr14.round(2)
+        %td
+          - vl = row[:vl].to_f
+          - if vl >= 5
+            %div{style: 'color: red;'}
+              =h vl.round(2)
+          - else
+            =h vl.round(2)
+        %td
+          =h number_with_delimiter(row[:tr].to_i)
+        %td
+          =h row[:atr].to_f.round(2)
+        %td
+          =h row[:natr].to_f.round(2)

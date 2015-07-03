@@ -1,0 +1,31 @@
+%table.table.table-striped
+  %thead
+    %tr
+      %th 日付
+      %th 始値
+      %th 高値
+      %th 安値
+      %th 終値
+      %th 出来高
+  %tbody
+    - @data.last(180).each do |row|
+      - date  = row[:date]
+      - open  = row[:open].to_i
+      - high  = row[:high].to_i
+      - low   = row[:low].to_i
+      - close = row[:adj_close].to_i
+      - volume = row[:volume].to_i
+      - unless date == "Date"
+        %tr
+          %td
+            =h date
+          %td
+            =h number_with_delimiter(open)
+          %td
+            =h number_with_delimiter(high)
+          %td
+            =h number_with_delimiter(low)
+          %td
+            =h number_with_delimiter(close)
+          %td
+            =h number_with_delimiter(volume)
