@@ -136,7 +136,8 @@
             %div{style: 'color: blue;'}
               =h slowk.round(2)
           - else
-            =h slowk.round(2)
+            %div{style: 'color: green;'}
+              =h slowk.round(2)
         %td
           - slowd = row[:slowd].to_f
           - if slowd >= 80
@@ -146,7 +147,8 @@
             %div{style: 'color: blue;'}
               =h slowd.round(2)
           - else
-            =h slowd.round(2)
+            %div{style: 'color: green;'}
+              =h slowd.round(2)
         %td
           - fastk = row[:fastk].to_f
           - if fastk >= 80
@@ -156,7 +158,8 @@
             %div{style: 'color: blue;'}
               =h fastk.round(2)
           - else
-            =h fastk.round(2)
+            %div{style: 'color: green;'}
+              =h fastk.round(2)
         %td
           - fastd = row[:fastd].to_f
           - if fastd >= 80
@@ -166,7 +169,8 @@
             %div{style: 'color: blue;'}
               =h fastd.round(2)
           - else
-            =h fastd.round(2)
+            %div{style: 'color: green;'}
+              =h fastd.round(2)
         %td
           - macd = row[:macd].to_f
           - if macd >= 0
@@ -200,7 +204,8 @@
             %div{style: 'color: blue;'}
               =h willr14.round(2)
           - else
-            =h willr14.round(2)
+            %div{style: 'color: green;'}
+              =h willr14.round(2)
         %td
           - vl = row[:vl].to_f
           - if vl >= 5
