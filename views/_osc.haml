@@ -59,7 +59,7 @@
         %a{:href => "http://www.moneypartners.co.jp/support/tech/atr.html", :target => "_blank"}
           =h "NATR"
   %tbody
-    - @data.last(4).each do |row|
+    - @data.last(3).each do |row|
       %tr
         %td
           - rsi9 = row[:rsi9].to_f

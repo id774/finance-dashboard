@@ -5,6 +5,9 @@
       .row
         .span8
           = render(:haml, :'_chart')
+          %p{:class=>"pull-right"}
+            %a{:href => "#{@root}stock/#{@params[:code]}/detail"}
+              =h "詳細"
 
         .span4
           = render(:haml, :'_series')
