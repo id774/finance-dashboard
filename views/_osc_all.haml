@@ -130,6 +130,14 @@
             %div{style: 'color: blue;'}
               =h roc75.round(2)
         %td
+          - roc150 = row[:roc150].to_f
+          - if roc150 >= 0
+            %div{style: 'color: red;'}
+              =h roc150.round(2)
+          - else
+            %div{style: 'color: blue;'}
+              =h roc150.round(2)
+        %td
           - cci14 = row[:cci14].to_f
           - if cci14 >= 100
             %div{style: 'color: red;'}
