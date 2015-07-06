@@ -17,6 +17,12 @@
         %a{:href => "http://www.kabuciao.com/tech/oscillator/roc.html", :target => "_blank"}
           =h "ROC25"
       %th
+        %a{:href => "http://www.kabuciao.com/tech/oscillator/roc.html", :target => "_blank"}
+          =h "ROC50"
+      %th
+        %a{:href => "http://www.kabuciao.com/tech/oscillator/roc.html", :target => "_blank"}
+          =h "ROC75"
+      %th
         %a{:href => "http://www.kabuciao.com/tech/oscillator/cci.html", :target => "_blank"}
           =h "CCI"
       %th
@@ -107,6 +113,22 @@
           - else
             %div{style: 'color: blue;'}
               =h roc25.round(2)
+        %td
+          - roc50 = row[:roc50].to_f
+          - if roc50 >= 0
+            %div{style: 'color: red;'}
+              =h roc50.round(2)
+          - else
+            %div{style: 'color: blue;'}
+              =h roc50.round(2)
+        %td
+          - roc75 = row[:roc75].to_f
+          - if roc75 >= 0
+            %div{style: 'color: red;'}
+              =h roc75.round(2)
+          - else
+            %div{style: 'color: blue;'}
+              =h roc75.round(2)
         %td
           - cci14 = row[:cci14].to_f
           - if cci14 >= 100
