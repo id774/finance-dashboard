@@ -3,6 +3,8 @@
     %tr
       %th 銘柄
       %th 企業名
+      %th 相関
+      %th 終値
       %th MOM25
       %th 比率
   %tbody
@@ -17,6 +19,10 @@
             %td
               %a{:href => "#{@root}stock/#{code}"}
                 =h name
+            %td
+              =h corr
+            %td
+              =h number_with_delimiter(close)
             %td
               =h diff
             %td
