@@ -20,7 +20,7 @@
         %a{:href => "http://www.kabuciao.com/tech/trend/bollin.html", :target => "_blank"}
           =h "LOWER"
   %tbody
-    - @data.last(180).each do |row|
+    - @data.reverse.last(180).each do |row|
       %tr
         %td
           =h number_with_delimiter(row[:ewma5].to_i)

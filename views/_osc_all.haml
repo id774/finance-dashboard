@@ -72,7 +72,7 @@
           =h "NATR"
       %th 出来高
   %tbody
-    - @data.last(180).each do |row|
+    - @data.reverse.last(180).each do |row|
       %tr
         %td
           =h number_with_delimiter(row[:sar].to_i)
