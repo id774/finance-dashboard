@@ -1,4 +1,10 @@
 %a{:href => "#{@root}stock/#{@params[:code]}"}
-  =h "[チャート表示]"
+  =h "[チャート]"
 %a{:href => "#{@root}stock/#{@params[:code]}/detail"}
-  =h "[全データ表示]"
+  =h "[全データ]"
+- stock_file = "#{@root}data/stock_#{@params[:code]}.csv"
+%a{:href => stock_file, :target => "_blank"}
+  [株価]
+- ti_file = "#{@root}data/ti_#{@params[:code]}.csv"
+%a{:href => ti_file, :target => "_blank"}
+  [指標]
