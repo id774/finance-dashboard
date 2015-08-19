@@ -2,6 +2,8 @@
   %thead
     %tr
       %th
+        RET
+      %th
         %a{:href => "https://www.rakuten-sec.co.jp/web/fop/futures/chart_guide/09.html", :target => "_blank"}
           =h "SAR"
       %th
@@ -74,6 +76,14 @@
   %tbody
     - @data.reverse.last(180).each do |row|
       %tr
+        %td
+          - ret_index = row[:ret_index].to_f
+          - if ret_index >= 0
+            %div{style: 'color: red;'}
+              =h ret_index.round(2)
+          - else
+            %div{style: 'color: blue;'}
+              =h ret_index.round(2)
         %td
           =h number_with_delimiter(row[:sar].to_i)
         %td
