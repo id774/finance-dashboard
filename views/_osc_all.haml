@@ -78,7 +78,7 @@
       %tr
         %td
           - ret_index = row[:ret_index].to_f
-          - if ret_index >= 0
+          - if ret_index >= 1
             %div{style: 'color: red;'}
               =h ret_index.round(2)
           - else
