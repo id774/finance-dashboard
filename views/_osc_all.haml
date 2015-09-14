@@ -74,7 +74,7 @@
           =h "NATR"
       %th 出来高
   %tbody
-    - @data.reverse.last(180).each do |row|
+    - @data.reverse.each do |row|
       %tr
         %td
           - ret_index = row[:ret_index].to_f

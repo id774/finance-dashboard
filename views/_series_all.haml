@@ -7,7 +7,7 @@
       %th 安値
       %th 終値
   %tbody
-    - @data.reverse.last(180).each do |row|
+    - @data.reverse.each do |row|
       - date  = row[:date]
       - open  = row[:open].to_i
       - high  = row[:high].to_i
