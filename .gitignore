@@ -18,3 +18,4 @@ public/assets/*.gz
 public/assets/*.yml
 public/data
 .svn
+config/.config.yml
