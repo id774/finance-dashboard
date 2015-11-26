@@ -75,11 +75,11 @@ class SinatraBootstrap < Sinatra::Base
     filename = File.expand_path('public/data/summary.csv')
     @summary = open_csv(filename)
 
-    filename = File.expand_path('public/data/summary_10.csv')
-    @summary10 = open_csv(filename)
-
     filename = File.expand_path('public/data/screening_rsi9.csv')
     @screening_rsi9 = open_csv(filename)
+
+    filename = File.expand_path('public/data/screening_willr14.csv')
+    @screening_willr14 = open_csv(filename)
 
     session[:recent] = [] unless session[:recent]
     @recent = session[:recent].sort
