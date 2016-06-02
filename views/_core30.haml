@@ -1,0 +1,35 @@
+%table.table.table-striped
+  %thead
+    %tr
+      %th 銘柄
+      %th 企業名
+      %th 始値
+      %th 高値
+      %th 安値
+      %th 終値
+      %th MOM1
+      %th 比率
+  %tbody
+    - if @core30.length > 0
+      - @core30.first(16).each do |line|
+        - code, corr, open, high, low, close, diff, ratio, trend, predict, name = line.strip.split("\t")
+        - unless code == "Code"
+          %tr
+            %td
+              %a{:href => "#{@root}stock/#{code}"}
+                =h code
+            %td
+              %a{:href => "#{@root}stock/#{code}"}
+                =h name
+            %td
+              =h number_with_delimiter(open)
+            %td
+              =h number_with_delimiter(high)
+            %td
+              =h number_with_delimiter(low)
+            %td
+              =h number_with_delimiter(close)
+            %td
+              =h diff
+            %td
+              =h (ratio + "%")
