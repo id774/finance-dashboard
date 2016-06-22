@@ -4,6 +4,7 @@
     %meta{:'http-equiv' => "Content-Type", :content => "text/html; charset=utf-8"}
     %title
       = @title || "Finance Dashboard"
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
@@ -11,10 +12,11 @@
     %link{ href: "#{@root}stylesheets/bootstrap.min.css", rel: "stylesheet" }/
     %link{ href: "#{@root}stylesheets/bootstrap-responsive.css", rel: "stylesheet" }/
     %link{ href: "#{@root}stylesheets/style.css", rel: "stylesheet" }/
-    %script{:type => "text/javascript", :src => "/javascripts/application.js"}
+    %script{:type => "text/javascript", :src => "#{@root}javascripts/application.js"}
+    %script{:type => "text/javascript", :src => "#{@root}javascripts/bootstrap-collapse.js"}
   %body(class='apps-index-page' data-spy="scroll" data-target=".subnav" data-offset="50")
-    %section{:id => "topbar"}
-      %div{:class=>'navbar navbar-fixed-top'}
+    %section#topbar
+      %div.navbar.navbar-fixed-top
         .navbar-inner
           .container
             %a(class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse")
