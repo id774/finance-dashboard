@@ -9,5 +9,9 @@
           = render(:haml, :'_trend_all')
         .span4
           = render(:haml, :'_osc_all')
+      .row
+        .span12
+          %div{:class=>"pull-left"}
+            = render(:haml, :'_chart_data')
 
 = render(:haml, :'_footer')

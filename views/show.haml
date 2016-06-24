@@ -5,6 +5,8 @@
       .row
         .span8
           = render(:haml, :'_chart')
+          %div{:class=>"pull-right"}
+            = render(:haml, :'_chart_data')
         .span4
           = render(:haml, :'_series')
           = render(:haml, :'_trend')
