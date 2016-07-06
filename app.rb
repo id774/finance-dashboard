@@ -84,6 +84,9 @@ class SinatraBootstrap < Sinatra::Base
     filename = File.expand_path('public/data/screening_willr14.csv')
     @screening_willr14 = open_csv(filename)
 
+    filename = File.expand_path('public/data/rolling_corr.csv')
+    @rolling_corr = open_csv(filename)
+
     filename = File.expand_path('public/data/portfolio.csv')
     @portfolio = open_csv(filename)
 
