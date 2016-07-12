@@ -19,6 +19,6 @@ RSpec::Core::RakeTask.new(:spec) do |spec|
   # - (Object) rspec_opts=(opts)
   # default : nil
   spec.pattern = 'spec/*_spec.rb'
-  spec.rspec_opts = %w(--color --format progress)
+  spec.rspec_opts = %w(--color --format documentation)
 end
 
