@@ -1,3 +1,6 @@
+- if @params[:code] == "N225"
+  %a{:href => "http://market.newsln.jp/apps/market/quotes?r=2y&c=1010&lang=ja"}
+    =h "[ドル建て]"
 %a{:href => "#{@root}stock/#{@params[:code]}"}
   =h "[チャート表示]"
 %a{:href => "#{@root}stock/#{@params[:code]}/detail"}
