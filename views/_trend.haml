@@ -14,6 +14,9 @@
         %a{:href => "http://www.kabuciao.com/tech/ido.html", :target => "_blank"}
           =h "MA75"
       %th
+        %a{:href => "http://www.kabuciao.com/tech/ido.html", :target => "_blank"}
+          =h "MA200"
+      %th
         %a{:href => "http://www.kabuciao.com/tech/trend/bollin.html", :target => "_blank"}
           =h "UPPER"
       %th
@@ -33,6 +36,8 @@
           =h number_with_delimiter(row[:ewma50].to_i)
         %td
           =h number_with_delimiter(row[:ewma75].to_i)
+        %td
+          =h number_with_delimiter(row[:ewma200].to_i)
         %td
           =h number_with_delimiter(row[:upperband].to_i)
         %td
