@@ -1,7 +1,7 @@
 - if @params[:code] == "N225"
   %a{:href => "http://market.newsln.jp/apps/market/quotes?r=2y&c=1010&lang=ja"}
     =h "[ドル建て]"
-- if @params[:code] == "2042"
+- if @params[:code] == "2042" or @params[:code] == "1563"
   %a{:href => "https://kabutan.jp/stock/chart?code=0012"}
     =h "[マザーズ指数]"
 %a{:href => "#{@root}stock/#{@params[:code]}"}
