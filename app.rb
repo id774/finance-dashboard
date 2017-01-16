@@ -101,12 +101,14 @@ class SinatraBootstrap < Sinatra::Base
   end
 
   get '/stock/:code' do
+    recovery_url = "http://market.newsln.jp/market/technical-chart/#{@params[:code]}.html"
+
     filename = 'public/data/ti_' + @params[:code] + '.csv'
     filename = File.expand_path(filename)
-    redirect @root unless File.exist?(filename)
+    redirect recovery_url unless File.exist?(filename)
 
     @data = open_data(filename)
-    redirect @root if @data.length == 0
+    redirect recovery_url if @data.length == 0
 
     @title = "#{@params[:code]} - Finance Dashboard"
 
@@ -119,12 +121,14 @@ class SinatraBootstrap < Sinatra::Base
   end
 
   get '/stock/:code/long' do
+    recovery_url = "http://market.newsln.jp/market/technical-chart/#{@params[:code]}.html"
+
     filename = 'public/data/ti_' + @params[:code] + '.csv'
     filename = File.expand_path(filename)
-    redirect @root unless File.exist?(filename)
+    redirect recovery_url unless File.exist?(filename)
 
     @data = open_data(filename)
-    redirect @root if @data.length == 0
+    redirect recovery_url if @data.length == 0
 
     @title = "#{@params[:code]} - Finance Dashboard"
 
@@ -137,12 +141,14 @@ class SinatraBootstrap < Sinatra::Base
   end
 
   get '/stock/:code/detail' do
+    recovery_url = "http://market.newsln.jp/market/technical-chart/#{@params[:code]}.html"
+
     filename = 'public/data/ti_' + @params[:code] + '.csv'
     filename = File.expand_path(filename)
-    redirect @root unless File.exist?(filename)
+    redirect recovery_url unless File.exist?(filename)
 
     @data = open_data(filename)
-    redirect @root if @data.length == 0
+    redirect recovery_url if @data.length == 0
 
     @title = "#{@params[:code]} - Finance Dashboard"
     haml :detail
