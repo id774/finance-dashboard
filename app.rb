@@ -103,7 +103,7 @@ class SinatraBootstrap < Sinatra::Base
   get '/stock/:code' do
     recovery_url = "http://market.newsln.jp/market/technical-chart/#{@params[:code]}.html"
 
-    filename = 'public/data/ti_' + @params[:code] + '.csv'
+    filename = "public/data/ti_#{@params[:code]}.csv"
     filename = File.expand_path(filename)
     redirect recovery_url unless File.exist?(filename)
 
@@ -123,7 +123,7 @@ class SinatraBootstrap < Sinatra::Base
   get '/stock/:code/long' do
     recovery_url = "http://market.newsln.jp/market/technical-chart/#{@params[:code]}.html"
 
-    filename = 'public/data/ti_' + @params[:code] + '.csv'
+    filename = "public/data/ti_#{@params[:code]}.csv"
     filename = File.expand_path(filename)
     redirect recovery_url unless File.exist?(filename)
 
@@ -143,7 +143,7 @@ class SinatraBootstrap < Sinatra::Base
   get '/stock/:code/detail' do
     recovery_url = "http://market.newsln.jp/market/technical-chart/#{@params[:code]}.html"
 
-    filename = 'public/data/ti_' + @params[:code] + '.csv'
+    filename = "public/data/ti_#{@params[:code]}.csv"
     filename = File.expand_path(filename)
     redirect recovery_url unless File.exist?(filename)
 
