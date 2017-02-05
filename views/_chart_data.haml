@@ -9,7 +9,7 @@
 %a{:href => "#{@root}stock/#{@params[:code]}/long"}
   =h "[長期チャート]"
 %a{:href => "#{@root}stock/#{@params[:code]}/detail"}
-  =h "[全データ表示]"
+  =h "[時系列表示]"
 - stock_file = "#{@root}data/stock_#{@params[:code]}.csv"
 %a{:href => stock_file, :target => "_blank"}
   [株価データ]
