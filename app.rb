@@ -140,6 +140,26 @@ class SinatraBootstrap < Sinatra::Base
     haml :long
   end
 
+  get '/stock/:code/short' do
+    recovery_url = "http://market.newsln.jp/market/technical-chart/#{@params[:code]}.html"
+
+    filename = "public/data/ti_#{@params[:code]}.csv"
+    filename = File.expand_path(filename)
+    redirect recovery_url unless File.exist?(filename)
+
+    @data = open_data(filename)
+    redirect recovery_url if @data.length == 0
+
+    @title = "#{@params[:code]} - Finance Dashboard"
+
+    session[:recent] = [] unless session[:recent]
+    session[:recent] << @params[:code]
+    session[:recent] = session[:recent].uniq.last(15)
+
+    @recent = session[:recent].sort
+    haml :short
+  end
+
   get '/stock/:code/detail' do
     recovery_url = "http://market.newsln.jp/market/technical-chart/#{@params[:code]}.html"
 

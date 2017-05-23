@@ -1,0 +1,20 @@
+%section{:id => "main"}
+- if @data.length > 0
+  .container
+    .content
+      .row
+        .span8
+          = render(:haml, :'_short')
+          %div{:class=>"pull-right"}
+            = render(:haml, :'_chart_data')
+        .span4
+          = render(:haml, :'_series')
+          = render(:haml, :'_trend')
+
+  .container
+    .content
+      .row
+        .span12
+          = render(:haml, :'_osc')
+
+= render(:haml, :'_footer')
