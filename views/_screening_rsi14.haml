@@ -3,14 +3,14 @@
     %tr
       %th 銘柄
       %th 企業名
-      %th RSI9
+      %th RSI14
       %th 終値
       %th 変化
       %th 比率
   %tbody
-    - if @screening_rsi9.length > 0
-      - @screening_rsi9.each do |line|
-        - code, corr, open, high, low, close, diff, ratio, rsi9, name = line.strip.split("\t")
+    - if @screening_rsi14.length > 0
+      - @screening_rsi14.each do |line|
+        - code, corr, open, high, low, close, diff, ratio, rsi14, name = line.strip.split("\t")
         - unless code == "Code"
           %tr
             %td
@@ -20,7 +20,7 @@
               %a{:href => "#{@root}stock/#{code}"}
                 =h name
             %td
-              =h rsi9
+              =h rsi14
             %td
               =h number_with_delimiter(close)
             %td

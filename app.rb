@@ -79,10 +79,7 @@ class SinatraBootstrap < Sinatra::Base
     @core30 = open_csv(filename)
 
     filename = File.expand_path('public/data/screening_rsi9.csv')
-    @screening_rsi9 = open_csv(filename)
-
-    filename = File.expand_path('public/data/screening_willr14.csv')
-    @screening_willr14 = open_csv(filename)
+    @screening_rsi14 = open_csv(filename)
 
     filename = File.expand_path('public/data/rolling_corr.csv')
     @rolling_corr = open_csv(filename)
