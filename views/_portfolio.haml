@@ -3,11 +3,12 @@
     %tr
       %th 銘柄
       %th 企業名
+      %th 相関
       %th 始値
       %th 高値
       %th 安値
       %th 終値
-      %th MOM1
+      %th 変化
       %th 比率
   %tbody
     - if @portfolio.length > 0
@@ -21,6 +22,8 @@
             %td
               %a{:href => "#{@root}stock/#{code}"}
                 =h name
+            %td
+              =h corr
             %td
               =h number_with_delimiter(open)
             %td
