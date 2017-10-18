@@ -10,7 +10,7 @@
   %tbody
     - if @screening_rsi14.length > 0
       - @screening_rsi14.each do |line|
-        - code, corr, open, high, low, close, diff, ratio, rsi14, name = line.strip.split("\t")
+        - code, open, high, low, close, diff, ratio, rsi14, name = line.strip.split("\t")
         - unless code == "Code"
           %tr
             %td

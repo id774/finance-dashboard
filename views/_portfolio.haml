@@ -13,7 +13,7 @@
   %tbody
     - if @portfolio.length > 0
       - @portfolio.first(11).each do |line|
-        - code, corr, open, high, low, close, diff, ratio, trend, predict, name = line.strip.split("\t")
+        - code, open, high, low, close, diff, ratio, trend, predict, name = line.strip.split("\t")
         - unless code == "Code"
           %tr
             %td
@@ -22,8 +22,6 @@
             %td
               %a{:href => "#{@root}stock/#{code}"}
                 =h name
-            %td
-              =h corr
             %td
               =h number_with_delimiter(open)
             %td

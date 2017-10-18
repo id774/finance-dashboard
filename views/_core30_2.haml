@@ -12,7 +12,7 @@
   %tbody
     - if @core30.length > 0
       - @core30.last(15).each do |line|
-        - code, corr, open, high, low, close, diff, ratio, rsi9, name = line.strip.split("\t")
+        - code, open, high, low, close, diff, ratio, rsi9, name = line.strip.split("\t")
         - unless code == "Code"
           %tr
             %td
