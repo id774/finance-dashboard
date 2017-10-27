@@ -72,7 +72,6 @@
       %th
         %a{:href => "http://www.moneypartners.co.jp/support/tech/atr.html", :target => "_blank"}
           =h "NATR"
-      %th 出来高
   %tbody
     - @data.reverse.each do |row|
       %tr
@@ -268,5 +267,3 @@
           =h row[:atr].to_f.round(2)
         %td
           =h row[:natr].to_f.round(2)
-        %td
-          =h number_with_delimiter(row[:volume].to_i)

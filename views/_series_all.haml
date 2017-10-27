@@ -6,6 +6,7 @@
       %th 高値
       %th 安値
       %th 終値
+      %th 出来高
   %tbody
     - @data.reverse.each do |row|
       - date  = row[:date]
@@ -13,6 +14,7 @@
       - high  = row[:high].to_i
       - low   = row[:low].to_i
       - close = row[:adj_close].to_i
+      - volume = row[:volume].to_i
       - unless date == "Date"
         %tr
           %td
@@ -25,3 +27,5 @@
             =h number_with_delimiter(low)
           %td
             =h number_with_delimiter(close)
+          %td
+            =h number_with_delimiter(volume)
