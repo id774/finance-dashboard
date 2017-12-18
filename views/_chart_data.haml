@@ -1,6 +1,18 @@
-- if @params[:code] == "N225"
+- if @params[:code] == "N225" or @params[:code] == "1321" or @params[:code] == "1357" or @params[:code] == "1570"
   %a{:href => "http://www.conceptsengine.com/finance/chart/1010.html"}
     =h "[ドル建て]"
+- if @params[:code] == "1348" or @params[:code] == "1356"
+  %a{:href => "http://www.conceptsengine.com/finance/chart/1013.html"}
+    =h "[TOPIX]"
+- if @params[:code] == "1546"
+  %a{:href => "http://www.conceptsengine.com/finance/chart/1100.html"}
+    =h "[ダウ]"
+- if @params[:code] == "1557"
+  %a{:href => "http://www.conceptsengine.com/finance/chart/1101.html"}
+    =h "[S&P500]"
+- if @params[:code] == "1545"
+  %a{:href => "http://www.conceptsengine.com/finance/chart/1102.html"}
+    =h "[NASDAQ]"
 - if @params[:code] == "2042" or @params[:code] == "1563"
   %a{:href => "https://kabutan.jp/stock/chart?code=0012"}
     =h "[マザーズ指数]"
