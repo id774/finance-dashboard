@@ -1,4 +1,4 @@
-- if @params[:code] == "N225" or @params[:code] == "1321" or @params[:code] == "1357" or @params[:code] == "1570"
+- if @params[:code] == "N225" or @params[:code] == "1321" or @params[:code] == "1357" or @params[:code] == "1570" or @params[:code] == "1570" or @params[:code] == "1579" or @params[:code] == "1580"
   %a{:href => "http://www.conceptsengine.com/finance/chart/1010.html"}
     =h "[ドル建て]"
 - if @params[:code] == "1348" or @params[:code] == "1356"
@@ -16,6 +16,12 @@
 - if @params[:code] == "2042" or @params[:code] == "1563"
   %a{:href => "https://kabutan.jp/stock/chart?code=0012"}
     =h "[マザーズ指数]"
+- if @params[:code] == "2049" or @params[:code] == "1552"
+  %a{:href => "https://nikkei225jp.com/data/vix.php"}
+    =h "[恐怖指数]"
+- if @params[:code] == "1671" or @params[:code] == "1699" or @params[:code] == "2038" or @params[:code] == "1605"
+  %a{:href => "https://nikkei225jp.com/oil/"}
+    =h "[原油]"
 %a{:href => "#{@root}stock/#{@params[:code]}"}
   =h "[標準チャート]"
 %a{:href => "#{@root}stock/#{@params[:code]}/short"}
