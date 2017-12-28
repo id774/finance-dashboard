@@ -72,9 +72,6 @@ class SinatraBootstrap < Sinatra::Base
     filename = File.expand_path('public/data/stocks.txt')
     @stocks = open_csv(filename)
 
-    filename = File.expand_path('public/data/summary.csv')
-    @summary = open_csv(filename)
-
     filename = File.expand_path('public/data/topix_core30.csv')
     @core30 = open_csv(filename)
 

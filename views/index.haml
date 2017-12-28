@@ -3,6 +3,9 @@
     .content
       .row
         .span12
+          = render(:haml, :'_datatable')
+      .row
+        .span12
           = render(:haml, :'_all')
           = render(:haml, :'_refindex')
       .row
@@ -17,12 +20,5 @@
         .span6
           = render(:haml, :'_core30_2')
           = render(:haml, :'_core30_data')
-      .row
-        .span6
-          = render(:haml, :'_summary')
-          = render(:haml, :'_summary_data')
-        .span6
-          = render(:haml, :'_screening_rsi14')
-          = render(:haml, :'_screening_rsi14_data')
 
 = render(:haml, :'_footer_r')
