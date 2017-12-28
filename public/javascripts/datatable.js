@@ -27,5 +27,14 @@ jQuery(function($){
       displayLength: 5,
       stateSave: true,
        order: [ [ 7, "desc" ] ],
+      "columnDefs": [
+        {"targets": 2, "searchable": false},
+        {"targets": 3, "searchable": false},
+        {"targets": 4, "searchable": false},
+        {"targets": 5, "searchable": false},
+        {"targets": 6, "searchable": false},
+        {"targets": 7, "searchable": false},
+        {"targets": 8, "searchable": false}
+      ]
    })
 });
