@@ -95,7 +95,7 @@ class SinatraBootstrap < Sinatra::Base
   end
 
   get '/stock/:code' do
-    recovery_url = "http://www.conceptsengine.com/finance/chart/#{@params[:code]}.html"
+    recovery_url = "http://www.conceptsengine.com/finance/technical-chart/#{@params[:code]}.html"
 
     filename = "public/data/ti_#{@params[:code]}.csv"
     filename = File.expand_path(filename)
@@ -115,7 +115,7 @@ class SinatraBootstrap < Sinatra::Base
   end
 
   get '/stock/:code/long' do
-    recovery_url = "http://www.conceptsengine.com/finance/chart/#{@params[:code]}.html"
+    recovery_url = "http://www.conceptsengine.com/finance/technical-chart/#{@params[:code]}.html"
 
     filename = "public/data/ti_#{@params[:code]}.csv"
     filename = File.expand_path(filename)
@@ -135,7 +135,7 @@ class SinatraBootstrap < Sinatra::Base
   end
 
   get '/stock/:code/short' do
-    recovery_url = "http://www.conceptsengine.com/finance/chart/#{@params[:code]}.html"
+    recovery_url = "http://www.conceptsengine.com/finance/technical-chart/#{@params[:code]}.html"
 
     filename = "public/data/ti_#{@params[:code]}.csv"
     filename = File.expand_path(filename)
@@ -155,7 +155,7 @@ class SinatraBootstrap < Sinatra::Base
   end
 
   get '/stock/:code/detail' do
-    recovery_url = "http://www.conceptsengine.com/finance/chart/#{@params[:code]}.html"
+    recovery_url = "http://www.conceptsengine.com/finance/technical-chart/#{@params[:code]}.html"
 
     filename = "public/data/ti_#{@params[:code]}.csv"
     filename = File.expand_path(filename)
