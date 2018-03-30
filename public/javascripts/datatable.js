@@ -26,7 +26,7 @@ jQuery(function($){
       lengthMenu:[5, 10, 15, 20, 50, 100, 250, 500],
       displayLength: 5,
       stateSave: false,
-       order: [ [ 7, "desc" ] ],
+      order: [ [ 7, "desc" ] ],
       "columnDefs": [
         {"targets": 2, "searchable": false},
         {"targets": 3, "searchable": false},
