@@ -11,7 +11,7 @@
       %th 比率
   %tbody
     - if @portfolio.length > 0
-      - @portfolio.first(17).each do |line|
+      - @portfolio.first(21).each do |line|
         - code, open, high, low, close, diff, ratio, trend, predict, name = line.strip.split("\t")
         - unless code == "Code"
           %tr
