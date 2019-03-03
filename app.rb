@@ -175,6 +175,7 @@ class SinatraBootstrap < Sinatra::Base
     session[:recent] = [] unless session[:recent]
     session[:recent] = session[:recent].uniq.last(15)
 
+    @recent = session[:recent].sort
     haml :none
   end
 
