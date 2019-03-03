@@ -172,6 +172,9 @@ class SinatraBootstrap < Sinatra::Base
   get '/stock/:code/none' do
     @title = "#{@params[:code]} - Finance Dashboard"
 
+    session[:recent] = [] unless session[:recent]
+    session[:recent] = session[:recent].uniq.last(15)
+
     haml :none
   end
 
