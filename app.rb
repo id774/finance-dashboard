@@ -95,7 +95,7 @@ class SinatraBootstrap < Sinatra::Base
   end
 
   get '/stock/:code' do
-    recovery_url = "http://finance.id774.net/finance-dashboard/stock/#{@params[:code]}/none"
+    recovery_url = "https://finance.id774.net/finance-dashboard/stock/#{@params[:code]}/none"
 
     filename = "public/data/ti_#{@params[:code]}.csv"
     filename = File.expand_path(filename)
@@ -115,7 +115,7 @@ class SinatraBootstrap < Sinatra::Base
   end
 
   get '/stock/:code/long' do
-    recovery_url = "http://finance.id774.net/finance-dashboard/stock/#{@params[:code]}/none"
+    recovery_url = "https://finance.id774.net/finance-dashboard/stock/#{@params[:code]}/none"
 
     filename = "public/data/ti_#{@params[:code]}.csv"
     filename = File.expand_path(filename)
@@ -135,7 +135,7 @@ class SinatraBootstrap < Sinatra::Base
   end
 
   get '/stock/:code/short' do
-    recovery_url = "http://finance.id774.net/finance-dashboard/stock/#{@params[:code]}/none"
+    recovery_url = "https://finance.id774.net/finance-dashboard/stock/#{@params[:code]}/none"
 
     filename = "public/data/ti_#{@params[:code]}.csv"
     filename = File.expand_path(filename)
@@ -155,7 +155,7 @@ class SinatraBootstrap < Sinatra::Base
   end
 
   get '/stock/:code/detail' do
-    recovery_url = "http://finance.id774.net/finance-dashboard/stock/#{@params[:code]}/none"
+    recovery_url = "https://finance.id774.net/finance-dashboard/stock/#{@params[:code]}/none"
 
     filename = "public/data/ti_#{@params[:code]}.csv"
     filename = File.expand_path(filename)
