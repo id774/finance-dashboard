@@ -24,7 +24,7 @@ jQuery(function($){
         }
       },
       lengthMenu:[5, 10, 15, 20, 50, 100, 250, 500],
-      displayLength: 5,
+      displayLength: 10,
       stateSave: false,
       order: [ [ 7, "desc" ] ],
       "columnDefs": [
