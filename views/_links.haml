@@ -2,14 +2,16 @@
   =h "Y!"
 %a{:href => "https://www.buffett-code.com/company/#{@params[:code]}", :target => "_blank"}
   =h "業績"
-%a{:href => "http://gethaitou.webcrow.jp/kobetsumeigara/kenrikakuteibi_#{@params[:code]}.html", :target => "_blank"}
-  =h "優待"
 %a{:href => "http://kabuka.biz/riron/#{@params[:code][0]}000/#{@params[:code]}.htm", :target => "_blank"}
   =h "理論"
-%a{:href => "http://kabuyoho.ifis.co.jp/index.php?sa=report&bcode=#{@params[:code]}", :target => "_blank"}
-  =h "進捗"
+%a{:href => "https://jp.reuters.com/investing/stocks/detail/#{@params[:code]}.T", :target => "_blank"}
+  =h "指標"
+%a{:href => "http://gethaitou.webcrow.jp/kobetsumeigara/kenrikakuteibi_#{@params[:code]}.html", :target => "_blank"}
+  =h "優待"
 %a{:href => "http://www.quick.co.jp/page/screening_quote_score.html?quote=#{@params[:code]}", :target => "_blank"}
   =h "Q"
+%a{:href => "http://kabuyoho.ifis.co.jp/index.php?sa=report&bcode=#{@params[:code]}", :target => "_blank"}
+  =h "進捗"
 %a{:href => "https://www.traders.co.jp/stocks_info/individual_info_basic.asp?SC=#{@params[:code]}", :target => "_blank"}
   =h "T's"
 %a{:href => "http://www.kabudragon.com/s?t=#{@params[:code]}/ichimoku=1", :target => "_blank"}
