@@ -1,0 +1,11 @@
+<p class="links">
+  {% for link in index_links %}
+  <a href="{{ link.url }}" target="_blank" rel="noopener">{{ link.label }}</a>
+  {% endfor %}
+  <a href="{{ url_for('stock', code=code) }}">[標準チャート]</a>
+  <a href="{{ url_for('stock_view', code=code, view='short') }}">[短期チャート]</a>
+  <a href="{{ url_for('stock_view', code=code, view='long') }}">[長期チャート]</a>
+  <a href="{{ url_for('stock_view', code=code, view='detail') }}">[時系列表示]</a>
+  <a href="{{ url_for('data', path='stock_' ~ code ~ '.csv') }}" target="_blank" rel="noopener">[株価データ]</a>
+  <a href="{{ url_for('data', path='ti_' ~ code ~ '.csv') }}" target="_blank" rel="noopener">[テクニカル指標]</a>
+</p>

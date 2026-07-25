@@ -1,0 +1,67 @@
+{% macro summary_table(request, rows, rsi_label=None, rsi_first=False, show_diff=False, table_id=None) %}
+<table{% if table_id %} id="{{ table_id }}"{% endif %}>
+  <thead>
+    <tr>
+      <th>銘柄</th>
+      <th>企業名</th>
+      {% if rsi_label and rsi_first %}<th>{{ rsi_label }}</th>{% endif %}
+      <th>始値</th>
+      <th>高値</th>
+      <th>安値</th>
+      <th>終値</th>
+      {% if show_diff %}<th>差</th>{% endif %}
+      <th>比率</th>
+      {% if rsi_label and not rsi_first %}<th>{{ rsi_label }}</th>{% endif %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      <td><a href="{{ request.url_for('stock', code=row.code) }}">{{ row.code }}</a></td>
+      <td><a href="{{ request.url_for('stock', code=row.code) }}">{{ row.name }}</a></td>
+      {% if rsi_label and rsi_first %}<td>{{ row.rsi }}</td>{% endif %}
+      <td>{{ number_with_delimiter(row.open) }}</td>
+      <td>{{ number_with_delimiter(row.high) }}</td>
+      <td>{{ number_with_delimiter(row.low) }}</td>
+      <td>{{ number_with_delimiter(row.close) }}</td>
+      {% if show_diff %}<td>{{ row.diff }}</td>{% endif %}
+      <td>{{ percent(row.ratio) }}</td>
+      {% if rsi_label and not rsi_first %}<td>{{ row.rsi }}</td>{% endif %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endmacro %}
+
+{% macro indicator_table(columns, rows) %}
+<table>
+  <thead>
+    <tr>
+      {% for column in columns %}
+      <th>
+        {% if column.link %}
+        <a href="{{ column.link }}" target="_blank" rel="noopener">{{ column.label }}</a>
+        {% else %}
+        {{ column.label }}
+        {% endif %}
+      </th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for cells in rows %}
+    <tr>
+      {% for cell in cells %}
+      <td{% if cell.emphasis %} class="{{ cell.emphasis }}"{% endif %}>{{ cell.text }}</td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endmacro %}
+
+{% macro data_link(request, filename, label) %}
+<p class="data-link">
+  <a href="{{ request.url_for('data', path=filename) }}" target="_blank" rel="noopener">{{ label }}</a>
+</p>
+{% endmacro %}

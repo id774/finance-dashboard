@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "finance-dashboard"
+version = "2.0.0"
+description = "Dashboard for finance data generated outside the application"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "GPL-3.0-or-later OR LGPL-3.0-or-later" }
+authors = [{ name = "id774", email = "idnanashi@gmail.com" }]
+dependencies = [
+    "fastapi>=0.110",
+    "itsdangerous>=2.0",
+    "jinja2>=3.0",
+    "pyyaml>=5.4",
+    "uvicorn>=0.27",
+]
+
+[project.optional-dependencies]
+dev = ["httpx>=0.27", "pytest>=8.0", "ruff>=0.5"]
+
+[project.urls]
+Homepage = "https://github.com/id774/finance-dashboard"
+
+[project.scripts]
+finance-dashboard = "finance_dashboard.main:main"
+
+[tool.setuptools.packages.find]
+include = ["finance_dashboard*"]
+
+[tool.setuptools.package-data]
+finance_dashboard = ["templates/*.html", "templates/partials/*.html", "static/*", "static/*/*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+
+[tool.pytest.ini_options]
+testpaths = ["test"]
+python_files = ["*_test.py"]

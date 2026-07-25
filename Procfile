@@ -1,1 +1,1 @@
-web: bundle exec rackup -p 3000 -o 0.0.0.0
+web: uvicorn finance_dashboard.main:app --host 0.0.0.0 --port 3000

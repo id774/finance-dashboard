@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% from "partials/tables.html" import indicator_table %}
+
+{% block content %}
+<section class="chart">
+  <div>
+    <img src="{{ url_for('data', path=chart_image) }}" alt="{{ code }}">
+    {% include "partials/chart_links.html" %}
+  </div>
+  <div>
+    {{ indicator_table(series_columns, series_rows) }}
+    {{ indicator_table(trend_columns, trend_rows) }}
+  </div>
+</section>
+
+<section class="oscillator">
+  {{ indicator_table(oscillator_columns, oscillator_rows) }}
+</section>
+{% endblock %}
+
+{% block footer %}
+{% include "partials/stock_footer.html" %}
+{% endblock %}

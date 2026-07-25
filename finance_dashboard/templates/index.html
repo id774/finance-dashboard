@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% from "partials/tables.html" import summary_table, data_link %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/gridjs.mermaid.min.css') }}">
+<script src="{{ url_for('static', path='js/gridjs.umd.js') }}" defer></script>
+<script src="{{ url_for('static', path='js/screening.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+<section id="screening">
+  <div id="screening-grid" data-stock-url="{{ url_for('stock', code='__CODE__') }}"></div>
+  <script id="screening-data" type="application/json">{{ screening | tojson }}</script>
+  <noscript>
+    {{ summary_table(request, screening, rsi_label="RSI14", show_diff=True) }}
+  </noscript>
+  {{ data_link(request, "screening_rsi14.csv", "詳細") }}
+</section>
+
+<section id="stocks">
+  <table>
+    <thead>
+      <tr><th>企業一覧</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="links">
+          {% for stock in stocks %}
+          <a href="{{ url_for('stock', code=stock.code) }}">{{ stock.code }} {{ stock.name }}</a>
+          {% endfor %}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  {{ data_link(request, "ref_index.csv", "参考指標") }}
+</section>
+
+<section id="portfolio" class="columns">
+  <div>{{ summary_table(request, portfolio_left, show_diff=True) }}</div>
+  <div>
+    {{ summary_table(request, portfolio_right, show_diff=True) }}
+    {{ data_link(request, "portfolio.csv", "詳細") }}
+  </div>
+</section>
+
+<section id="core30" class="columns">
+  <div>{{ summary_table(request, core30_left, rsi_label="RSI9", rsi_first=True) }}</div>
+  <div>
+    {{ summary_table(request, core30_right, rsi_label="RSI9", rsi_first=True) }}
+    {{ data_link(request, "topix_core30.csv", "詳細") }}
+  </div>
+</section>
+{% endblock %}

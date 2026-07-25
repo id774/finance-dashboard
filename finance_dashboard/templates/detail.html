@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% from "partials/tables.html" import indicator_table %}
+
+{% block content %}
+{% include "partials/chart_links.html" %}
+
+<section class="detail">
+  <div>{{ indicator_table(series_columns, series_rows) }}</div>
+  <div>{{ indicator_table(trend_columns, trend_rows) }}</div>
+  <div>{{ indicator_table(oscillator_columns, oscillator_rows) }}</div>
+</section>
+{% endblock %}
+
+{% block footer %}
+{% include "partials/stock_footer.html" %}
+{% endblock %}
