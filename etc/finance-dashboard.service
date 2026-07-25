@@ -1,0 +1,17 @@
+[Unit]
+Description=Finance Dashboard
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/finance-dashboard
+Environment=FINANCE_DASHBOARD_ROOT_PATH=/finance-dashboard
+ExecStart=/var/www/finance-dashboard/.venv/bin/uvicorn finance_dashboard.main:app \
+    --host 127.0.0.1 --port 3000 --root-path /finance-dashboard
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

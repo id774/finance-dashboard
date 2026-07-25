@@ -1,0 +1,92 @@
+/* Dashboard specific styles layered on top of Pico.css */
+
+:root {
+  --pico-font-size: 90%;
+  --pico-spacing: 0.6rem;
+}
+
+body > header,
+body > main,
+body > footer {
+  padding-block: var(--pico-spacing);
+}
+
+nav ul.recent {
+  flex-wrap: wrap;
+}
+
+nav ul.recent li {
+  padding-inline: 0.35rem;
+}
+
+section {
+  margin-bottom: var(--pico-spacing);
+}
+
+section.columns,
+section.chart,
+section.detail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pico-spacing);
+  align-items: flex-start;
+}
+
+section.columns > div,
+section.detail > div {
+  flex: 1 1 24rem;
+  min-width: 0;
+  overflow-x: auto;
+}
+
+section.chart > div:first-child {
+  flex: 2 1 32rem;
+  min-width: 0;
+}
+
+section.chart > div:last-child {
+  flex: 1 1 24rem;
+  min-width: 0;
+  overflow-x: auto;
+}
+
+section.chart img {
+  max-width: 100%;
+  height: auto;
+}
+
+section.oscillator {
+  overflow-x: auto;
+}
+
+table {
+  font-size: 0.85rem;
+}
+
+th,
+td {
+  padding: 0.25rem 0.4rem;
+  white-space: nowrap;
+}
+
+p.links a,
+td.links a {
+  margin-right: 0.5rem;
+  white-space: nowrap;
+}
+
+p.data-link {
+  text-align: right;
+}
+
+td.up {
+  color: #c0392b;
+}
+
+td.down {
+  color: #2471a3;
+}
+
+td.mid {
+  color: #1e8449;
+}

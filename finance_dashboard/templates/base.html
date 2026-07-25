@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title }}</title>
+    <link rel="shortcut icon" href="{{ url_for('static', path='favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/pico.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
+    {% block head %}{% endblock %}
+  </head>
+  <body>
+    <header class="container-fluid">
+      <nav>
+        <ul>
+          <li><strong><a href="{{ url_for('index') }}">Finance Dashboard</a></strong></li>
+        </ul>
+        <ul class="recent">
+          <li><a href="{{ url_for('clear_recent') }}">Clear</a></li>
+          {% for code in recent %}
+          <li><a href="{{ url_for('stock', code=code) }}">{{ code }}</a></li>
+          {% endfor %}
+        </ul>
+      </nav>
+    </header>
+    <main class="container-fluid">
+      {% block content %}{% endblock %}
+    </main>
+    <footer class="container-fluid">
+      <hr>
+      {% block footer %}{% endblock %}
+      <p class="links">
+        {% for link in reference_links %}
+        <a href="{{ link.url }}" target="_blank" rel="noopener">{{ link.label }}</a>
+        {% endfor %}
+      </p>
+    </footer>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

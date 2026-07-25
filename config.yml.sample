@@ -1,0 +1,19 @@
+# Sample configuration. Copy to config.yml and edit, or set the
+# FINANCE_DASHBOARD_* environment variables instead.
+auth:
+  username: user
+  # Either password or password_sha256 can be used. When both are set,
+  # password_sha256 takes precedence.
+  password: pass
+  # password_sha256: 5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8
+
+session:
+  # Key used to sign the cookie that stores recently viewed codes.
+  # A temporary key is generated when this is omitted, which invalidates
+  # existing cookies on every restart.
+  secret_key: change-me
+
+data:
+  # Directory holding the generated CSV and PNG files.
+  # Defaults to public/data of this repository.
+  directory: /var/stock/data
