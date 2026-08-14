@@ -5,46 +5,31 @@ v1.0.1 (Release Date: TBD)
 --------------------------
 - Add doc/ARCHITECTURE.md, doc/DATA_CONTRACT.md, doc/DEPLOYMENT.md and
   doc/POLICY.md, moving the detail out of README.md and leaving it the entrance.
-- Add this file, and rename doc/LICENSE to doc/LICENSE.md. README.md is updated
-  to match; no other file referred to it.
-- Complete the module headers of config.py, data.py, formatting.py,
-  indicators.py, links.py, __init__.py and test/conftest.py with the
-  Requirements and Version History blocks the rest of the repository carried,
-  and state in each Description what the module is responsible for rather than
-  what its functions are called.
+- Add this file, and rename doc/LICENSE to doc/LICENSE.md.
+- Complete the module headers the rest of the repository already carried, and
+  state in each Description what the module is responsible for rather than what
+  its functions are called.
 - Start file level version management at v1.0, renumbering the single v2.0
-  entry main.py and deploy.sh carried and leaving their descriptions unchanged.
-- Expand section 2.5 of doc/POLICY.md into Documentation and Versioning, stating
-  when a module version is bumped, how module versions are numbered and roll
-  over, how repository release versions and Git tags stand apart from them, and
-  how an entry in this file is written, grouped and shortened. The rules were
-  already followed here but recorded nowhere in this repository, and they are
-  written out here rather than referred to in another one.
-- Comment etc/finance-dashboard.service with what an operator must adjust, and
-  why the root path is set both on the command line and in the environment.
-- State the responsibility boundary with the data pipeline in README.md and
-  doc/DATA_CONTRACT.md: the data pipeline writes the directory, this repository only
-  reads it.
-- State in README.md and doc/POLICY.md that this is a private dashboard for its
-  operator's own analysis: not a public web service, not a way of publishing
-  market data, and not a continuing analysis service for third parties. Add an
-  Access Control section naming the four ways it may be reached, and record that
-  the name public/data is a path rather than a permission.
-- Name the J-Quants API Free plan as the origin of everything displayed, and say
-  plainly that the figures are delayed rather than live. Distinguish the licence
-  of this source code from the terms of the market data it displays, in
-  README.md, doc/POLICY.md and doc/DATA_CONTRACT.md.
+  entry main.py and deploy.sh carried.
+- State the documentation and versioning rules in doc/POLICY.md, covering module
+  headers and versions, repository releases and how an entry in this file is
+  written.
+- Comment etc/finance-dashboard.service with what an operator must adjust.
+- State the responsibility boundary with the data pipeline: it writes the data
+  directory, and this repository only reads it.
+- State that this is a private dashboard for its operator's own analysis rather
+  than a public service, add an Access Control section naming the ways it may
+  be reached, and record that public/data is a path rather than a permission.
+- Name the J-Quants API Free plan as the origin of everything displayed, say
+  plainly that the figures are delayed rather than live, and distinguish the
+  licence of this source code from the terms of the data it displays.
 - Read data_source.txt, which finance now writes, and show the source, the
-  generation date and the last trading day on every page through base.html. An
-  absent value renders as unknown; no date is substituted for another and no
-  figure is invented to fill a gap.
-- Remove the ref_index.csv link from the index page. It was never produced by
-  finance, and the reference indices behind it came from a data source the
-  pipeline no longer uses; the J-Quants Free plan carries no index values.
-- Assert in test/app_test.py that no module here names an API endpoint, an API
-  key or an HTTP client, so that data fetching cannot migrate into the
-  dashboard. Add the data_source.txt fixture and its contract tests, and drop
-  the sys.path insert from test/conftest.py.
+  generation date and the last trading day on every page. An absent value
+  renders as unknown rather than being filled in with a substitute.
+- Remove the ref_index.csv link from the index page, which the pipeline never
+  produced and whose reference indices are no longer available to it.
+- Assert that no module here names an API endpoint, an API key or an HTTP
+  client, so that data fetching cannot migrate into the dashboard.
 - Replace the market index code used in the test fixtures with a listed equity,
   matching what the pipeline can now produce.
 
@@ -72,11 +57,10 @@ v1.0 (2026-07-25)
 
 Before v1.0
 -----------
-- The repository carries no release tag and no version file for any revision
-  before v1.0, so no earlier version number is recorded here. The Sinatra era
-  survives as a numbered commit series ending at "157 Fix Quick link"
-  (2019-10-17), and the commit log is its only history. Nothing has been
-  reconstructed from it into a version entry.
+- No release tag or version file exists for any revision before v1.0, so no
+  earlier version number is recorded here. The Sinatra era survives as a
+  numbered commit series ending at "157 Fix Quick link" (2019-10-17), and the
+  commit log is its only history.
 
 Version History Guidelines
 ==========================
