@@ -29,8 +29,13 @@
 #    - Reject stock codes containing path separators
 #    - Reload a file after its contents change
 #    - Split rows into two balanced groups
+#    - Read the provenance of the generated data
+#    - Report an absent provenance file as nothing known, not as today
+#    - Ignore a key data_source.txt was not meant to carry
 #
 #  Version History:
+#  v1.1 2026-08-14
+#       Cover the provenance loader.
 #  v1.0 2026-07-25
 #       Initial release.
 #
@@ -43,7 +48,7 @@ from finance_dashboard import data
 
 def test_load_stocks(data_dir):
     rows = data.load_stocks(data_dir)
-    assert [row["code"] for row in rows] == ["N225", "1321", "7203"]
+    assert [row["code"] for row in rows] == ["6758", "1321", "7203"]
     assert rows[2]["name"] == "トヨタ自動車"
 
 
@@ -61,7 +66,7 @@ def test_load_portfolio_columns(data_dir):
 
 
 def test_load_indicators(data_dir):
-    rows = data.load_indicators(data_dir, "N225")
+    rows = data.load_indicators(data_dir, "6758")
     assert len(rows) == 20
     assert rows[0]["date"] == "2026-07-01"
     assert rows[0]["adj_close"] == "1050.5"
@@ -90,3 +95,32 @@ def test_split_columns():
     left, right = data.split_columns([{"code": str(index)} for index in range(5)])
     assert [row["code"] for row in left] == ["0", "1", "2"]
     assert [row["code"] for row in right] == ["3", "4"]
+
+
+def test_load_data_source(data_dir):
+    values = data.load_data_source(data_dir)
+    assert values["source"] == "J-Quants API (Free plan, delayed)"
+    assert values["generated"] == "2026-07-21"
+    assert values["last_trading_day"] == "2026-04-24"
+
+
+def test_the_last_trading_day_is_older_than_the_generation_date(data_dir):
+    """The delay is visible in the file, which is the point of it."""
+    values = data.load_data_source(data_dir)
+    assert values["last_trading_day"] < values["generated"]
+
+
+def test_a_missing_provenance_file_is_nothing_known(tmp_path):
+    empty = tmp_path / "empty"
+    empty.mkdir()
+    data.clear_cache()
+    assert data.load_data_source(str(empty)) == {}
+
+
+def test_an_unexpected_key_is_ignored(data_dir):
+    path = os.path.join(data_dir, "data_source.txt")
+    with open(path, "a", encoding="utf-8") as handle:
+        handle.write("api_key\tsomething-that-must-never-be-here\n")
+    os.utime(path, (0, 0))
+    values = data.load_data_source(data_dir)
+    assert set(values) <= set(data.DATA_SOURCE_KEYS)

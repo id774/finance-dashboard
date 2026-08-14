@@ -15,6 +15,9 @@ producing side would break.
 ## 1. The boundary
 
 ```text
+J-Quants API (Free plan, delayed)
+     |
+     v
 finance  (batch, cron, 18:10 on weekdays)
      |
      v
@@ -26,6 +29,12 @@ finance-dashboard  (FastAPI, read only)
 
 The two repositories share no code, no process and no database. They share a
 directory of files.
+
+The market data provider appears at the top of that diagram and nowhere else in
+it. This application never reaches the J-Quants API, is never given its API key,
+and makes no outbound request while serving a page. Fetching is the pipeline's
+responsibility; `test/app_test.py` asserts that no module here so much as names
+the endpoint, the credential or an HTTP client.
 
 - `finance` writes the directory and never reads anything this application
   produces, because this application produces nothing.
@@ -54,18 +63,55 @@ which is the only module here that opens a generated file.
 | File | Parsed? | Used for |
 |---|---|---|
 | `stocks.txt` | yes, line split | the company listing on the index page |
+| `data_source.txt` | yes, key and value | the delayed data notice on every page |
 | `screening_rsi14.csv` | yes, positional | the sortable screening table |
 | `portfolio.csv` | yes, positional | the portfolio table |
 | `topix_core30.csv` | yes, positional | the TOPIX Core30 table |
 | `ti_CODE.csv` | yes, by header name | every table on a stock page |
 | `stock_CODE.csv` | no | offered as a download |
-| `ref_index.csv` | no | linked from the index page |
 | `chart_CODE.png`, `short_CODE.png`, `long_CODE.png` | no | the chart images |
 
 The unparsed files are served straight from the mounted data directory. Nothing
 here inspects their contents, so their format is not this application's
-business. Note that `ref_index.csv` is linked but is **not produced** by
-`finance`; the link is dead unless something else on the host writes it.
+business.
+
+Serving them is still serving market data. When the dashboard is reachable by
+anyone but its operator, the Basic authentication middleware wraps `/data` as
+well as the HTML for that reason; see the Access Control section of the README.
+
+### 2.1 `data_source.txt`
+
+Tab separated, one key and value per line, no header. Three keys, in this order:
+
+```text
+source	J-Quants API (Free plan, delayed)
+generated	2026-07-21
+last_trading_day	2026-04-24
+```
+
+| Key | Meaning |
+|---|---|
+| `source` | The provider and plan the figures came from |
+| `generated` | The day the pipeline ran |
+| `last_trading_day` | The newest trading day the data covers |
+
+The last two differ, and the difference is the point of the file. The Free plan
+publishes in arrears, so the newest figure on any page is weeks older than the
+run that produced it. `base.html` shows all three on every page.
+
+A key that is absent is rendered as unknown. A value is never substituted:
+showing `generated` where `last_trading_day` is missing would present the age of
+the run as the age of the data, which is exactly the misreading this file
+exists to prevent. An unrecognised key is ignored rather than displayed.
+
+### 2.2 `ref_index.csv` — withdrawn
+
+Earlier versions linked `ref_index.csv` from the index page. It was never
+produced by `finance`, and the reference indices it was meant to hold — N225,
+GSPC, IXIC, DJI — came from a data source this project no longer uses. The
+J-Quants Free plan does not carry index values, and no free, licensed
+alternative has been adopted, so nothing produces the file and the link has been
+removed rather than left dead. Nothing in either repository refers to it.
 
 ---
 

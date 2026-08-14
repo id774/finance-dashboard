@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "finance-dashboard"
-version = "1.0.0"
+version = "1.1.0"
 description = "Dashboard for finance data generated outside the application"
 readme = "README.md"
 requires-python = ">=3.9"

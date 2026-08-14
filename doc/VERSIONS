@@ -1,6 +1,31 @@
 finance-dashboard Repository Version History
 ============================================
 
+v1.1.0 (Release Date: TBD)
+--------------------------
+- State in README.md and doc/POLICY.md that this is a private dashboard for its
+  operator's own analysis: not a public web service, not a way of publishing
+  market data, and not a continuing analysis service for third parties. Add an
+  Access Control section naming the four ways it may be reached, and record that
+  the name public/data is a path rather than a permission.
+- Name the J-Quants API Free plan as the origin of everything displayed, and say
+  plainly that the figures are delayed rather than live. Distinguish the licence
+  of this source code from the terms of the market data it displays, in
+  README.md, doc/POLICY.md and doc/DATA_CONTRACT.md.
+- Read data_source.txt, which finance now writes, and show the source, the
+  generation date and the last trading day on every page through base.html. An
+  absent value renders as unknown; no date is substituted for another and no
+  figure is invented to fill a gap.
+- Remove the ref_index.csv link from the index page. It was never produced by
+  finance, and the reference indices behind it came from a data source the
+  pipeline no longer uses; the J-Quants Free plan carries no index values.
+- Assert in test/app_test.py that no module here names an API endpoint, an API
+  key or an HTTP client, so that data fetching cannot migrate into the
+  dashboard. Add the data_source.txt fixture and its contract tests, and drop
+  the sys.path insert from test/conftest.py.
+- Replace the market index code used in the test fixtures with a listed equity,
+  matching what the pipeline can now produce.
+
 v1.0.1 (Release Date: TBD)
 --------------------------
 - Add doc/ARCHITECTURE.md, doc/DATA_CONTRACT.md, doc/DEPLOYMENT.md and

@@ -9,12 +9,20 @@ see [`DATA_CONTRACT.md`](DATA_CONTRACT.md). For how it is installed and run, see
 
 ## 1. What this application is
 
-A read only view of a directory.
+A read only view of a directory, for the person who owns it.
 
-The `finance` pipeline writes CSV files and PNG charts into that directory once
-a day. This application parses them, decides how they are presented, and renders
-HTML on the server. It computes no indicator, trains no model, fetches no price,
-stores nothing and writes no file.
+The `finance` pipeline fetches prices from the J-Quants API and writes CSV files
+and PNG charts into that directory once a day. This application parses them,
+decides how they are presented, and renders HTML on the server. It computes no
+indicator, trains no model, fetches no price, stores nothing and writes no file.
+
+The provider is the pipeline's business and not this one's. Nothing here holds
+an API key, names an API endpoint or imports an HTTP client, so a page view
+cannot reach a data provider by any path. What the provider's delay means for
+what is displayed does reach here, and is handled in one place: `data.py` reads
+`data_source.txt`, `main.py` puts it in the context of every page, and
+`base.html` shows the source and the last trading day so that delayed figures
+are never read as live ones.
 
 That constraint is what keeps the whole thing small. There is no database, no
 migration, no background job, no cache server, no queue and no build step. State
