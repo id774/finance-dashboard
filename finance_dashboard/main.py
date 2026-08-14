@@ -12,8 +12,8 @@
 #  where a Settings is resolved once and handed to everything below.
 #
 #  What the dashboard is, is a read only view of a directory, meant for
-#  the person who owns it. The finance pipeline
-#  (https://github.com/id774/finance) fetches prices from the J-Quants
+#  the person who owns it. The data pipeline
+#  fetches prices from the J-Quants
 #  API and writes CSV files and PNG charts there once a day; this
 #  application parses them through data.py, decides their presentation
 #  through indicators.py, links.py and formatting.py, and renders Jinja2

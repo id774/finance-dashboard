@@ -11,7 +11,7 @@ see [`DATA_CONTRACT.md`](DATA_CONTRACT.md). For how it is installed and run, see
 
 A read only view of a directory, for the person who owns it.
 
-The `finance` pipeline fetches prices from the J-Quants API and writes CSV files
+The data pipeline fetches prices from the J-Quants API and writes CSV files
 and PNG charts into that directory once a day. This application parses them,
 decides how they are presented, and renders HTML on the server. It computes no
 indicator, trains no model, fetches no price, stores nothing and writes no file.
@@ -180,7 +180,7 @@ uploaded file and no writable directory.
 
 ## 7. Failure
 
-The two repositories are deployed and restarted independently, and the pipeline
+The two components are deployed and restarted independently, and the pipeline
 rewrites the data directory while this process keeps running. The application is
 built for that, not defended against it:
 

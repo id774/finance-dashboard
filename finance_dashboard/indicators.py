@@ -33,7 +33,7 @@
 #  rather than failing, so a table stays displayable against an older file.
 #
 #  This module computes no indicator. The values are calculated by the
-#  finance pipeline and read from disk; what is decided here is only how
+#  data pipeline and read from disk; what is decided here is only how
 #  they are presented. The links point at third-party explanations of each
 #  indicator and are the only outbound URLs on a stock page.
 #

@@ -6,7 +6,7 @@
 #
 #  Description:
 #  Build the world every test in this suite runs against: a temporary data
-#  directory holding sample files in the formats the finance pipeline
+#  directory holding sample files in the formats the data pipeline
 #  produces, and an application bound to that directory.
 #
 #  The sample files are the contract written down. The tab separated
@@ -72,7 +72,7 @@ PORTFOLIO += "9432\t3000\t3100\t2990\t3050\t-10\t-0.33\tdown\t3000\t日本電信
 
 SCREENING = CORE30
 
-# What finance writes beside the generated files: where the figures came
+# What the data pipeline writes beside the generated files: where the figures came
 # from, when the pipeline ran, and the last trading day they cover. The
 # two dates differ because the source publishes in arrears, and the
 # fixture keeps that difference so that a test can tell them apart.
