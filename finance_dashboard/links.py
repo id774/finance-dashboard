@@ -2,17 +2,48 @@
 # -*- coding: utf-8 -*-
 
 ########################################################################
-# links.py: External link definitions
+# finance_dashboard/links.py: External link definitions
 #
 #  Description:
-#  Keep the external reference links of the dashboard as data so that the
-#  templates stay free of repeated markup. Stock links embed the stock
-#  code, index links are shown only for the codes listed with them.
+#  Hold the outbound links the pages offer, as data rather than as markup
+#  repeated in a template. The dashboard renders what the finance pipeline
+#  computed; these links are how a reader gets from a code on a page to
+#  the places that carry what the pipeline does not -- company results,
+#  ratings, shareholder perks, short interest, a broker, a market index.
+#
+#  Three sets, differing in how they are selected:
+#
+#  - STOCK_LINK_TEMPLATES: URL templates with a {code} placeholder, and in
+#    one case a {prefix} of the leading digit. stock_links() fills them in
+#    for the stock being viewed, so every stock page carries all of them.
+#  - REFERENCE_LINKS: fixed URLs that do not depend on a stock. Shown once
+#    on the index page.
+#  - INDEX_LINKS: pairs of a code tuple and the links belonging to it.
+#    index_links() returns the links only for a code in the tuple, which
+#    is how a chart of the Nikkei is offered on the pages of the ETFs that
+#    track it and nowhere else.
+#
+#  The labels are Japanese and the targets are Japanese market sites, so
+#  the labels are stored as they are displayed. Translating them would
+#  leave a caption naming a site the reader then has to recognize.
+#
+#  Nothing here is fetched, checked or proxied. These are hrefs the
+#  templates print; this application makes no outbound request of its own,
+#  and a dead link is a dead link on the page rather than a failure of a
+#  page view. The list is maintained by hand as sites come and go.
 #
 #  Author: id774 (More info: http://id774.net)
 #  Source Code: https://github.com/id774/finance-dashboard
 #  License: The GPL version 3, or LGPL version 3 (Dual License).
 #  Contact: idnanashi@gmail.com
+#
+#  Requirements:
+#  - Python Version: 3.9 or later
+#  - Standard library only
+#
+#  Version History:
+#  v1.0 2026-07-25
+#       Initial release.
 #
 ########################################################################
 

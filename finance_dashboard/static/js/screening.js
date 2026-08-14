@@ -1,4 +1,18 @@
 // Render the RSI14 screening table with sorting, search, and pagination.
+//
+// This is the whole of the JavaScript this repository writes; gridjs.umd.js
+// beside it is a third-party bundle. Nothing here fetches anything: the rows
+// are read out of the JSON script element index.html already emitted, so the
+// table is built from markup that was delivered with the page and this
+// application needs no API of its own.
+//
+// The screening section is the one part of the site not rendered on the
+// server. index.html emits an empty container for this script to fill, and a
+// <noscript> copy of the same table for a reader without JavaScript. This
+// script returns without touching the page when the container, the data
+// element or Grid.js is absent, or when there are no rows, which leaves the
+// section empty rather than half built or raising.
+
 document.addEventListener("DOMContentLoaded", function () {
   var wrapper = document.getElementById("screening-grid");
   var source = document.getElementById("screening-data");

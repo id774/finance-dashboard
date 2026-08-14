@@ -1,0 +1,77 @@
+finance-dashboard Repository Version History
+============================================
+
+v2.0.1 (Release Date: TBD)
+--------------------------
+- Add doc/ARCHITECTURE.md, doc/DATA_CONTRACT.md, doc/DEPLOYMENT.md and
+  doc/POLICY.md, moving the detail out of README.md and leaving it the entrance.
+- Add this file, and rename doc/LICENSE to doc/LICENSE.md so that the three
+  sibling repositories name the document alike. README.md is updated to match;
+  no other file referred to it.
+- Complete the module headers of config.py, data.py, formatting.py,
+  indicators.py, links.py, __init__.py and test/conftest.py with the
+  Requirements and Version History blocks the rest of the repository carried,
+  and state in each Description what the module is responsible for rather than
+  what its functions are called.
+- Start file level version management at v1.0, renumbering the single v2.0
+  entry main.py and deploy.sh carried and leaving their descriptions unchanged.
+- Comment etc/finance-dashboard.service with what an operator must adjust, and
+  why the root path is set both on the command line and in the environment.
+- State the responsibility boundary with finance in README.md and
+  doc/DATA_CONTRACT.md: finance writes the directory, this repository only
+  reads it.
+
+v2.0 (2026-07-25)
+-----------------
+- Rewrite the dashboard in Python with FastAPI and Jinja2, replacing the
+  Sinatra application, and keep the URL layout so that existing bookmarks work.
+- Remove the bundled jQuery, Bootstrap and DataTables assets and the Ruby
+  runtime, Gemfile and Rakefile with them. Pico.css and Grid.js replace them,
+  and there is no build step and no Node.js dependency.
+- Read settings from FINANCE_DASHBOARD_ environment variables first and
+  config.yml second, replacing .config.yml.
+- Enable Basic authentication only when a user name and a password or its
+  SHA-256 digest are configured, covering the data files as well as the pages.
+- Keep the recently viewed codes in a signed session cookie instead of a
+  database, and remove config/database.yml.
+- Cache each data file by modification time and size, so a file the pipeline
+  regenerates is picked up without restarting the service.
+- Add etc/finance-dashboard.service, and rewrite deploy.sh to refresh a virtual
+  environment and restart the unit instead of deploying the Sinatra tree.
+- Add the pytest suite under test/, which builds its own data directory and
+  never reads the configured one.
+- Add pyproject.toml, doc/LICENSE, doc/COPYING and doc/COPYING.LESSER,
+  declaring the dual GPLv3 or LGPLv3 license.
+
+Before v2.0
+-----------
+- The repository carries no release tag and no version file for any revision
+  before v2.0, so no earlier version number is recorded here. The Sinatra era
+  survives as a numbered commit series ending at "157 Fix Quick link"
+  (2019-10-17), and the commit log is its only history. Nothing has been
+  reconstructed from it into a version entry.
+
+Version History Guidelines
+==========================
+- Write one coherent change per physical line, as a rule.
+- Keep entries near 100 columns where practical. Necessary file names,
+  command names, option names, and configuration names may extend an entry
+  to approximately 120 columns.
+- When a version history already exists, balance a new entry against the
+  length of the existing lines, so that the whole file stays consistent.
+- When an entry becomes substantially longer, omit or abstract implementation
+  details, examples, reasons, and secondary effects where possible.
+- Preserve the changed target, externally observable behavior, compatibility
+  or security impact, and important option or configuration names.
+- Combine related changes within the same version, especially changes to the
+  same file or feature.
+- Place closely related entries near each other.
+- Append an independent new change to the end of the current version entry.
+- This file records the history of the repository. The Version History block in
+  a module header records the history of that file, and the two are kept apart:
+  a release entry here does not raise a module version, and a module version
+  does not become an entry here unless the change is observable from outside.
+- A change to how a generated file is parsed is recorded here and in
+  doc/DATA_CONTRACT.md in the same commit, because the summary files are read
+  positionally and a silent divergence from the producing side is what that
+  document exists to prevent.

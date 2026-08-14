@@ -2,17 +2,48 @@
 # -*- coding: utf-8 -*-
 
 ########################################################################
-# conftest.py: Shared fixtures for Finance Dashboard tests
+# test/conftest.py: Shared fixtures of the Finance Dashboard test suite
 #
 #  Description:
-#  Create a temporary data directory that mimics the files produced by
-#  the external data pipeline, and build an application instance bound
-#  to it. Tests never touch the real data directory.
+#  Build the world every test in this suite runs against: a temporary data
+#  directory holding sample files in the formats the finance pipeline
+#  produces, and an application bound to that directory.
+#
+#  The sample files are the contract written down. The tab separated
+#  summaries carry their leading "Code" header and the exact column order
+#  data.py zips positionally, and the indicator header names all 38
+#  columns of a ti_CODE.csv in the order the pipeline writes them. A test
+#  that passes against these fixtures is evidence about the real files
+#  only because the fixtures match them, so a change to the contract on
+#  the producing side is a change to this file.
+#
+#  All of it is invented. No real holding, price or portfolio appears
+#  here, and the stock names are well known issuers used as sample data.
+#
+#  Every fixture is built under pytest's tmp_path. The suite never reads
+#  the configured data directory, never reads config.yml, and writes
+#  nothing outside the temporary tree, so it runs on a host where the
+#  pipeline has never run. data.clear_cache() is called around the
+#  fixtures because the loaders cache per path, and a cached list from one
+#  test's directory must not answer another test.
 #
 #  Author: id774 (More info: http://id774.net)
 #  Source Code: https://github.com/id774/finance-dashboard
 #  License: The GPL version 3, or LGPL version 3 (Dual License).
 #  Contact: idnanashi@gmail.com
+#
+#  Usage:
+#      This module is loaded by pytest. Run the suite from the repository
+#      root:
+#          pytest
+#
+#  Requirements:
+#  - Python Version: 3.9 or later
+#  - pytest, httpx (for the FastAPI test client)
+#
+#  Version History:
+#  v1.0 2026-07-25
+#       Initial release.
 #
 ########################################################################
 
