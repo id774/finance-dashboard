@@ -5,9 +5,8 @@ v1.0.1 (Release Date: TBD)
 --------------------------
 - Add doc/ARCHITECTURE.md, doc/DATA_CONTRACT.md, doc/DEPLOYMENT.md and
   doc/POLICY.md, moving the detail out of README.md and leaving it the entrance.
-- Add this file, and rename doc/LICENSE to doc/LICENSE.md so that the three
-  sibling repositories name the document alike. README.md is updated to match;
-  no other file referred to it.
+- Add this file, and rename doc/LICENSE to doc/LICENSE.md. README.md is updated
+  to match; no other file referred to it.
 - Complete the module headers of config.py, data.py, formatting.py,
   indicators.py, links.py, __init__.py and test/conftest.py with the
   Requirements and Version History blocks the rest of the repository carried,
@@ -17,8 +16,8 @@ v1.0.1 (Release Date: TBD)
   entry main.py and deploy.sh carried and leaving their descriptions unchanged.
 - Comment etc/finance-dashboard.service with what an operator must adjust, and
   why the root path is set both on the command line and in the environment.
-- State the responsibility boundary with finance in README.md and
-  doc/DATA_CONTRACT.md: finance writes the directory, this repository only
+- State the responsibility boundary with the data pipeline in README.md and
+  doc/DATA_CONTRACT.md: the data pipeline writes the directory, this repository only
   reads it.
 - State in README.md and doc/POLICY.md that this is a private dashboard for its
   operator's own analysis: not a public web service, not a way of publishing

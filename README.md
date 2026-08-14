@@ -2,19 +2,19 @@
 
 ## Overview
 
-**finance-dashboard** is a **private dashboard**: one person's view of their own investment analysis, on their own machine or behind their own access control. It renders the CSV files and chart images produced by the [finance](https://github.com/id774/finance) pipeline, and holds no database of its own.
+**finance-dashboard** is a **private dashboard**: one person's view of their own investment analysis, on their own machine or behind their own access control. It renders CSV files and chart images produced by an external data pipeline, and holds no database of its own.
 
 It is not a public web service, and it is not a way of publishing market data. See [Purpose and Scope](#1-purpose-and-scope) before deploying it anywhere a stranger can reach.
 
 The application is written in Python with FastAPI and Jinja2. Pages are rendered on the server, and the only client side dependency is a small table component, so no Node.js toolchain or build step is required.
 
-It only reads. `finance` fetches the prices, computes the indicators, trains the models, draws the charts and writes a directory of files; this repository parses that directory and displays it. The two share no code and no process — they share a directory, and the format of those files is the whole of the interface between them.
+It only reads. The data pipeline fetches the prices, computes the indicators, trains the models, draws the charts and writes a directory of files; this application parses that directory and displays it. The two components share no code and no process — they share a directory, and the format of those files is the whole of the interface between them.
 
 ```text
 J-Quants API (Free plan, delayed)
      |
      v
-finance  (batch, cron, 18:10 on weekdays)
+data pipeline  (batch, cron, 18:10 on weekdays)
      |
      v
 <data directory>/*.csv  *.txt  *.png
@@ -25,7 +25,7 @@ finance-dashboard  (FastAPI, read only)
 
 The arrow points one way. This repository never calls the J-Quants API, is never given its API key, and makes no outbound request of its own during a page view. Fetching market data is the pipeline's responsibility and stays there; a test asserts that no module here names the endpoint, the credential or an HTTP client.
 
-Neither repository is a dependency of the other. This one starts and serves without the pipeline installed; pointed at an empty directory it renders empty tables. See [Data Files](#3-data-files) and [`doc/DATA_CONTRACT.md`](doc/DATA_CONTRACT.md).
+The application starts and serves without the pipeline installed; pointed at an empty directory it renders empty tables. See [Data Files](#3-data-files) and [`doc/DATA_CONTRACT.md`](doc/DATA_CONTRACT.md).
 
 ## Features
 
@@ -77,8 +77,6 @@ These are design premises, not preferences, and the code and the tests are arran
 - **Open source code, licensed data.** This repository is published under the GPL or the LGPL. That covers the source code in it and nothing else. It says nothing whatever about the market data the dashboard displays, which is governed by the provider's terms. See [License](#13-license).
 - **No credentials, no market data in the repository.** No API key, no fetched price, no real portfolio is committed here. Every fixture in `test/` is invented.
 
-The sibling repository states the same premises from the producing side; see its README and `doc/POLICY.md`.
-
 ---
 
 ## 2. Data Source and Delay
@@ -87,7 +85,7 @@ Everything shown here originates from the **J-Quants API**, the market data serv
 
 **The figures are not live.** The Free plan publishes in arrears — at the time of writing, twelve weeks behind the present — and keeps a bounded history behind that point. A price on these pages is therefore weeks old, and the most recent weeks of the market are not represented at all.
 
-Because a delayed figure that looks current is worse than no figure, every page carries a notice naming the source and the **last trading day** the data covers, beside the day the pipeline generated it. Those come from `data_source.txt`, which `finance` writes; when it is absent the notice says the age is unknown rather than assuming it is today.
+Because a delayed figure that looks current is worse than no figure, every page carries a notice naming the source and the **last trading day** the data covers, beside the day the pipeline generated it. Those come from `data_source.txt`, which the data pipeline writes; when it is absent the notice says the age is unknown rather than assuming it is today.
 
 The exact length of the delay is deliberately **not** repeated through this repository. It is a published property of a subscription plan that can change, and the pipeline configures it in one place. What is shown here is the last trading day itself, which is the fact a reader needs and cannot go stale.
 
@@ -120,7 +118,7 @@ Three details are load bearing and easy to lose:
 - A missing file is a warning and an empty table, never an error. The pipeline and the dashboard are deployed and restarted independently, and a file that has not been generated yet is an ordinary state.
 - Nothing is invented to fill a gap. A stock with no data renders as an empty table, and an unrecorded last trading day renders as unknown. No page ever shows a stale figure as though it were current, or today's date for data that does not reach it.
 
-`ref_index.csv` was linked from the index page by earlier versions and was never produced by `finance`. The link is gone; the reference indices behind it came from a data source this project no longer uses, and the J-Quants Free plan does not carry index values. See [section 9 of the data contract](doc/DATA_CONTRACT.md).
+`ref_index.csv` was linked from the index page by earlier versions and was never produced by the data pipeline. The link is gone; the reference indices behind it came from a data source this project no longer uses, and the J-Quants Free plan does not carry index values. See [section 9 of the data contract](doc/DATA_CONTRACT.md).
 
 [`doc/DATA_CONTRACT.md`](doc/DATA_CONTRACT.md) is the full description of what is read and the rules it is read by.
 
@@ -240,7 +238,7 @@ Two settings decide whether a deployment is sound. `FINANCE_DASHBOARD_SECRET_KEY
 
 Authentication is off unless credentials are configured, so an unconfigured dashboard is served to anyone who can reach it. Decide how it is protected before it listens on anything but localhost; [Access Control](#6-access-control) has the options.
 
-The dashboard needs read access to the generated directory and nothing else. It is not installed on the pipeline host's behalf, does not import the `finance` package, and is not given the J-Quants API key.
+The dashboard needs read access to the generated directory and nothing else. It is not installed on the pipeline host's behalf and is not given the J-Quants API key.
 
 The whole procedure, the routine operations and what to check when something fails are in [`doc/DEPLOYMENT.md`](doc/DEPLOYMENT.md).
 
@@ -300,7 +298,9 @@ Third party assets bundled under `finance_dashboard/static` are [Pico.css](https
 | [`doc/VERSIONS`](doc/VERSIONS) | Release history of the repository |
 | [`doc/LICENSE.md`](doc/LICENSE.md) | The license, with the full texts beside it |
 
-This README is the entrance and `doc/` holds the detail. The producing side documents itself in the same way; [`finance`](https://github.com/id774/finance) carries the normative description of every file it writes in its own `doc/DATA_CONTRACT.md`.
+This README is the entrance and `doc/` holds the detail. This repository's
+[`doc/DATA_CONTRACT.md`](doc/DATA_CONTRACT.md) is the normative description of
+the files the application reads.
 
 ---
 
@@ -322,6 +322,6 @@ For full details, please refer to [`doc/LICENSE.md`](doc/LICENSE.md). See also [
 
 **The market data this dashboard displays is not covered by that license and never becomes free to use because of it.** The prices, the indicators derived from them and the charts drawn from them originate from the J-Quants API and remain governed by that provider's terms of service, which permit personal analysis and prohibit redistributing the data or providing a continuing analysis service to third parties. Two separate questions: what you may do with this code, and what you may do with the data you put through it. The first is answered here; the second is answered by the provider.
 
-The sibling repositories [`finance`](https://github.com/id774/finance) and [`reply-writer`](https://github.com/id774/reply-writer) are under the same terms. The bundled third party assets keep their own MIT licenses, as noted above.
+The bundled third party assets keep their own MIT licenses, as noted above.
 
 Thank you for using and contributing to this repository!

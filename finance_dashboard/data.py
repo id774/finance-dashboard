@@ -5,13 +5,13 @@
 # finance_dashboard/data.py: File loaders of Finance Dashboard
 #
 #  Description:
-#  Read the files the finance pipeline writes into the data directory and
+#  Read the files the data pipeline writes into the data directory and
 #  expose them as lists of dictionaries the templates can render. This
 #  module is the whole of this application's read side: nothing else opens
 #  a generated file, and nothing anywhere writes one.
 #
-#  It is therefore where the contract with finance
-#  (https://github.com/id774/finance) is implemented, and doc/DATA_CONTRACT.md
+#  It is therefore where the input contract
+#  is implemented, and doc/DATA_CONTRACT.md
 #  describes what that contract is. Three shapes are handled:
 #
 #  - stocks.txt, comma separated, code and name per line. The listing.
@@ -21,8 +21,7 @@
 #    against SUMMARY_COLUMNS or PORTFOLIO_COLUMNS below, so a column
 #    inserted or reordered on the producing side does not fail here, it
 #    silently shifts every later value into the wrong name. Those two
-#    tuples are the contract, and finance pins them from its own side in
-#    test/test_contract.py.
+#    tuples are the contract, and the producer must match them.
 #  - ti_CODE.csv, comma separated with a named header row, read by name
 #    through csv.DictReader after each header cell is lowercased and
 #    reduced to [0-9a-z_] by _normalize(). Only this shape survives a
@@ -87,10 +86,10 @@ PORTFOLIO_FILE = "portfolio.csv"
 SCREENING_FILE = "screening_rsi14.csv"
 DATA_SOURCE_FILE = "data_source.txt"
 
-# The keys finance writes into data_source.txt, in the order it writes
+# The keys the data pipeline writes into data_source.txt, in the order it writes
 # them. Duplicated here rather than imported, like the summary columns
-# above: the duplication is the contract, and finance pins the same
-# three names from its own side.
+# above: the duplication is the contract, and the producer must use the same
+# three names.
 DATA_SOURCE_KEYS: Sequence[str] = ("source", "generated", "last_trading_day")
 
 SUMMARY_COLUMNS: Sequence[str] = (

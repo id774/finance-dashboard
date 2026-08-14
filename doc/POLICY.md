@@ -127,9 +127,9 @@ main.py  ->  config.py  data.py  indicators.py  links.py  ->  formatting.py
 - The formats are a published interface, not an implementation detail. See
   [`DATA_CONTRACT.md`](DATA_CONTRACT.md), and change it in the same commit as
   the code that reads differently.
-- The summary files are read positionally. The column tuples in `data.py` are
-  the contract on this side; `finance` states the same thing from its side. A
-  change to either without the other is the failure mode both exist to catch.
+- The summary files are read positionally. The column tuples in `data.py` and
+  `DATA_CONTRACT.md` define the contract. Change both together so that the
+  implementation and its documentation cannot disagree.
 - Parsing is tolerant by design. A conversion returns a fallback rather than
   raising, because the leading rows of an indicator file are empty by
   construction. Do not "fix" that by making conversions strict.
@@ -197,8 +197,7 @@ A change is judged by whether it:
 
 ### 2.2 Program Structure
 
-- `str.format()` rather than f-strings, matching the house style shared with the
-  sibling repositories.
+- `str.format()` rather than f-strings, matching this repository's house style.
 - Module level constants are upper case and grouped at the top, after the
   imports.
 - A helper private to a module is prefixed with an underscore.
@@ -280,8 +279,6 @@ choice.
   `license = { text = "GPL-3.0-or-later OR LGPL-3.0-or-later" }`.
 - The README, `LICENSE.md` and the module headers state one thing. A change to
   the license is a change to all four places in the same commit.
-- The sibling repositories `finance` and `reply-writer` are under the same
-  terms.
 - Vendored third-party assets keep their own licenses, which the README records.
   Do not vendor anything whose license is incompatible with distribution under
   the above.

@@ -37,7 +37,7 @@ the key on this side, something has gone wrong upstream of it.
 - Python 3.9 or later.
 - Apache, or any reverse proxy, terminating TLS in front of uvicorn.
 - systemd.
-- A data directory the service user can read. Usually this is the `finance`
+- A data directory the service user can read. Usually this is the data
   pipeline's output directory on the same host, reached through a symlink.
 
 The pipeline does **not** have to be installed for the dashboard to start.

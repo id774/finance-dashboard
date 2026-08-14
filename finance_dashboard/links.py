@@ -6,7 +6,7 @@
 #
 #  Description:
 #  Hold the outbound links the pages offer, as data rather than as markup
-#  repeated in a template. The dashboard renders what the finance pipeline
+#  repeated in a template. The dashboard renders what the data pipeline
 #  computed; these links are how a reader gets from a code on a page to
 #  the places that carry what the pipeline does not -- company results,
 #  ratings, shareholder perks, short interest, a broker, a market index.

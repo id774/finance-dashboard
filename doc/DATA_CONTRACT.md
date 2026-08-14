@@ -1,14 +1,8 @@
 # Data Contract
 
-This document describes the files this application reads, and the rules it
-reads them by. It is the consumer's half of an interface whose normative
-description lives in the producing repository, at
-[`finance/doc/DATA_CONTRACT.md`](https://github.com/id774/finance/blob/master/doc/DATA_CONTRACT.md).
-
-Where the two disagree about what a file contains, that document is right and
-this one is the bug. What this document is authoritative about is the other
-direction: how these files are parsed here, and therefore what a change on the
-producing side would break.
+This document is the normative description of the files this application reads
+and the rules it reads them by. It defines the input contract that a data
+producer must satisfy and what a change to those inputs would break here.
 
 ---
 
@@ -18,7 +12,7 @@ producing side would break.
 J-Quants API (Free plan, delayed)
      |
      v
-finance  (batch, cron, 18:10 on weekdays)
+data producer  (batch, cron, 18:10 on weekdays)
      |
      v
 <data directory>/*.csv  *.txt  *.png
@@ -27,8 +21,8 @@ finance  (batch, cron, 18:10 on weekdays)
 finance-dashboard  (FastAPI, read only)
 ```
 
-The two repositories share no code, no process and no database. They share a
-directory of files.
+The producer and application share no code, no process and no database. They
+share a directory of files.
 
 The market data provider appears at the top of that diagram and nowhere else in
 it. This application never reaches the J-Quants API, is never given its API key,
@@ -36,8 +30,8 @@ and makes no outbound request while serving a page. Fetching is the pipeline's
 responsibility; `test/app_test.py` asserts that no module here so much as names
 the endpoint, the credential or an HTTP client.
 
-- `finance` writes the directory and never reads anything this application
-  produces, because this application produces nothing.
+- The data producer writes the directory and never reads anything this
+  application produces, because this application produces nothing.
 - `finance-dashboard` reads the directory and never writes into it. There is no
   code path here that opens a file for writing.
 - Neither imports the other. Neither is a dependency of the other, at runtime or
@@ -107,8 +101,8 @@ exists to prevent. An unrecognised key is ignored rather than displayed.
 ### 2.2 `ref_index.csv` — withdrawn
 
 Earlier versions linked `ref_index.csv` from the index page. It was never
-produced by `finance`, and the reference indices it was meant to hold — N225,
-GSPC, IXIC, DJI — came from a data source this project no longer uses. The
+produced by the current data pipeline, and the reference indices it was meant
+to hold — N225, GSPC, IXIC, DJI — came from a data source this project no longer uses. The
 J-Quants Free plan does not carry index values, and no free, licensed
 alternative has been adopted, so nothing produces the file and the link has been
 removed rather than left dead. Nothing in either repository refers to it.
@@ -142,9 +136,8 @@ the left, and the page renders a company name where a ratio belongs, silently
 and plausibly. Renaming a header is safe, because headers are ignored. Adding a
 column at the end is absorbed. Anything else is a breaking change.
 
-`finance` pins both tuples from its own side in its `test/test_contract.py`,
-duplicating them into the test rather than importing them. The duplication is
-the contract: two independent statements that must agree.
+Tests in this repository pin both tuples. The duplication between the tests and
+the implementation is the contract: two independent statements that must agree.
 
 ### 3.2 By header name — the indicator files
 
@@ -212,14 +205,13 @@ copy, which is harmless because the cache is read only and stamp checked.
 ## 6. Changing this contract
 
 A change to any of the three parsed formats is a change to a published
-interface, and it is not this repository's to make alone.
+interface and must be coordinated with the data producer.
 
-1. The producing side changes `finance/doc/DATA_CONTRACT.md` and its
-   `test/test_contract.py` in the same commit.
-2. This side changes the column tuples in `data.py`, this document, and the
-   fixtures in `test/conftest.py` in the same commit.
-3. Both are deployed together where the change is not backward compatible. A
-   column appended to the end of a summary file is the only change that is.
+1. This repository changes the column tuples in `data.py`, this document, and
+   the fixtures in `test/conftest.py` in the same commit.
+2. The producer and application are deployed together where the change is not
+   backward compatible. A column appended to the end of a summary file is the
+   only change that is.
 
 The fixtures in `test/conftest.py` are the contract written down on this side.
 A test passing against them is evidence about the real files only because the
