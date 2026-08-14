@@ -24,6 +24,19 @@
       </nav>
     </header>
     <main class="container-fluid">
+      <p class="provenance">
+        {% if data_source.source %}
+        データ提供元: {{ data_source.source }}。リアルタイムではありません。
+        {% else %}
+        データ提供元: 未記録。リアルタイムではありません。
+        {% endif %}
+        {% if data_source.last_trading_day %}
+        表示中の最終取引日: {{ data_source.last_trading_day }}
+        {% else %}
+        表示中の最終取引日: 不明
+        {% endif %}
+        {% if data_source.generated %}（生成日: {{ data_source.generated }}）{% endif %}
+      </p>
       {% block content %}{% endblock %}
     </main>
     <footer class="container-fluid">

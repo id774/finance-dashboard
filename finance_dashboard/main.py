@@ -11,14 +11,24 @@
 #  directory, installs middleware or parses a command line, and it is
 #  where a Settings is resolved once and handed to everything below.
 #
-#  What the dashboard is, is a read only view of a directory. The finance
-#  pipeline (https://github.com/id774/finance) writes CSV files and PNG
-#  charts there once a day; this application parses them through
-#  data.py, decides their presentation through indicators.py, links.py
-#  and formatting.py, and renders Jinja2 templates on the server. It
-#  computes no indicator, stores nothing, holds no database and writes no
-#  file. Point it at a directory the pipeline never filled and it renders
-#  empty tables rather than failing.
+#  What the dashboard is, is a read only view of a directory, meant for
+#  the person who owns it. The finance pipeline
+#  (https://github.com/id774/finance) fetches prices from the J-Quants
+#  API and writes CSV files and PNG charts there once a day; this
+#  application parses them through data.py, decides their presentation
+#  through indicators.py, links.py and formatting.py, and renders Jinja2
+#  templates on the server. It computes no indicator, fetches no price,
+#  stores nothing, holds no database and writes no file. Point it at a
+#  directory the pipeline never filled and it renders empty tables rather
+#  than failing.
+#
+#  It never reaches the data provider. No API key is read here, no
+#  endpoint named, no HTTP client imported; a page view cannot make an
+#  outbound request. What does reach here is the consequence of the
+#  provider's delay: render() puts the contents of data_source.txt into
+#  every page's context, and base.html shows the source and the last
+#  trading day so that figures published weeks in arrears are not read as
+#  live market information.
 #
 #  create_app() builds the application so that a test can bind one to a
 #  temporary directory without touching the environment. It mounts the
@@ -77,6 +87,9 @@
 #      Display version information and exit.
 #
 #  Version History:
+#  v1.1 2026-08-14
+#       Put the provenance of the generated data into the context of
+#       every page.
 #  v1.0 2026-07-25
 #       Rewrite the dashboard in Python with FastAPI and Jinja2.
 #
@@ -201,6 +214,11 @@ def create_app(settings: Optional[Settings] = None) -> FastAPI:
         """Render a template with the values shared by every page."""
         context.setdefault("title", "Finance Dashboard")
         context["recent"] = _recent_codes(request)
+        # On every page, not only the index. The figures are delayed
+        # wherever they are shown, and a reader who arrives on a stock
+        # page from a bookmark must see that as plainly as one who came
+        # through the front door.
+        context["data_source"] = data.load_data_source(settings.data_dir)
         return templates.TemplateResponse(request, name, context)
 
     def indicator_rows(code: str) -> List[data.Row]:

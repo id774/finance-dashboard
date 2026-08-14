@@ -27,6 +27,14 @@
 #    through csv.DictReader after each header cell is lowercased and
 #    reduced to [0-9a-z_] by _normalize(). Only this shape survives a
 #    reordering.
+#  - data_source.txt, tab separated key and value, one pair per line.
+#    It names the provider the figures came from, the day the pipeline
+#    ran, and the last trading day the data covers. The last of those is
+#    why it exists: the data source publishes in arrears, so the newest
+#    figure on any page is weeks old, and a dashboard that showed it
+#    without saying so would read as live market information. What is
+#    absent from the file is left absent on the page; nothing here
+#    substitutes today's date for a last trading day it was not given.
 #
 #  Every read goes through a cache keyed by path and stamped with the
 #  modification time and size of the file. The pipeline rewrites the
@@ -55,6 +63,8 @@
 #  - Standard library only
 #
 #  Version History:
+#  v1.1 2026-08-14
+#       Read data_source.txt, so that the age of the data can be shown.
 #  v1.0 2026-07-25
 #       Initial release.
 #
@@ -75,6 +85,13 @@ STOCKS_FILE = "stocks.txt"
 CORE30_FILE = "topix_core30.csv"
 PORTFOLIO_FILE = "portfolio.csv"
 SCREENING_FILE = "screening_rsi14.csv"
+DATA_SOURCE_FILE = "data_source.txt"
+
+# The keys finance writes into data_source.txt, in the order it writes
+# them. Duplicated here rather than imported, like the summary columns
+# above: the duplication is the contract, and finance pins the same
+# three names from its own side.
+DATA_SOURCE_KEYS: Sequence[str] = ("source", "generated", "last_trading_day")
 
 SUMMARY_COLUMNS: Sequence[str] = (
     "code",
@@ -187,9 +204,37 @@ def _read_indicators(path: str) -> List[Row]:
     return rows
 
 
+def _read_data_source(path: str) -> List[Row]:
+    """Read the tab separated key and value pairs of data_source.txt."""
+    values: Row = {}
+    with open(path, encoding="utf-8", errors="replace") as handle:
+        for line in handle:
+            if not line.strip():
+                continue
+            key, _, value = line.rstrip("\n").partition("\t")
+            key = key.strip()
+            if key in DATA_SOURCE_KEYS:
+                values[key] = value.strip()
+    return [values]
+
+
 def load_stocks(data_dir: str) -> List[Row]:
     """Load the full stock listing shown on the index page."""
     return _load_cached(os.path.join(data_dir, STOCKS_FILE), _read_stocks)
+
+
+def load_data_source(data_dir: str) -> Row:
+    """
+    Load the provenance of the generated data.
+
+    Returns a mapping of the keys that were present, which is empty when
+    the file has not been written. A caller renders what it is given and
+    nothing else: an absent last trading day means the age of the data
+    is unknown, and saying nothing is the only honest thing to show for
+    it.
+    """
+    rows = _load_cached(os.path.join(data_dir, DATA_SOURCE_FILE), _read_data_source)
+    return rows[0] if rows else {}
 
 
 def load_core30(data_dir: str) -> List[Row]:

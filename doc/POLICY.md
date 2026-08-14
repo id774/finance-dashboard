@@ -17,6 +17,28 @@ The Invariants below decide over the rest of it.
 
 ### 1.1 Purpose and Scope
 
+- **This application is a private dashboard.** It exists so that one person can
+  read their own investment analysis. It is not a public web service, not a
+  product, and not a way of publishing market data. Every rule below is written
+  on that assumption, and a change that would only make sense for a service with
+  users other than its operator is out of scope by definition.
+- **The data it displays is licensed, and the code is not the data.** The
+  figures originate from the J-Quants API under terms that permit personal
+  analysis and prohibit redistributing the data or providing a continuing
+  analysis service to a third party. This repository is published under the GPL
+  or the LGPL; that covers the source code and confers nothing whatever on the
+  data put through it. The two questions are answered by two different
+  documents and must never be conflated in one.
+- **Consequences that are binding here.** The dashboard is not deployed to the
+  open internet without access control; `/data` is protected wherever the HTML
+  is; no API key is accepted, stored or read by this application; and no market
+  data, holding or credential is committed to this repository, including as a
+  test fixture.
+- **`public/data` is a path, not a permission.** The name is inherited from the
+  Sinatra application that served static files from `public/`. It carries no
+  implication that the data may be published, and renaming it would change
+  nothing about the terms the data came under while breaking every existing
+  deployment, symbolic link and `/data` route. It stays.
 - This document decides how the repository is implemented: the coding rules, the
   responsibilities of the modules and the direction of dependency between them,
   the handling of settings and credentials, the treatment of the files this
@@ -53,7 +75,15 @@ These lines are not crossed by a setting or by an extension.
   outbound access and no third party is told who is looking at it.
 - **Do not make an outbound request.** This application contacts nothing. The
   external links on a page are hrefs the reader may follow; they are never
-  fetched, checked or proxied here.
+  fetched, checked or proxied here. In particular it never calls the market
+  data API the pipeline fetches from, and never holds its API key: a test
+  asserts that no module here names the endpoint, the credential or an HTTP
+  client.
+- **Do not present delayed data as current.** The source publishes in arrears.
+  Every page states the source and the last trading day the data covers, taken
+  from `data_source.txt`. Where that is absent the page says the age is unknown;
+  no date is ever substituted for another, and no figure is carried forward,
+  interpolated or invented to fill a gap.
 - **Do not fail a page over a missing or malformed data file.** The pipeline and
   the dashboard are deployed and restarted independently. A missing file is a
   warning and an empty table.

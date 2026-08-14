@@ -25,6 +25,11 @@ directory; this side only reads it.
 Deploying the dashboard therefore cannot disturb generated data, and
 regenerating data never requires a deployment.
 
+It also installs no credential. The J-Quants API key belongs to the pipeline
+host and is never copied here: this application does not fetch market data and
+has nothing to authenticate with. If a deployment procedure ever seems to want
+the key on this side, something has gone wrong upstream of it.
+
 ---
 
 ## Before you begin
@@ -85,7 +90,7 @@ which.
 ## Configure
 
 Every setting is read from the environment first and from `config.yml` second.
-The full table is in the [README](../README.md#3-configuration). Three of them
+The full table is in the [README](../README.md#5-configuration). Three of them
 decide whether the deployment is sound:
 
 **`FINANCE_DASHBOARD_SECRET_KEY`** signs the session cookie carrying the
@@ -110,6 +115,19 @@ printf '%s' 'your-password' | sha256sum
 Basic authentication over plain HTTP sends the credential in reverse-encoded
 plaintext on every request. Terminate TLS at Apache, and do not publish this
 without it.
+
+This is not only a matter of taste about who sees your holdings. The pages and
+the files under `/data` carry market data obtained from the J-Quants API for
+personal analysis, under terms that do not permit redistributing it or offering
+a continuing analysis service to others. Publishing this dashboard where
+strangers can read it is redistribution. Choose one of the four approaches in
+the [README](../README.md#6-access-control) — localhost only, Basic
+authentication, proxy authentication, or a VPN or address restriction — before
+it listens on anything but the loopback interface.
+
+When Basic authentication is on, it wraps the mounted `/data` directory as well
+as the HTML. Protecting only the pages would leave the same figures downloadable
+as CSV.
 
 **`FINANCE_DASHBOARD_ROOT_PATH`** must match the path Apache proxies, and is set
 twice: `--root-path` on the uvicorn command line so that generated URLs carry

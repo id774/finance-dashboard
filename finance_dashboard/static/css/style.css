@@ -90,3 +90,11 @@ td.down {
 td.mid {
   color: #1e8449;
 }
+
+p.provenance {
+  margin-bottom: 0.75rem;
+  padding: 0.35rem 0.6rem;
+  border-left: 3px solid #b7791f;
+  font-size: 0.8rem;
+  opacity: 0.85;
+}

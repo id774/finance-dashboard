@@ -11,14 +11,19 @@
 #
 #  The sample files are the contract written down. The tab separated
 #  summaries carry their leading "Code" header and the exact column order
-#  data.py zips positionally, and the indicator header names all 38
-#  columns of a ti_CODE.csv in the order the pipeline writes them. A test
-#  that passes against these fixtures is evidence about the real files
-#  only because the fixtures match them, so a change to the contract on
-#  the producing side is a change to this file.
+#  data.py zips positionally, the indicator header names all 38 columns
+#  of a ti_CODE.csv in the order the pipeline writes them, and
+#  data_source.txt carries the three keys finance records the provenance
+#  of the data under. A test that passes against these fixtures is
+#  evidence about the real files only because the fixtures match them,
+#  so a change to the contract on the producing side is a change to this
+#  file.
 #
 #  All of it is invented. No real holding, price or portfolio appears
-#  here, and the stock names are well known issuers used as sample data.
+#  here; the stock codes and names are well known issuers used as
+#  sample data, and every figure beside them was made up. Nothing in
+#  this repository was obtained from the market data API that produces
+#  the real files, and nothing from it may be added here.
 #
 #  Every fixture is built under pytest's tmp_path. The suite never reads
 #  the configured data directory, never reads config.yml, and writes
@@ -42,23 +47,20 @@
 #  - pytest, httpx (for the FastAPI test client)
 #
 #  Version History:
+#  v1.1 2026-08-14
+#       Add the data_source.txt fixture and drop the sys.path insert.
 #  v1.0 2026-07-25
 #       Initial release.
 #
 ########################################################################
 
-import os
-import sys
-
 import pytest
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from finance_dashboard import data
+from finance_dashboard.config import Settings
+from finance_dashboard.main import create_app
 
-from finance_dashboard import data  # noqa: E402
-from finance_dashboard.config import Settings  # noqa: E402
-from finance_dashboard.main import create_app  # noqa: E402
-
-STOCKS = "N225,日経平均\n1321,日経225連動型\n7203,トヨタ自動車\n"
+STOCKS = "6758,ソニーグループ\n1321,日経225連動型\n7203,トヨタ自動車\n"
 
 CORE30 = "\t".join(("Code", "Open", "High", "Low", "Close", "Diff", "Ratio", "RSI", "Name")) + "\n"
 CORE30 += "7203\t2000\t2100\t1990\t2050\t50\t2.50\t65.43\tトヨタ自動車\n"
@@ -69,6 +71,16 @@ PORTFOLIO += "7203\t2000\t2100\t1990\t2050\t50\t2.50\tup\t2100\tトヨタ自動�
 PORTFOLIO += "9432\t3000\t3100\t2990\t3050\t-10\t-0.33\tdown\t3000\t日本電信電話\n"
 
 SCREENING = CORE30
+
+# What finance writes beside the generated files: where the figures came
+# from, when the pipeline ran, and the last trading day they cover. The
+# two dates differ because the source publishes in arrears, and the
+# fixture keeps that difference so that a test can tell them apart.
+DATA_SOURCE = (
+    "source\tJ-Quants API (Free plan, delayed)\n"
+    "generated\t2026-07-21\n"
+    "last_trading_day\t2026-04-24\n"
+)
 
 INDICATOR_HEADER = (
     "Date,Open,High,Low,Close,Adj_Close,Volume,EWMA5,EWMA25,EWMA50,EWMA75,EWMA200,"
@@ -95,8 +107,9 @@ def data_dir(tmp_path):
     series = INDICATOR_HEADER
     for day in range(1, 21):
         series += INDICATOR_ROW.format(date="2026-07-{:02d}".format(day))
-    (directory / "ti_N225.csv").write_text(series, encoding="utf-8")
+    (directory / "ti_6758.csv").write_text(series, encoding="utf-8")
     (directory / "ti_7203.csv").write_text(INDICATOR_HEADER, encoding="utf-8")
+    (directory / "data_source.txt").write_text(DATA_SOURCE, encoding="utf-8")
     data.clear_cache()
     yield str(directory)
     data.clear_cache()
