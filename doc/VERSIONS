@@ -14,6 +14,12 @@ v1.0.1 (Release Date: TBD)
   what its functions are called.
 - Start file level version management at v1.0, renumbering the single v2.0
   entry main.py and deploy.sh carried and leaving their descriptions unchanged.
+- Expand section 2.5 of doc/POLICY.md into Documentation and Versioning, stating
+  when a module version is bumped, how module versions are numbered and roll
+  over, how repository release versions and Git tags stand apart from them, and
+  how an entry in this file is written, grouped and shortened. The rules were
+  already followed here but recorded nowhere in this repository, and they are
+  written out here rather than referred to in another one.
 - Comment etc/finance-dashboard.service with what an operator must adjust, and
   why the root path is set both on the command line and in the environment.
 - State the responsibility boundary with the data pipeline in README.md and
