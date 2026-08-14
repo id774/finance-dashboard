@@ -30,7 +30,7 @@
 #  - APP_SERVICE: systemd unit name. Defaults to finance-dashboard.
 #
 #  Version History:
-#  v2.0 2026-07-25
+#  v1.0 2026-07-25
 #       Deploy the Python application instead of the Sinatra application.
 #
 ########################################################################

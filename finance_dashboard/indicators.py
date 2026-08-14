@@ -2,21 +2,53 @@
 # -*- coding: utf-8 -*-
 
 ########################################################################
-# indicators.py: Table definitions for technical indicators
+# finance_dashboard/indicators.py: Indicator table definitions
 #
 #  Description:
-#  Describe the indicator tables as data instead of repeating markup for
-#  every column. A column carries its label, reference link, formatter,
-#  and the rule that decides the emphasis class of a cell.
+#  Decide which indicator columns each table on a stock page carries, what
+#  each is labelled, how its value is printed, and when it is emphasized.
+#  All of that is held as data -- a tuple of Column definitions per table
+#  -- rather than as markup repeated once per column in a template.
 #
-#  Emphasis classes follow the previous implementation: "up" for values
-#  in the overbought or positive range, "down" for the opposite range,
-#  and "mid" for the neutral range of stochastic style indicators.
+#  The dashboard shows around forty indicator columns across several
+#  tables. Written as markup, a change of threshold would mean finding one
+#  number among forty near-identical blocks of HTML, and the templates
+#  would carry the display logic. Here a table is a tuple, a column is a
+#  NamedTuple of key, label, reference link, formatter and rule, and
+#  build_rows() turns a list of data rows into a list of rendered Cells
+#  that a template loops over without deciding anything.
+#
+#  A rule receives the whole row and the current value already converted
+#  to a float by formatting.to_float, so it never has to parse or guard
+#  against an empty field. It returns an emphasis class the stylesheet
+#  interprets: "up" for the overbought or positive range, "down" for the
+#  opposite, "mid" for the neutral band of a stochastic style indicator,
+#  and "" for no emphasis. band(), threshold(), above_only() and
+#  below_reference() build the four shapes of rule the tables need; the
+#  thresholds are the ones the previous Sinatra implementation used.
+#
+#  The column keys are the normalized header cells of ti_CODE.csv, which
+#  data.py produces by lowercasing each header and reducing it to
+#  [0-9a-z_]. A key naming a column the file does not carry renders empty
+#  rather than failing, so a table stays displayable against an older file.
+#
+#  This module computes no indicator. The values are calculated by the
+#  finance pipeline and read from disk; what is decided here is only how
+#  they are presented. The links point at third-party explanations of each
+#  indicator and are the only outbound URLs on a stock page.
 #
 #  Author: id774 (More info: http://id774.net)
 #  Source Code: https://github.com/id774/finance-dashboard
 #  License: The GPL version 3, or LGPL version 3 (Dual License).
 #  Contact: idnanashi@gmail.com
+#
+#  Requirements:
+#  - Python Version: 3.9 or later
+#  - Standard library only
+#
+#  Version History:
+#  v1.0 2026-07-25
+#       Initial release.
 #
 ########################################################################
 

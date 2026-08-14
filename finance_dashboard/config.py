@@ -2,21 +2,75 @@
 # -*- coding: utf-8 -*-
 
 ########################################################################
-# config.py: Settings loader for Finance Dashboard
+# finance_dashboard/config.py: Settings loader of Finance Dashboard
 #
 #  Description:
-#  Build application settings from environment variables and an optional
-#  YAML configuration file. Environment variables take precedence so that
-#  credentials can be supplied without writing them to disk.
+#  Resolve every runtime setting of the dashboard in one place: which
+#  directory the generated files are read from, whether Basic
+#  authentication is enforced and against which credentials, the key that
+#  signs the session cookie, and the path prefix the application is
+#  published under.
 #
-#  Basic authentication is enabled only when credentials are configured,
-#  which keeps the historical behavior of running without authentication
-#  when no configuration file exists.
+#  Settings come from environment variables first and from an optional
+#  YAML file second, so that a credential can be supplied to the systemd
+#  unit without being written into a file in the deployment directory.
+#  This is the only module that reads os.environ; main.py resolves a
+#  Settings once at startup and passes it down, which is what lets a test
+#  build an application against a temporary directory without touching
+#  the environment of the process.
+#
+#  Authentication is enforced only when a user name and either a password
+#  or its SHA-256 digest are configured. Without them the dashboard is
+#  served to anyone who can reach it, which is the behaviour the previous
+#  Sinatra version had when no configuration file existed. Comparisons go
+#  through hmac.compare_digest rather than ==, so a wrong password costs
+#  the same time as a right one.
+#
+#  Nothing here reads a data file or reaches the network. A missing YAML
+#  file is not an error, and one whose top level is not a mapping is
+#  reported and treated as absent, because every setting has a default or
+#  a documented consequence for being unset. A YAML syntax error is not
+#  caught here and stops the process at startup, which is where a
+#  malformed file should surface.
 #
 #  Author: id774 (More info: http://id774.net)
 #  Source Code: https://github.com/id774/finance-dashboard
 #  License: The GPL version 3, or LGPL version 3 (Dual License).
 #  Contact: idnanashi@gmail.com
+#
+#  Requirements:
+#  - Python Version: 3.9 or later
+#  - PyYAML
+#
+#  Environment Variables:
+#  Every name below is prefixed with FINANCE_DASHBOARD_ and takes
+#  precedence over the corresponding key of the YAML file.
+#  - CONFIG
+#      Path of the YAML file. Defaults to config.yml in the repository
+#      root. A missing file is not an error.
+#  - DATA_DIR
+#      Directory holding the files finance generates. YAML key
+#      data.directory. Defaults to public/data, and is expanded and made
+#      absolute so that the application runs from any working directory.
+#  - USERNAME / PASSWORD / PASSWORD_SHA256
+#      Basic authentication credentials. YAML keys auth.username,
+#      auth.password and auth.password_sha256. The digest is preferred
+#      where both are set, so that no plain password need be stored.
+#  - SECRET_KEY
+#      Key signing the session cookie that carries the recently viewed
+#      codes. YAML key session.secret_key. A temporary key is generated
+#      and a warning logged when unset, which logs every viewer out on a
+#      restart; set it in any deployment that outlives one process.
+#  - SESSION_MAX_AGE
+#      Lifetime of that cookie in seconds. Defaults to 1209600, two weeks.
+#  - ROOT_PATH
+#      Path prefix when the application is published under a sub
+#      directory, for example /finance-dashboard behind Apache. Empty by
+#      default.
+#
+#  Version History:
+#  v1.0 2026-07-25
+#       Initial release.
 #
 ########################################################################
 

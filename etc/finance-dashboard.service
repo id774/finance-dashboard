@@ -1,3 +1,23 @@
+# Example systemd unit for Finance Dashboard. Copy it to
+# /etc/systemd/system/ and adjust the user, the paths, the port and the
+# root path before enabling it.
+#
+# It carries no hostname, no certificate and no credential. Basic
+# authentication credentials and the session secret key belong in
+# config.yml in the working directory, or in Environment= lines added
+# here with FINANCE_DASHBOARD_ names; either way the file holding them is
+# kept readable by the service user only.
+#
+# The application binds 127.0.0.1. Apache is the entrance from outside
+# and uvicorn is never exposed directly, which is what lets the dashboard
+# be published over HTTPS without TLS in this process. The root path is
+# set twice on purpose: --root-path tells uvicorn where the application
+# is mounted so that generated URLs carry the prefix, and the
+# environment variable tells the settings loader the same thing. Both
+# must match the path Apache proxies, /finance-dashboard here.
+#
+# See doc/DEPLOYMENT.md for the whole procedure.
+
 [Unit]
 Description=Finance Dashboard
 After=network.target

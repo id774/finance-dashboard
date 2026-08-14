@@ -1,0 +1,257 @@
+# Implementation Policies
+
+finance-dashboard is a single Python web application, so this policy is stated
+directly for Python rather than separating a shared section from per-language
+ones.
+
+This document stands on its own. It is the whole implementation policy of this
+repository, and no rule here is completed by a document kept somewhere else. A
+subject it does not cover is a gap in this document, to be filled here rather
+than looked up elsewhere.
+
+The Invariants below decide over the rest of it.
+
+---
+
+## 1. General Policy
+
+### 1.1 Purpose and Scope
+
+- This document decides how the repository is implemented: the coding rules, the
+  responsibilities of the modules and the direction of dependency between them,
+  the handling of settings and credentials, the treatment of the files this
+  application reads, the approach to tests and documentation, and the criteria
+  by which a change is judged.
+- It applies to everything committed here: the Python modules, the templates,
+  the stylesheet, the JavaScript this repository wrote, the tests, the
+  deployment files and the documents. It does not apply to the vendored
+  third-party assets, which are not edited at all.
+- What this application reads and the rules it reads by belong to
+  [`DATA_CONTRACT.md`](DATA_CONTRACT.md). How it is composed and what happens
+  during a request belong to [`ARCHITECTURE.md`](ARCHITECTURE.md). How it is
+  installed and operated belongs to [`DEPLOYMENT.md`](DEPLOYMENT.md). This
+  document does not restate them; it decides how they are carried out.
+
+### 1.2 Invariants
+
+These lines are not crossed by a setting or by an extension.
+
+- **Do not write into the data directory.** This application has no code path
+  that opens a generated file for writing. The pipeline owns that directory.
+- **Do not compute what the pipeline computes.** No indicator is calculated
+  here, no model applied, no price fetched. A number shown on a page was read
+  from a file. Where a value is wanted that does not exist, it is added to the
+  pipeline and to the data contract, not derived in a template.
+- **Do not introduce a database, a migration or a background job.** State that
+  survives a request is a signed cookie and a stamped read-through cache, and
+  nothing more.
+- **Do not add a build step.** No `package.json`, no bundler, no transpiler, no
+  Node.js in the build or the deployment. Assets are vendored as they are
+  served.
+- **Do not fetch a third-party asset at page load.** Stylesheets and scripts are
+  served from this repository, so that the dashboard works on a host with no
+  outbound access and no third party is told who is looking at it.
+- **Do not make an outbound request.** This application contacts nothing. The
+  external links on a page are hrefs the reader may follow; they are never
+  fetched, checked or proxied here.
+- **Do not fail a page over a missing or malformed data file.** The pipeline and
+  the dashboard are deployed and restarted independently. A missing file is a
+  warning and an empty table.
+
+### 1.3 Design Philosophy
+
+- Prioritize clarity, portability, and explicit control over convenience.
+- Favor predictable behavior and long-term maintainability.
+- Render on the server. A page arrives complete, and JavaScript is an
+  enhancement of one table rather than the mechanism of the site.
+- Keep presentation as data. A table is a tuple of column definitions, not
+  markup repeated once per column, so a threshold is changed in one place.
+- Keep the templates free of decisions. Everything a template prints was decided
+  by a module above it.
+- The measure of this application is that it renders the pipeline's output
+  faithfully and stays up while the pipeline rewrites underneath it.
+
+### 1.4 The Modules and the Direction of Dependency
+
+```text
+main.py  ->  config.py  data.py  indicators.py  links.py  ->  formatting.py
+```
+
+- A module never imports one above it. `data.py` takes a directory and a code,
+  never a `Request`.
+- **`main.py` is the only module that knows about HTTP.** No other module
+  imports FastAPI, reads a request or builds a response.
+- **`config.py` is the only module that reads the environment.** A `Settings` is
+  resolved at an entry point and passed down. A module that needs a setting
+  receives it.
+- **`data.py` is the only module that opens a generated file.** Nothing else
+  reads the data directory.
+- **`formatting.py` imports nothing from the package.** It is the bottom, and
+  stays testable a value at a time.
+- Importing the package must have no side effect: no configuration read, no
+  directory resolved, no port bound. `create_app()` builds an application; the
+  module level `app` is constructed lazily.
+
+### 1.5 The Data Files
+
+- The formats are a published interface, not an implementation detail. See
+  [`DATA_CONTRACT.md`](DATA_CONTRACT.md), and change it in the same commit as
+  the code that reads differently.
+- The summary files are read positionally. The column tuples in `data.py` are
+  the contract on this side; `finance` states the same thing from its side. A
+  change to either without the other is the failure mode both exist to catch.
+- Parsing is tolerant by design. A conversion returns a fallback rather than
+  raising, because the leading rows of an indicator file are empty by
+  construction. Do not "fix" that by making conversions strict.
+- Every read goes through the stamped cache. Do not add a code path that opens a
+  generated file directly.
+
+### 1.6 Configuration
+
+- Every setting has an environment variable prefixed `FINANCE_DASHBOARD_`, and
+  most have a `config.yml` key. The environment wins, so that a credential can
+  reach the service without being written into the deployment directory.
+- A setting has a default, or a documented consequence for being unset. A new
+  setting is added to `config.py`, the README table, and `DEPLOYMENT.md` where
+  it affects the deployment, in the same change.
+- A missing configuration file is not an error. A malformed one stops the
+  process at startup rather than being silently ignored.
+- Credentials are compared with `hmac.compare_digest`, never with `==`.
+- No credential, key or digest is logged, rendered into a page, or written into
+  an error message.
+
+### 1.7 Logging and Output
+
+- No module prints. Everything logs, through `logging.getLogger(__name__)`.
+- Output goes to stdout and is captured by systemd. There is no log file to
+  rotate.
+- A missing data file logs a warning naming the path. That warning is the first
+  thing an operator greps for, and it is not lowered to debug.
+
+### 1.8 Errors
+
+- A route validates a stock code before it reaches a file name. Path parameters
+  are constrained by pattern at the route, and `data.is_valid_code` checks again
+  at the boundary.
+- A stock with no data is a 303 to the placeholder view, not a 404 and not a
+  500. A code on the listing whose files have not been produced is an ordinary
+  state.
+- An unknown path is a 404. A malformed code is rejected by the route.
+- No traceback, path or setting reaches the browser.
+
+### 1.9 Judging a Change
+
+A change is judged by whether it:
+
+- keeps every invariant in 1.2;
+- leaves the data contract intact, or changes it deliberately, on both sides, in
+  the same commit;
+- keeps the URL layout, or has a reason worth a broken bookmark;
+- carries its documentation in the same commit;
+- passes `pytest` and `ruff check .`
+
+---
+
+## 2. Python Policy
+
+### 2.1 Structure
+
+- Python 3.9 or later. The floor is set by `requires-python` in
+  `pyproject.toml`; do not use syntax the floor does not have.
+- Dependencies are declared in `pyproject.toml` with lower bounds, and installed
+  with `pip install .`. There is no `requirements.txt`.
+- A new runtime dependency needs a reason beyond convenience. The dependency
+  list is short and is meant to stay so.
+- Type hints on function signatures. `ruff` is configured with `E`, `F`, `I` and
+  `W` at a line length of 100, and its ordering is the import order.
+
+### 2.2 Program Structure
+
+- `str.format()` rather than f-strings, matching the house style shared with the
+  sibling repositories.
+- Module level constants are upper case and grouped at the top, after the
+  imports.
+- A helper private to a module is prefixed with an underscore.
+- Prefer a named tuple over a dictionary for a fixed shape.
+
+### 2.3 Templates and Assets
+
+- Templates loop and print. A template that decides something is a module's
+  responsibility that leaked.
+- The stylesheet is hand written and served as it is. The JavaScript this
+  repository wrote is one file; it is plain ES5-compatible script with no build
+  step and no dependency beyond the vendored Grid.js.
+- Vendored third-party assets are not edited. They are replaced wholesale by a
+  newer release, and their licenses are recorded in the README.
+- Japanese appears in the interface where it is the label a reader expects — a
+  column caption, a link name, a company name. Code, comments and documents are
+  English.
+
+### 2.4 Testing
+
+- `pytest`, from the repository root. Test files are named `*_test.py`.
+- A test builds its own data directory under `tmp_path`. No test reads the
+  configured data directory, reads `config.yml`, or writes outside the temporary
+  tree, so the suite runs on a host where the pipeline has never run.
+- The fixtures in `test/conftest.py` are the data contract written down. A
+  change to a format changes them in the same commit.
+- The cache is cleared around a fixture, because the loaders cache per path.
+- Test data is invented. No real holding, price or portfolio appears in this
+  repository.
+- New behaviour arrives with a test. A bug fix arrives with the test that would
+  have caught it.
+
+### 2.5 Documentation
+
+Every module carries a header block in this order: `Description`, the standard
+`Author`, `Source Code`, `License`, `Contact` block, `Usage` and `Options`
+(executables only), `Environment Variables` (`config.py` only), `Requirements`,
+`Version History`. Test modules carry `Test Cases` after `Description`.
+
+- The `Description` is what makes the file readable on its own. It states why
+  the module exists, which responsibility it holds, what it consumes and what it
+  produces, and which modules or external systems it touches. It is not a list
+  of the functions below it, which the code already carries.
+- Public functions carry a docstring. Self-evident code does not get a comment
+  restating it; a comment explains why, where the why is not obvious.
+- Documentation is updated in the same change as the behaviour it describes.
+- Module versions use a two-level `major.minor` scheme. Do not bump for a
+  comment, formatting or documentation-only change; do bump for anything that
+  changes behaviour.
+- File level `Version History` and the repository level
+  [`VERSIONS`](VERSIONS) are separate. A release entry does not raise a module
+  version, and a module version does not become a release entry unless the
+  change is observable from outside.
+- The README is the entrance and `doc/` holds the detail. Do not answer the same
+  question in both.
+- Comments, docstrings and documents are in English.
+
+### 2.6 Shell Scripts
+
+- POSIX `sh`, not bash. `deploy.sh` is the only script here.
+- It checks its required commands before doing anything, and exits 127 naming a
+  missing one.
+- Every step that can fail is followed by a non-zero exit. A deployment that
+  half-succeeded reports failure.
+- `-h` and `--help` print the header block, which is therefore the usage text
+  and cannot drift from it.
+
+### 2.7 License
+
+This repository is dual licensed: GPL version 3 or LGPL version 3, at the
+recipient's option. The texts are [`COPYING`](COPYING) and
+[`COPYING.LESSER`](COPYING.LESSER), and [`LICENSE.md`](LICENSE.md) states the
+choice.
+
+- Every source module carries the line
+  `License: The GPL version 3, or LGPL version 3 (Dual License).` in its header
+  block, between `Source Code` and `Contact`.
+- `pyproject.toml` carries the matching
+  `license = { text = "GPL-3.0-or-later OR LGPL-3.0-or-later" }`.
+- The README, `LICENSE.md` and the module headers state one thing. A change to
+  the license is a change to all four places in the same commit.
+- The sibling repositories `finance` and `reply-writer` are under the same
+  terms.
+- Vendored third-party assets keep their own licenses, which the README records.
+  Do not vendor anything whose license is incompatible with distribution under
+  the above.

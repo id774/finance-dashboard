@@ -2,22 +2,61 @@
 # -*- coding: utf-8 -*-
 
 ########################################################################
-# data.py: CSV loaders for Finance Dashboard
+# finance_dashboard/data.py: File loaders of Finance Dashboard
 #
 #  Description:
-#  Read the dashboard data files produced outside this application and
-#  expose them as lists of dictionaries. Results are cached per file and
-#  invalidated by modification time and size, so an external update is
-#  picked up without restarting the application.
+#  Read the files the finance pipeline writes into the data directory and
+#  expose them as lists of dictionaries the templates can render. This
+#  module is the whole of this application's read side: nothing else opens
+#  a generated file, and nothing anywhere writes one.
 #
-#  Two formats are handled. Summary files such as portfolio.csv are tab
-#  separated with a leading "Code" header line, while per stock files
-#  named ti_CODE.csv are comma separated with a named header row.
+#  It is therefore where the contract with finance
+#  (https://github.com/id774/finance) is implemented, and doc/DATA_CONTRACT.md
+#  describes what that contract is. Three shapes are handled:
+#
+#  - stocks.txt, comma separated, code and name per line. The listing.
+#  - The summary files -- topix_core30.csv, screening_rsi14.csv and
+#    portfolio.csv -- tab separated, with a leading "Code" header line
+#    that is skipped. These are read POSITIONALLY: the fields are zipped
+#    against SUMMARY_COLUMNS or PORTFOLIO_COLUMNS below, so a column
+#    inserted or reordered on the producing side does not fail here, it
+#    silently shifts every later value into the wrong name. Those two
+#    tuples are the contract, and finance pins them from its own side in
+#    test/test_contract.py.
+#  - ti_CODE.csv, comma separated with a named header row, read by name
+#    through csv.DictReader after each header cell is lowercased and
+#    reduced to [0-9a-z_] by _normalize(). Only this shape survives a
+#    reordering.
+#
+#  Every read goes through a cache keyed by path and stamped with the
+#  modification time and size of the file. The pipeline rewrites the
+#  directory once a day while this process keeps running, so a stamp that
+#  differs is what makes the new data appear without a restart, and a
+#  stamp that matches is what stops a page view from re-parsing a file
+#  that has not changed. The cache is process local and guarded by a lock,
+#  and clear_cache() empties it for tests and manual reloads.
+#
+#  A missing file is a warning and an empty list, never an exception. The
+#  pipeline and the dashboard are deployed and run independently, so a
+#  file that has not been generated yet, or a stock without history, is an
+#  ordinary state and renders as an empty table rather than a 500.
+#
+#  A stock code reaches this module from the URL. is_valid_code() holds it
+#  to [0-9A-Za-z_.-] before it is ever formatted into a file name, so that
+#  no request can walk out of the data directory.
 #
 #  Author: id774 (More info: http://id774.net)
 #  Source Code: https://github.com/id774/finance-dashboard
 #  License: The GPL version 3, or LGPL version 3 (Dual License).
 #  Contact: idnanashi@gmail.com
+#
+#  Requirements:
+#  - Python Version: 3.9 or later
+#  - Standard library only
+#
+#  Version History:
+#  v1.0 2026-07-25
+#       Initial release.
 #
 ########################################################################
 

@@ -2,17 +2,53 @@
 # -*- coding: utf-8 -*-
 
 ########################################################################
-# main.py: Application entry point for Finance Dashboard
+# finance_dashboard/main.py: Application entry point of Finance Dashboard
 #
 #  Description:
-#  Build the FastAPI application that renders the dashboard from the CSV
-#  files placed under the data directory, and provide a small launcher
-#  for development use.
+#  Build the FastAPI application that renders the dashboard, and provide
+#  the launcher that serves it during development. This is the top of the
+#  application: it is the only module that defines a route, mounts a
+#  directory, installs middleware or parses a command line, and it is
+#  where a Settings is resolved once and handed to everything below.
 #
-#  The application keeps the URL layout of the previous Sinatra version.
-#  Recently viewed codes are stored in a signed session cookie, and the
-#  whole site including the data files is protected by Basic
-#  authentication when credentials are configured.
+#  What the dashboard is, is a read only view of a directory. The finance
+#  pipeline (https://github.com/id774/finance) writes CSV files and PNG
+#  charts there once a day; this application parses them through
+#  data.py, decides their presentation through indicators.py, links.py
+#  and formatting.py, and renders Jinja2 templates on the server. It
+#  computes no indicator, stores nothing, holds no database and writes no
+#  file. Point it at a directory the pipeline never filled and it renders
+#  empty tables rather than failing.
+#
+#  create_app() builds the application so that a test can bind one to a
+#  temporary directory without touching the environment. It mounts the
+#  bundled static assets, mounts the data directory itself so that the
+#  charts and raw CSVs are downloadable, installs the session middleware
+#  that carries the recently viewed codes in a signed cookie, and -- only
+#  when credentials are configured -- installs the Basic authentication
+#  middleware. That middleware wraps the whole site including /data,
+#  because the generated files are the same information the pages show
+#  and protecting only the HTML would leave them open.
+#
+#  The URL layout is the one the previous Sinatra version served, kept so
+#  that a bookmark survives the rewrite. A stock code arrives from the
+#  path and is held to CODE_PATTERN by the route itself before any
+#  handler runs, and data.is_valid_code checks it again before it is
+#  formatted into a file name. Where a stock has no generated data the
+#  request is redirected to the placeholder view with a 303 rather than
+#  refused, because a code on the listing whose files have not been
+#  produced yet is an ordinary state rather than a bad request.
+#
+#  Routes:
+#      /                     index: screening, portfolio and Core30 tables
+#      /stock/{code}         standard chart
+#      /stock/{code}/short   short term chart
+#      /stock/{code}/long    long term chart
+#      /stock/{code}/detail  the full indicator series
+#      /stock/{code}/none    placeholder for a stock without data
+#      /clear_recent         clear the recently viewed list
+#      /data/...             the generated files, served from the data directory
+#      /static/...           the bundled stylesheets, scripts and favicon
 #
 #  Author: id774 (More info: http://id774.net)
 #  Source Code: https://github.com/id774/finance-dashboard
@@ -41,7 +77,7 @@
 #      Display version information and exit.
 #
 #  Version History:
-#  v2.0 2026-07-25
+#  v1.0 2026-07-25
 #       Rewrite the dashboard in Python with FastAPI and Jinja2.
 #
 ########################################################################
