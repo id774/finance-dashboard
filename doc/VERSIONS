@@ -1,7 +1,7 @@
 finance-dashboard Repository Version History
 ============================================
 
-v2.0.1 (Release Date: TBD)
+v1.0.1 (Release Date: TBD)
 --------------------------
 - Add doc/ARCHITECTURE.md, doc/DATA_CONTRACT.md, doc/DEPLOYMENT.md and
   doc/POLICY.md, moving the detail out of README.md and leaving it the entrance.
@@ -21,7 +21,7 @@ v2.0.1 (Release Date: TBD)
   doc/DATA_CONTRACT.md: finance writes the directory, this repository only
   reads it.
 
-v2.0 (2026-07-25)
+v1.0 (2026-07-25)
 -----------------
 - Rewrite the dashboard in Python with FastAPI and Jinja2, replacing the
   Sinatra application, and keep the URL layout so that existing bookmarks work.
@@ -43,10 +43,10 @@ v2.0 (2026-07-25)
 - Add pyproject.toml, doc/LICENSE, doc/COPYING and doc/COPYING.LESSER,
   declaring the dual GPLv3 or LGPLv3 license.
 
-Before v2.0
+Before v1.0
 -----------
 - The repository carries no release tag and no version file for any revision
-  before v2.0, so no earlier version number is recorded here. The Sinatra era
+  before v1.0, so no earlier version number is recorded here. The Sinatra era
   survives as a numbered commit series ending at "157 Fix Quick link"
   (2019-10-17), and the commit log is its only history. Nothing has been
   reconstructed from it into a version entry.
