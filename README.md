@@ -114,7 +114,7 @@ ln -s /var/stock/data public/data
 
 Three details are load bearing and easy to lose:
 
-- The three summary files are **tab** separated and are read **positionally**. A column inserted or reordered on the producing side does not fail here; it shifts every later value into the wrong name. `ti_CODE.csv` is the only file read by header name.
+- The summary files are **tab** separated and are read **positionally**. A column inserted or reordered on the producing side does not fail here; it shifts every later value into the wrong name. `ti_CODE.csv` is the only file read by header name.
 - A missing file is a warning and an empty table, never an error. The pipeline and the dashboard are deployed and restarted independently, and a file that has not been generated yet is an ordinary state.
 - Nothing is invented to fill a gap. A stock with no data renders as an empty table, and an unrecorded last trading day renders as unknown. No page ever shows a stale figure as though it were current, or today's date for data that does not reach it.
 
@@ -234,7 +234,8 @@ Update an existing deployment with `deploy.sh`, which pulls the latest revision,
 ./deploy.sh
 ```
 
-Two settings decide whether a deployment is sound. `FINANCE_DASHBOARD_SECRET_KEY` must be set, or every restart empties each reader's recently viewed list. `FINANCE_DASHBOARD_ROOT_PATH` must match both the `--root-path` on the Uvicorn command line and the path Apache proxies, or generated links lose the prefix.
+Deployment-sensitive settings and their required relationships are
+documented in [`doc/DEPLOYMENT.md`](doc/DEPLOYMENT.md). `FINANCE_DASHBOARD_SECRET_KEY` must be set, or every restart empties each reader's recently viewed list. `FINANCE_DASHBOARD_ROOT_PATH` must match both the `--root-path` on the Uvicorn command line and the path Apache proxies, or generated links lose the prefix.
 
 Authentication is off unless credentials are configured, so an unconfigured dashboard is served to anyone who can reach it. Decide how it is protected before it listens on anything but localhost; [Access Control](#6-access-control) has the options.
 
@@ -251,9 +252,12 @@ The whole procedure, the routine operations and what to check when something fai
 .venv/bin/ruff check .
 ```
 
-32 tests over the routes, the loaders and the indicator tables. Each builds its own data directory under a temporary path, so the real data files are never touched, `config.yml` is never read, and the suite runs on a host where the pipeline has never run. No test reaches the network, and one of them asserts that no module in the application could: none names an API endpoint, an API key, or an HTTP client.
+The test suite covers the routes, the loaders and the indicator tables. Each builds its own data directory under a temporary path, so the real data files are never touched, `config.yml` is never read, and the suite runs on a host where the pipeline has never run. No test reaches the network. The suite also asserts that application modules do not name a market-data API endpoint, an API key, or an HTTP client.
 
-The fixtures in `test/conftest.py` are the data contract written down on this side: the summary columns in the order they are read positionally, all 38 columns of a `ti_CODE.csv`, and the three keys of `data_source.txt`. A change to a generated format changes them in the same commit.
+The fixtures in `test/conftest.py` mirror the schemas and positional ordering
+defined by [`doc/DATA_CONTRACT.md`](doc/DATA_CONTRACT.md), including the
+summary files, `ti_CODE.csv`, and `data_source.txt`. A generated-format change
+updates the data contract and its matching fixtures in the same change.
 
 **All test data is invented.** No real holding, price or portfolio appears in this repository, and nothing obtained from the J-Quants API may be added as a fixture. The stock codes and names are well known issuers used as labels; every figure beside them was made up.
 
