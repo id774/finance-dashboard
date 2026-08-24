@@ -116,7 +116,7 @@ Three details are load bearing and easy to lose:
 
 - The summary files are **tab** separated and are read **positionally**. A column inserted or reordered on the producing side does not fail here; it shifts every later value into the wrong name. `ti_CODE.csv` is the only file read by header name.
 - A missing file is a warning and an empty table, never an error. The pipeline and the dashboard are deployed and restarted independently, and a file that has not been generated yet is an ordinary state.
-- Nothing is invented to fill a gap. A stock with no indicator data renders the placeholder view, and an unrecorded last trading day renders as unknown. No page ever shows a stale figure as though it were current, or today's date for data that does not reach it.
+- Missing stock-level data and provenance are not invented to fill a gap. A stock with no indicator data renders the placeholder view, and an unrecorded last trading day renders as unknown. Numeric field parsing follows the tolerance rules in [`doc/DATA_CONTRACT.md`](doc/DATA_CONTRACT.md) rather than this no-data rule. No page ever shows a stale figure as though it were current, or today's date for data that does not reach it.
 
 `ref_index.csv` was linked from the index page by earlier versions and was never produced by the data pipeline. The link is gone; the reference indices behind it came from a data source this project no longer uses, and no replacement source has been adopted. See [`doc/DATA_CONTRACT.md`](doc/DATA_CONTRACT.md) for the withdrawn-file contract.
 

@@ -210,16 +210,20 @@ rather than being silently ignored.
 
 ## 11. Nothing is invented
 
-No page ever shows a stale figure as though it were current, and no gap is
-filled with a substitute.
+No page ever shows a stale figure as though it were current, and no missing
+stock-level data or provenance value is filled with a substitute.
+Numeric field parsing is a separate tolerance rule defined in section 10 and
+[`DATA_CONTRACT.md`](DATA_CONTRACT.md).
 
 - A stock with no data renders the placeholder view, not zeroes or a fabricated
   table.
 - An unrecorded last trading day renders as unknown, not as today.
-- A value the files do not carry is not derived, estimated or defaulted into
-  existence.
+- Missing rows, stock-level data and provenance values are not derived,
+  estimated or defaulted into existence. Individual fields that are present
+  but unparseable follow the numeric tolerance rule instead.
 
-The application displays what the directory says and admits what it does not
+The application displays what the directory says, subject only to the explicit
+parsing tolerances defined by the data contract, and admits what it does not
 know.
 
 ## 12. State
