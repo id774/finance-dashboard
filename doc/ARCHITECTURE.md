@@ -146,8 +146,8 @@ Pages are rendered by Jinja2 on the server and delivered complete. There is no
 client side framework, no bundler, no `package.json` and no Node.js anywhere in
 the build or the deployment.
 
-The deliberate client-side exception is the RSI14 screening table on the index page
-is built in the browser by `static/js/screening.js`, so that it can be sorted,
+The deliberate client-side exception is the RSI14 screening table on the index page,
+which is built in the browser by `static/js/screening.js`, so that it can be sorted,
 searched and paged without a round trip. The template emits an empty container
 and the row data as a JSON `<script>` element, and the script fills the
 container from it — it fetches nothing. A `<noscript>` copy of the same table is

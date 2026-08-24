@@ -111,12 +111,16 @@ are specified by [`DATA_CONTRACT.md`](DATA_CONTRACT.md).
 
 ### 7.2 Provenance and delay
 
-Everything displayed originates from the **J-Quants API Free plan**, fetched by
-the pipeline. Two properties of that plan are requirements here, not defects:
+Everything displayed comes from files produced by the pipeline. The current
+producer records J-Quants provenance in `data_source.txt`, but this application
+does not own or restate the provider's current subscription terms.
 
-- **The figures are not live.** The plan publishes in arrears, and the most
-  recent weeks of the market are not represented at all.
-- **The history is bounded.** A span older than the plan keeps is simply absent.
+The requirements here concern the properties of the produced data:
+
+- **The figures may be delayed.** The dashboard must not assume that the newest
+  figure in the files is current.
+- **The available history may be bounded.** The dashboard displays the history
+  present in the generated files and does not invent rows that are absent.
 
 Because a delayed figure that looks current is worse than no figure, **every
 page must name the source and the last trading day the data covers**, beside the
