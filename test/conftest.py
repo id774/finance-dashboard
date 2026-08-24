@@ -11,8 +11,8 @@
 #
 #  The sample files are the contract written down. The tab separated
 #  summaries carry their leading "Code" header and the exact column order
-#  data.py zips positionally, the indicator header names all 38 columns
-#  of a ti_CODE.csv in the order the pipeline writes them, and
+#  data.py zips positionally, the indicator header names the columns of a
+#  ti_CODE.csv in the order the pipeline writes them, and
 #  data_source.txt carries the three keys finance records the provenance
 #  of the data under. A test that passes against these fixtures is
 #  evidence about the real files only because the fixtures match them,
@@ -47,6 +47,9 @@
 #  - pytest, httpx (for the FastAPI test client)
 #
 #  Version History:
+#  v1.2 2026-08-24
+#       Update the provenance fixture to keep the source identity and
+#       data age as separate facts.
 #  v1.1 2026-08-14
 #       Add the data_source.txt fixture and drop the sys.path insert.
 #  v1.0 2026-07-25
@@ -74,10 +77,11 @@ SCREENING = CORE30
 
 # What the data pipeline writes beside the generated files: where the figures came
 # from, when the pipeline ran, and the last trading day they cover. The
-# two dates differ because the source publishes in arrears, and the
-# fixture keeps that difference so that a test can tell them apart.
+# fixture keeps distinct generation and trading dates so tests can prove
+# the dashboard displays the values independently without inferring one
+# from the other.
 DATA_SOURCE = (
-    "source\tJ-Quants API (Free plan, delayed)\n"
+    "source\tJ-Quants API (Free plan)\n"
     "generated\t2026-07-21\n"
     "last_trading_day\t2026-04-24\n"
 )
