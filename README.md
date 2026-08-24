@@ -83,7 +83,7 @@ These are design premises, not preferences, and the code and the tests are arran
 
 Everything shown here originates from the **J-Quants API**, the market data service JPX Market Innovation & Research operates for individual investors, on its **Free plan**. The pipeline fetches it; this repository only reads what the pipeline wrote.
 
-**The figures are not live.** The Free plan publishes in arrears — at the time of writing, twelve weeks behind the present — and keeps a bounded history behind that point. A price on these pages is therefore weeks old, and the most recent weeks of the market are not represented at all.
+**The figures are not live.** The pipeline may operate under a subscription whose published data lags the present. The dashboard does not encode that lag as a fixed number; it displays the last trading day recorded by the pipeline.
 
 Because a delayed figure that looks current is worse than no figure, every page carries a notice naming the source and the **last trading day** the data covers, beside the day the pipeline generated it. Those come from `data_source.txt`, which the data pipeline writes; when it is absent the notice says the age is unknown rather than assuming it is today.
 
@@ -118,7 +118,7 @@ Three details are load bearing and easy to lose:
 - A missing file is a warning and an empty table, never an error. The pipeline and the dashboard are deployed and restarted independently, and a file that has not been generated yet is an ordinary state.
 - Nothing is invented to fill a gap. A stock with no data renders as an empty table, and an unrecorded last trading day renders as unknown. No page ever shows a stale figure as though it were current, or today's date for data that does not reach it.
 
-`ref_index.csv` was linked from the index page by earlier versions and was never produced by the data pipeline. The link is gone; the reference indices behind it came from a data source this project no longer uses, and the J-Quants Free plan does not carry index values. See [section 9 of the data contract](doc/DATA_CONTRACT.md).
+`ref_index.csv` was linked from the index page by earlier versions and was never produced by the data pipeline. The link is gone; the reference indices behind it came from a data source this project no longer uses, and no replacement source has been adopted. See [`doc/DATA_CONTRACT.md`](doc/DATA_CONTRACT.md) for the withdrawn-file contract.
 
 [`doc/DATA_CONTRACT.md`](doc/DATA_CONTRACT.md) is the full description of what is read and the rules it is read by.
 

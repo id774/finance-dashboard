@@ -89,9 +89,9 @@ last_trading_day	2026-04-24
 | `generated` | The day the pipeline ran |
 | `last_trading_day` | The newest trading day the data covers |
 
-The last two differ, and the difference is the point of the file. The Free plan
-publishes in arrears, so the newest figure on any page is weeks older than the
-run that produced it. `base.html` shows all three on every page.
+The last two can differ, and the difference is the point of the file. The
+provider's publication window can place the newest figure earlier than the run
+that produced it. `base.html` shows all three on every page.
 
 A key that is absent is rendered as unknown. A value is never substituted:
 showing `generated` where `last_trading_day` is missing would present the age of
@@ -102,14 +102,14 @@ exists to prevent. An unrecognised key is ignored rather than displayed.
 
 Earlier versions linked `ref_index.csv` from the index page. It was never
 produced by the current data pipeline, and the reference indices it was meant
-to hold — N225, GSPC, IXIC, DJI — came from a data source this project no longer uses. The
-J-Quants Free plan does not carry index values, and no free, licensed
-alternative has been adopted, so nothing produces the file and the link has been
-removed rather than left dead. Nothing in either repository refers to it.
+to hold — N225, GSPC, IXIC, DJI — came from a data source this project no longer
+uses. No replacement source has been adopted, so nothing produces the file and
+the link has been removed rather than left dead. Nothing in either repository
+refers to it.
 
 ---
 
-## 3. The two parsing styles, and why the difference matters
+## 3. Parsing styles and why the difference matters
 
 ### 3.1 Positional — the summary files
 
@@ -204,8 +204,8 @@ copy, which is harmless because the cache is read only and stamp checked.
 
 ## 6. Changing this contract
 
-A change to any of the three parsed formats is a change to a published
-interface and must be coordinated with the data producer.
+A change to any parsed input format is a change to a published interface and
+must be coordinated with the data producer.
 
 1. This repository changes the column tuples in `data.py`, this document, and
    the fixtures in `test/conftest.py` in the same commit.
