@@ -9,7 +9,7 @@ producer must satisfy and what a change to those inputs would break here.
 ## 1. The boundary
 
 ```text
-J-Quants API (Free plan, delayed)
+J-Quants API (Free plan)
      |
      v
 data producer  (batch, cron, 18:10 on weekdays)
@@ -57,7 +57,7 @@ which is the only module here that opens a generated file.
 | File | Parsed? | Used for |
 |---|---|---|
 | `stocks.txt` | yes, line split | the company listing on the index page |
-| `data_source.txt` | yes, key and value | the delayed data notice on every page |
+| `data_source.txt` | yes, key and value | the provenance and data-age notice on every page |
 | `screening_rsi14.csv` | yes, positional | the sortable screening table |
 | `portfolio.csv` | yes, positional | the portfolio table |
 | `topix_core30.csv` | yes, positional | the TOPIX Core30 table |
@@ -78,7 +78,7 @@ well as the HTML for that reason; see the Access Control section of the README.
 Tab separated, one key and value per line, no header. Three keys, in this order:
 
 ```text
-source	J-Quants API (Free plan, delayed)
+source	J-Quants API (Free plan)
 generated	2026-07-21
 last_trading_day	2026-04-24
 ```

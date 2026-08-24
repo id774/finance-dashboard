@@ -34,6 +34,9 @@
 #    - Ignore a key data_source.txt was not meant to carry
 #
 #  Version History:
+#  v1.2 2026-08-24
+#       Expect the provenance source to name the provider and plan
+#       without a publication delay claim.
 #  v1.1 2026-08-14
 #       Cover the provenance loader.
 #  v1.0 2026-07-25
@@ -99,7 +102,7 @@ def test_split_columns():
 
 def test_load_data_source(data_dir):
     values = data.load_data_source(data_dir)
-    assert values["source"] == "J-Quants API (Free plan, delayed)"
+    assert values["source"] == "J-Quants API (Free plan)"
     assert values["generated"] == "2026-07-21"
     assert values["last_trading_day"] == "2026-04-24"
 

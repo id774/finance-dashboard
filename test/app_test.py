@@ -34,6 +34,9 @@
 #    - Make no outbound request and hold no market data credential
 #
 #  Version History:
+#  v1.2 2026-08-24
+#       Expect the provenance notice to name the provider and plan
+#       without a publication delay claim.
 #  v1.1 2026-08-14
 #       Cover the delayed data notice and the absence of any data
 #       fetching.
@@ -140,7 +143,7 @@ def test_data_files_require_authentication(settings):
 def test_every_page_states_the_source_and_the_last_trading_day(client):
     for path in ("/", "/stock/6758", "/stock/6758/detail", "/stock/6758/none"):
         text = client.get(path).text
-        assert "J-Quants API (Free plan, delayed)" in text
+        assert "J-Quants API (Free plan)" in text
         assert "2026-04-24" in text
         assert "リアルタイムではありません" in text
 

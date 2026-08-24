@@ -213,7 +213,8 @@ rather than being silently ignored.
 No page ever shows a stale figure as though it were current, and no gap is
 filled with a substitute.
 
-- A stock with no data renders as an empty table, not as zeroes.
+- A stock with no data renders the placeholder view, not zeroes or a fabricated
+  table.
 - An unrecorded last trading day renders as unknown, not as today.
 - A value the files do not carry is not derived, estimated or defaulted into
   existence.
