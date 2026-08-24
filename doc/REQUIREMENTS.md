@@ -15,7 +15,7 @@ How a change is carried out and judged belongs to [`POLICY.md`](POLICY.md), and
 how the application is installed and operated belongs to
 [`DEPLOYMENT.md`](DEPLOYMENT.md).
 
-The three-way split is deliberate. This document may be read on its own to learn
+This separation is deliberate. This document may be read on its own to learn
 what the application is required to do; nothing in it is completed by a document
 in another repository.
 
@@ -141,7 +141,7 @@ the reader needs, and it cannot go stale.
 
 ## 8. What it presents
 
-Six views, at the URL layout the previous Sinatra implementation served:
+The views use the URL layout the previous Sinatra implementation served:
 
 | View | Contents |
 |---|---|
@@ -247,15 +247,16 @@ code.
 - Values that are not operational stay in code. Not every constant needs to
   become a setting.
 
-Two settings decide whether a deployment is sound, and both must be documented
-as such: the secret key, without which every restart empties the reader's
-recently viewed list, and the path prefix, which must match both the server's
-command line and the path the proxy serves or generated links lose the prefix.
+A deployment must account for the session-signing key and the path prefix.
+When the service is reachable beyond the loopback interface, it must also have
+the access control required by section 15.1. These conditions are named
+directly rather than maintained as a fixed count because access control depends
+on how the service is exposed.
 
 ## 14. Credentials
 
-There is no API key here. The only secret is the authentication password, and
-the key that signs the session cookie.
+There is no market-data API key here. The application may hold an
+authentication credential and a session-signing key.
 
 - A password may be configured as a plain value or as a SHA-256 digest, and the
   digest form is the one the documents recommend.
@@ -349,11 +350,11 @@ what is required; that one states how the requirements are met.
 It covers the module composition and the direction of dependency, what each
 module is responsible for, one request from authentication through loading and
 presentation to rendering, the views and the limits that bound their tables, the
-two places state lives, and how failure is handled.
+places where state lives, and how failure is handled.
 
 The detailed specification of the interface in section 9 is
-[`DATA_CONTRACT.md`](DATA_CONTRACT.md). Between the two of them the design of
-this repository is fully described, and no further design document is required.
+[`DATA_CONTRACT.md`](DATA_CONTRACT.md). Together, those documents fully describe
+the design of this repository, and no further design document is required.
 
 ## 18. The documents
 
