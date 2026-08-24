@@ -26,8 +26,8 @@ are never read as live ones.
 
 That constraint is what keeps the whole thing small. There is no database, no
 migration, no background job, no cache server, no queue and no build step. State
-that survives a request lives in two places only: a signed cookie in the
-reader's browser, and a per process cache of parsed files that is stamped
+that survives a request lives only in a signed cookie in the reader's
+browser and a per process cache of parsed files that is stamped
 against the filesystem and can always be thrown away.
 
 ---
@@ -66,7 +66,7 @@ Dependency points one way, and a module never imports one above it.
 | `links.py` | the outbound links a page offers | nothing |
 | `__init__.py` | the package version | nothing |
 
-Two properties follow, and both are worth keeping:
+The following properties are worth keeping:
 
 - **`main.py` is the only module that knows about HTTP.** No other module
   imports FastAPI, reads a request or builds a response. `data.py` takes a
@@ -110,8 +110,9 @@ A stock page, `GET /stock/7203`:
 8. **Rendering.** `stock.html` loops over cells and links. It decides nothing:
    every value it prints was decided above it.
 
-The index page is the same shape without steps 3, 5 and 7, loading four files
-instead of one.
+The index page follows the same request path but has no stock-code validation,
+no placeholder redirect, and no recently-viewed update. It loads the listing
+and summary files used by the index instead of a single stock indicator file.
 
 ---
 
@@ -126,7 +127,7 @@ instead of one.
 | `/stock/{code}/detail` | `detail.html` | the whole series, newest first |
 | `/stock/{code}/none` | `none.html` | nothing; the placeholder |
 
-The three chart views differ only in which image they name. They share a
+The standard, short, and long chart views differ only in which image they name. They share a
 template, a column set and a handler, because the difference between them
 belongs to the pipeline that drew the images.
 
@@ -145,7 +146,7 @@ Pages are rendered by Jinja2 on the server and delivered complete. There is no
 client side framework, no bundler, no `package.json` and no Node.js anywhere in
 the build or the deployment.
 
-One exception, and it is deliberate: the RSI14 screening table on the index page
+The deliberate client-side exception is the RSI14 screening table on the index page
 is built in the browser by `static/js/screening.js`, so that it can be sorted,
 searched and paged without a round trip. The template emits an empty container
 and the row data as a JSON `<script>` element, and the script fills the

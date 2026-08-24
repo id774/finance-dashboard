@@ -90,8 +90,9 @@ which.
 ## Configure
 
 Every setting is read from the environment first and from `config.yml` second.
-The full table is in the [README](../README.md#5-configuration). Three of them
-decide whether the deployment is sound:
+The full table is in the [README](../README.md#5-configuration). Pay
+particular attention to the session-signing key, access-control credentials
+when the service is reachable beyond loopback, and the root path:
 
 **`FINANCE_DASHBOARD_SECRET_KEY`** signs the session cookie carrying the
 recently viewed codes. Unset, a key is generated per process and a warning is
@@ -120,10 +121,10 @@ This is not only a matter of taste about who sees your holdings. The pages and
 the files under `/data` carry market data obtained from the J-Quants API for
 personal analysis, under terms that do not permit redistributing it or offering
 a continuing analysis service to others. Publishing this dashboard where
-strangers can read it is redistribution. Choose one of the four approaches in
-the [README](../README.md#6-access-control) — localhost only, Basic
-authentication, proxy authentication, or a VPN or address restriction — before
-it listens on anything but the loopback interface.
+strangers can read it is redistribution. Choose an access-control approach from
+the [README](../README.md#6-access-control) before it listens on anything but
+the loopback interface: localhost only, Basic authentication, proxy
+authentication, or a VPN or address restriction.
 
 When Basic authentication is on, it wraps the mounted `/data` directory as well
 as the HTML. Protecting only the pages would leave the same figures downloadable

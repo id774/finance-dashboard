@@ -104,8 +104,9 @@ Earlier versions linked `ref_index.csv` from the index page. It was never
 produced by the current data pipeline, and the reference indices it was meant
 to hold — N225, GSPC, IXIC, DJI — came from a data source this project no longer
 uses. No replacement source has been adopted, so nothing produces the file and
-the link has been removed rather than left dead. Nothing in either repository
-refers to it.
+the link has been removed rather than left dead. No runtime code in either
+repository consumes it, and the dashboard no longer links it from the user
+interface.
 
 ---
 
@@ -136,8 +137,8 @@ the left, and the page renders a company name where a ratio belongs, silently
 and plausibly. Renaming a header is safe, because headers are ignored. Adding a
 column at the end is absorbed. Anything else is a breaking change.
 
-Tests in this repository pin both tuples. The duplication between the tests and
-the implementation is the contract: two independent statements that must agree.
+Tests in this repository pin the tuples. The duplication between the tests and
+the implementation is the contract: independent statements that must agree.
 
 ### 3.2 By header name — the indicator files
 
@@ -181,7 +182,8 @@ Every one of the following is an ordinary state, not an error:
   writes during its nightly run and this application may read mid-write; the
   next page view picks up the completed file.
 
-The cost of the third is worth stating plainly: **a missing value and a genuine
+The conversion of missing and non-numeric values to `0.0` has a cost worth
+stating plainly: **a missing value and a genuine
 zero are indistinguishable** once past `to_float`. Both render as `0.00`, and an
 emphasis rule with a lower band marks a leading empty cell the same way it marks
 a real zero.
