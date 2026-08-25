@@ -1,8 +1,8 @@
 finance-dashboard Repository Version History
 ============================================
 
-v1.0.1 (Release Date: TBD)
---------------------------
+v1.0.1 (2026-08-26)
+-------------------
 - Add doc/ARCHITECTURE.md, doc/DATA_CONTRACT.md, doc/DEPLOYMENT.md and
   doc/POLICY.md, moving the detail out of README.md and leaving it the entrance.
 - Add this file, and rename doc/LICENSE to doc/LICENSE.md.
