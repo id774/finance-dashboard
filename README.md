@@ -188,13 +188,15 @@ Set `FINANCE_DASHBOARD_SECRET_KEY` in any deployment that outlives one process, 
 ## 7. Running
 
 ```bash
-.venv/bin/python -m finance_dashboard.main --host 0.0.0.0 --port 3000 --reload
+.venv/bin/python -m finance_dashboard.main --port 3000 --reload
 ```
 
 The same server can be started through the `Procfile` with `foreman start`, or directly with Uvicorn.
 
+The `Procfile` binds to `0.0.0.0`. Use it only where access is controlled by one of the approaches described in [Access Control](#6-access-control).
+
 ```bash
-.venv/bin/uvicorn finance_dashboard.main:app --host 0.0.0.0 --port 3000
+.venv/bin/uvicorn finance_dashboard.main:app --host 127.0.0.1 --port 3000
 ```
 
 | Path | View |
