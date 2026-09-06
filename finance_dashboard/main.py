@@ -91,7 +91,7 @@
 #       Put the provenance of the generated data into the context of
 #       every page.
 #  v1.0 2026-07-25
-#       Rewrite the dashboard in Python with FastAPI and Jinja2.
+#       Initial release.
 #
 ########################################################################
 

@@ -31,7 +31,7 @@
 #
 #  Version History:
 #  v1.0 2026-07-25
-#       Deploy the Python application instead of the Sinatra application.
+#       Initial release.
 #
 ########################################################################
 
