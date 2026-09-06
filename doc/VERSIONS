@@ -30,24 +30,7 @@ v1.0.1 (2026-08-26)
 
 v1.0 (2026-07-25)
 -----------------
-- Rewrite the dashboard in Python with FastAPI and Jinja2, replacing the
-  Sinatra application, and keep the URL layout so that existing bookmarks work.
-- Remove the bundled jQuery, Bootstrap and DataTables assets and the Ruby runtime, Gemfile and Rakefile
-  with them. Pico.css and Grid.js replace them, and there is no build step and no Node.js dependency.
-- Read settings from FINANCE_DASHBOARD_ environment variables first and
-  config.yml second, replacing .config.yml.
-- Enable Basic authentication only when a user name and a password or its
-  SHA-256 digest are configured, covering the data files as well as the pages.
-- Keep the recently viewed codes in a signed session cookie instead of a
-  database, and remove config/database.yml.
-- Cache each data file by modification time and size, so a file the pipeline
-  regenerates is picked up without restarting the service.
-- Add etc/finance-dashboard.service, and rewrite deploy.sh to refresh a virtual
-  environment and restart the unit instead of deploying the Sinatra tree.
-- Add the pytest suite under test/, which builds its own data directory and
-  never reads the configured one.
-- Add pyproject.toml, doc/LICENSE, doc/COPYING and doc/COPYING.LESSER,
-  declaring the dual GPLv3 or LGPLv3 license.
+- Initial release.
 
 Before v1.0
 -----------
@@ -71,6 +54,8 @@ Version History Guidelines
   same file or feature.
 - Place closely related entries near each other.
 - Append an independent new change to the end of the current version entry.
+- The first entry, at the lowest version this file reaches, reads only
+  "Initial release." and nothing else.
 - This file records the history of the repository. The Version History block in
   a module header records the history of that file, and the two are kept apart:
   a release entry here does not raise a module version, and a module version
