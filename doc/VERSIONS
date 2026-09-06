@@ -6,26 +6,21 @@ v1.0.1 (2026-08-26)
 - Add doc/ARCHITECTURE.md, doc/DATA_CONTRACT.md, doc/DEPLOYMENT.md and
   doc/POLICY.md, moving the detail out of README.md and leaving it the entrance.
 - Add this file, and rename doc/LICENSE to doc/LICENSE.md.
-- Complete the module headers the rest of the repository already carried, and
-  state in each Description what the module is responsible for rather than what
-  its functions are called.
+- Complete the module headers the rest of the repository already carried, and state in each
+  Description what the module is responsible for rather than what its functions are called.
 - Start file level version management at v1.0, renumbering the single v2.0
   entry main.py and deploy.sh carried.
 - State the documentation and versioning rules in doc/POLICY.md, covering module
-  headers and versions, repository releases and how an entry in this file is
-  written.
+  headers and versions, repository releases and how an entry in this file is written.
 - Comment etc/finance-dashboard.service with what an operator must adjust.
 - State the responsibility boundary with the data pipeline: it writes the data
   directory, and this repository only reads it.
-- State that this is a private dashboard for its operator's own analysis rather
-  than a public service, add an Access Control section naming the ways it may
-  be reached, and record that public/data is a path rather than a permission.
-- Name the J-Quants API Free plan as the origin of everything displayed, say
-  plainly that the figures are delayed rather than live, and distinguish the
-  licence of this source code from the terms of the data it displays.
-- Read data_source.txt, which finance now writes, and show the source, the
-  generation date and the last trading day on every page. An absent value
-  renders as unknown rather than being filled in with a substitute.
+- State that this is a private dashboard for its operator's own analysis rather than a public service, add an Access
+  Control section naming the ways it may be reached, and record that public/data is a path rather than a permission.
+- Name the J-Quants API Free plan as the origin of everything displayed, say plainly that the figures are delayed
+  rather than live, and distinguish the licence of this source code from the terms of the data it displays.
+- Read data_source.txt, which finance now writes, and show the source, the generation date and the last
+  trading day on every page. An absent value renders as unknown rather than being filled in with a substitute.
 - Remove the ref_index.csv link from the index page, which the pipeline never
   produced and whose reference indices are no longer available to it.
 - Assert that no module here names an API endpoint, an API key or an HTTP
@@ -37,9 +32,8 @@ v1.0 (2026-07-25)
 -----------------
 - Rewrite the dashboard in Python with FastAPI and Jinja2, replacing the
   Sinatra application, and keep the URL layout so that existing bookmarks work.
-- Remove the bundled jQuery, Bootstrap and DataTables assets and the Ruby
-  runtime, Gemfile and Rakefile with them. Pico.css and Grid.js replace them,
-  and there is no build step and no Node.js dependency.
+- Remove the bundled jQuery, Bootstrap and DataTables assets and the Ruby runtime, Gemfile and Rakefile
+  with them. Pico.css and Grid.js replace them, and there is no build step and no Node.js dependency.
 - Read settings from FINANCE_DASHBOARD_ environment variables first and
   config.yml second, replacing .config.yml.
 - Enable Basic authentication only when a user name and a password or its
@@ -57,10 +51,8 @@ v1.0 (2026-07-25)
 
 Before v1.0
 -----------
-- No release tag or version file exists for any revision before v1.0, so no
-  earlier version number is recorded here. The Sinatra era survives as a
-  numbered commit series ending at "157 Fix Quick link" (2019-10-17), and the
-  commit log is its only history.
+- No release tag or version file exists before v1.0, so no earlier version is
+  recorded here; the Sinatra era survives only as a numbered commit series.
 
 Version History Guidelines
 ==========================
