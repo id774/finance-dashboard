@@ -6,48 +6,48 @@ v1.0.1 (2026-08-26)
 - Add doc/ARCHITECTURE.md, doc/DATA_CONTRACT.md, doc/DEPLOYMENT.md and
   doc/POLICY.md, moving the detail out of README.md and leaving it the entrance.
 - Add this file, and rename doc/LICENSE to doc/LICENSE.md.
-- Complete the module headers the rest of the repository already carried, and state in each
-  Description what the module is responsible for rather than what its functions are called.
-- Start file level version management at v1.0, renumbering the single v2.0
-  entry main.py and deploy.sh carried.
-- State the documentation and versioning rules in doc/POLICY.md, covering module
-  headers and versions, repository releases and how an entry in this file is written.
+- Complete the module headers the rest of the repository already carried, stating
+  each module's responsibility rather than its function names.
+- Start file level version management at v1.0, renumbering the single v2.0 entry
+  main.py and deploy.sh carried.
+- State the documentation and versioning rules in doc/POLICY.md: module headers,
+  versions, releases, and how entries here are written.
 - Comment etc/finance-dashboard.service with what an operator must adjust.
 - State the responsibility boundary with the data pipeline: it writes the data
   directory, and this repository only reads it.
-- State that this is a private dashboard for its operator's own analysis rather than a public service, add an Access
-  Control section naming the ways it may be reached, and record that public/data is a path rather than a permission.
-- Name the J-Quants API Free plan as the origin of everything displayed, say plainly that the figures are delayed
-  rather than live, and distinguish the licence of this source code from the terms of the data it displays.
-- Read data_source.txt, which finance now writes, and show the source, the generation date and the last
-  trading day on every page. An absent value renders as unknown rather than being filled in with a substitute.
+- State that this is a private dashboard for its operator's own analysis, add an
+  Access Control section, and record public/data as a path, not a permission.
+- Name the J-Quants API Free plan as the data's origin, state plainly that figures
+  are delayed, and distinguish this code's licence from the data's terms.
+- Read data_source.txt, now written by finance, and show the source, generation
+  date and last trading day on every page; an absent value renders as unknown.
 - Remove the ref_index.csv link from the index page, which the pipeline never
   produced and whose reference indices are no longer available to it.
-- Assert that no module here names an API endpoint, an API key or an HTTP
-  client, so that data fetching cannot migrate into the dashboard.
+- Assert that no module here names an API endpoint, an API key or an HTTP client,
+  so that data fetching cannot migrate into the dashboard.
 - Replace the market index code used in the test fixtures with a listed equity,
   matching what the pipeline can now produce.
 
 v1.0 (2026-07-25)
 -----------------
-- Rewrite the dashboard in Python with FastAPI and Jinja2, replacing the
-  Sinatra application, and keep the URL layout so that existing bookmarks work.
-- Remove the bundled jQuery, Bootstrap and DataTables assets and the Ruby runtime, Gemfile and Rakefile
-  with them. Pico.css and Grid.js replace them, and there is no build step and no Node.js dependency.
-- Read settings from FINANCE_DASHBOARD_ environment variables first and
-  config.yml second, replacing .config.yml.
-- Enable Basic authentication only when a user name and a password or its
-  SHA-256 digest are configured, covering the data files as well as the pages.
-- Keep the recently viewed codes in a signed session cookie instead of a
-  database, and remove config/database.yml.
+- Rewrite the dashboard in Python with FastAPI and Jinja2, replacing the Sinatra
+  application, and keep the URL layout so that existing bookmarks work.
+- Remove the bundled jQuery, Bootstrap, DataTables, Ruby runtime, Gemfile and
+  Rakefile; Pico.css and Grid.js replace them with no build step or Node.js.
+- Read settings from FINANCE_DASHBOARD_ environment variables first and config.yml
+  second, replacing .config.yml.
+- Enable Basic authentication only when a user name and a password or its SHA-256
+  digest are configured, covering the data files as well as the pages.
+- Keep the recently viewed codes in a signed session cookie instead of a database,
+  and remove config/database.yml.
 - Cache each data file by modification time and size, so a file the pipeline
   regenerates is picked up without restarting the service.
 - Add etc/finance-dashboard.service, and rewrite deploy.sh to refresh a virtual
   environment and restart the unit instead of deploying the Sinatra tree.
-- Add the pytest suite under test/, which builds its own data directory and
-  never reads the configured one.
-- Add pyproject.toml, doc/LICENSE, doc/COPYING and doc/COPYING.LESSER,
-  declaring the dual GPLv3 or LGPLv3 license.
+- Add the pytest suite under test/, which builds its own data directory and never
+  reads the configured one.
+- Add pyproject.toml, doc/LICENSE, doc/COPYING and doc/COPYING.LESSER, declaring
+  the dual GPLv3 or LGPLv3 license.
 
 Before v1.0
 -----------
