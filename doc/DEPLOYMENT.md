@@ -70,20 +70,30 @@ Configure it:
 
 ```bash
 cp config.yml.sample config.yml
-chmod 600 config.yml
 ```
 
-Install the unit:
+Install the unit and set up the runtime permissions:
 
 ```bash
 sudo cp etc/finance-dashboard.service /etc/systemd/system/
+sudo chgrp -R www-data /var/www/finance-dashboard
+sudo chmod -R u=rwX,g=rX,o= /var/www/finance-dashboard
 sudo systemctl daemon-reload
 sudo systemctl enable --now finance-dashboard
 ```
 
-The unit is an example. Adjust the user, the working directory, the port and the
-root path before enabling it; the comments at the top of the file say which is
-which.
+The unit is an example. Adjust its user, group, working directory, port and
+root path before enabling it. The sample runs as www-data:www-data.
+
+The application tree remains owned by the deployment user. Its group is the
+runtime service group. Directories and existing executables become 0750,
+ordinary files become 0640, and other users receive no access. In the standard
+layout this makes config.yml readable by www-data without making it writable
+by the service or readable by everyone.
+
+If the service User= is changed, set Group= to that user's primary group and
+use the same user as APP_USER when running deploy.sh. deploy.sh resolves the
+primary group with `id -gn`.
 
 ---
 
@@ -165,15 +175,18 @@ cd /var/www/finance-dashboard && ./deploy.sh
 ```
 
 It pulls the working tree, creates the virtual environment if absent,
-reinstalls the package, restores ownership and permissions, and restarts the
+reinstalls the package, resolves APP_USER's primary group, grants that group
+read and execute access without changing user ownership, and restarts the
 unit. Any step that fails stops the script with a non-zero status.
 
 `APP_ROOT`, `APP_USER` and `APP_SERVICE` override the defaults
 (`/var/www/finance-dashboard`, `www-data`, `finance-dashboard`).
+APP_USER names the runtime service user, not the application owner. Its primary
+group, returned by `id -gn`, must match Group= in the systemd unit.
 
-The script requires `git`, `python3`, `sudo` and `systemctl`, and exits 127
-naming whichever is missing. It expects the application directory to exist
-already: it updates a deployment, it does not create one.
+The script requires `git`, `python3`, `sudo`, `systemctl`, `id`, `chgrp` and
+`chmod`, and exits 127 naming whichever is missing. It expects the application
+directory to exist already: it updates a deployment, it does not create one.
 
 ---
 
@@ -207,8 +220,12 @@ credentials aggressively; expect to have to close the window to be re-prompted.
 first. A YAML syntax error in `config.yml` stops the process at startup on
 purpose, and the traceback names the file and the line.
 
-**`Command not found` from `deploy.sh`.** One of `git`, `python3`, `sudo` or
-`systemctl` is absent; the message names it.
+**`Command not found` from `deploy.sh`.** One of `git`, `python3`, `sudo`,
+`systemctl`, `id`, `chgrp` or `chmod` is absent; the message names it.
+
+**`Service user does not exist` from `deploy.sh`.** `APP_USER` does not name an
+account on this host. Set it to the same user as `User=` in the systemd unit;
+its primary group must also match the unit's `Group=`.
 
 **Every page is empty; tables show no rows.** The data directory is wrong or
 unreadable. The log carries a warning naming each missing file. Confirm the
