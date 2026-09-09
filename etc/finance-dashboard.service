@@ -5,8 +5,14 @@
 # It carries no hostname, no certificate and no credential. Basic
 # authentication credentials and the session secret key belong in
 # config.yml in the working directory, or in Environment= lines added
-# here with FINANCE_DASHBOARD_ names; either way the file holding them is
-# kept readable by the service user only.
+# here with FINANCE_DASHBOARD_ names. For config.yml, the deployment
+# owner keeps file ownership and the service group receives read access;
+# the service group must not receive write access and other users receive
+# no access.
+#
+# If User= is changed, set Group= to that user's primary group and use
+# the same user as APP_USER for deploy.sh. The deployment script resolves
+# that primary group with id -gn and never changes the file owner.
 #
 # The application binds 127.0.0.1. Apache is the entrance from outside
 # and uvicorn is never exposed directly, which is what lets the dashboard

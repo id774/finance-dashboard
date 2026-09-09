@@ -1,6 +1,11 @@
 finance-dashboard Repository Version History
 ============================================
 
+v1.0.2 (Release Date: TBD)
+--------------------------
+- Preserve deployment ownership while granting the service group read-only
+  application access.
+
 v1.0.1 (2026-08-26)
 -------------------
 - Add doc/ARCHITECTURE.md, doc/DATA_CONTRACT.md, doc/DEPLOYMENT.md and

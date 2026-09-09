@@ -230,7 +230,11 @@ ProxyPass /finance-dashboard http://127.0.0.1:3000
 ProxyPassReverse /finance-dashboard http://127.0.0.1:3000
 ```
 
-Update an existing deployment with `deploy.sh`, which pulls the latest revision, refreshes the virtual environment, restores ownership, and restarts the service. Any step that fails stops the script with a non-zero status.
+Update an existing deployment with `deploy.sh`, which pulls the latest revision,
+refreshes the virtual environment, grants the runtime service group read and
+execute access without changing the deployment owner's file ownership, and
+restarts the service. Any step that fails stops the script with a non-zero
+status.
 
 ```bash
 ./deploy.sh
