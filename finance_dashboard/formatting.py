@@ -29,7 +29,7 @@
 #  rest of the package, so it is the one part that can be reasoned about
 #  and tested a value at a time.
 #
-#  Author: id774 (More info: http://id774.net)
+#  Author: id774 (More info: https://id774.net)
 #  Source Code: https://github.com/id774/finance-dashboard
 #  License: The GPL version 3, or LGPL version 3 (Dual License).
 #  Contact: idnanashi@gmail.com
