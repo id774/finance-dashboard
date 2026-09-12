@@ -164,9 +164,9 @@ That is why the placeholder is a route rather than a rendered error, and the
 requirement is that existing bookmarks keep working.
 
 Each stock page also offers a fixed set of outbound links to external sites for
-that code, and the index offers a fixed set of reference links. **These are
-hrefs and nothing more.** The application never follows one, never fetches one
-and never reports that a reader followed one.
+that code, and the shared footer on every page offers a fixed set of reference
+links. **These are hrefs and nothing more.** The application never follows one,
+never fetches one and never reports that a reader followed one.
 
 ## 9. The data contract
 
@@ -203,10 +203,17 @@ defended against it.**
   tables.** It must not require the pipeline to be installed.
 - **Regenerated data appears without a restart.** A cache may exist, but it must
   be invalidated by the state of the file on disk.
+- If the configured data directory itself does not exist, HTML pages still
+  render through the ordinary missing-file behaviour and `/data/...` returns
+  404. If the directory later appears, `/data/...` serves it without an
+  application restart.
 
-What is *not* tolerated is a broken configuration: a malformed configuration
-file must stop the process at startup, where `systemctl status` will show it,
-rather than being silently ignored.
+What is not tolerated is a broken configuration. YAML syntax errors, a
+non-mapping top level, a non-null named section that is not a mapping, and a
+selected non-null authentication/session string setting with a non-string value
+stop startup. Missing or empty configuration files, null or omitted optional
+values and unknown keys remain tolerated. Digest syntax, data-directory
+existence and other semantic content are not validated merely for strictness.
 
 ## 11. Nothing is invented
 
@@ -247,9 +254,10 @@ enforced and against what, the key that signs the cookie, its lifetime, and the
 path prefix the application is published under — are settings, not constants in
 code.
 
-- They are read from the environment first and from an optional YAML file
-  second, so that a credential can be given to the systemd unit without being
-  written into a file in the deployment directory.
+- Settings are read from the environment first and from optional YAML second, so
+  a launch environment may inject settings without changing the configuration
+  file. The sample systemd deployment keeps secret values in protected
+  config.yml and does not store them directly in Environment= lines.
 - They are resolved **once**, in one place, and passed down. No module below the
   entry point reaches for the environment on its own.
 - Every setting has a default or a documented consequence for being unset.
@@ -271,8 +279,9 @@ authentication credential and a session-signing key.
   digest form is the one the documents recommend.
 - Comparison is constant-time, so that a wrong password costs the same as a
   right one.
-- No credential and no secret key is committed to this repository in any form,
-  including as a sample value.
+- No real credential or secret key from an actual deployment is committed to
+  this repository. Sample configuration may contain obvious non-production
+  placeholders, but never a usable private value copied from a deployment.
 - No credential appears in a log line, an exception message or a rendered page.
 
 ## 15. Non-functional requirements

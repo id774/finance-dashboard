@@ -140,6 +140,13 @@ When Basic authentication is on, it wraps the mounted `/data` directory as well
 as the HTML. Protecting only the pages would leave the same figures downloadable
 as CSV.
 
+For the sample systemd deployment, keep Basic authentication credentials and
+the session secret in the protected config.yml. Do not put secret values
+directly in Environment= lines of the unit; the sample uses Environment= only
+for the non-secret root path. The FINANCE_DASHBOARD_* environment interface
+remains available when the launch environment injects values without storing
+them directly in the unit file.
+
 **`FINANCE_DASHBOARD_ROOT_PATH`** must match the path Apache proxies, and is set
 twice: `--root-path` on the uvicorn command line so that generated URLs carry
 the prefix, and the environment variable so that the settings loader agrees. If

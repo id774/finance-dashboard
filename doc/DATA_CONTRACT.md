@@ -147,10 +147,10 @@ the implementation is the contract: independent statements that must agree.
 `data._normalize`, so `Adj_Close` becomes `adj_close` and `RSI14` becomes
 `rsi14`. Rows whose `date` is empty, or is the literal `Date`, are dropped.
 
-Columns are therefore safe to reorder and unsafe to rename. A column this
-application does not know about is carried through and ignored; a column it
-looks for and does not find renders as an empty value rather than failing, so a
-table stays displayable against an older file.
+A column this application does not know about is carried through and ignored.
+When a numeric column the presentation layer expects is absent, its existing
+numeric tolerance renders zero rather than failing. Reordering remains safe;
+renaming a consumed column remains unsafe.
 
 The keys the pages use are the ones named in
 [`finance_dashboard/indicators.py`](../finance_dashboard/indicators.py).
@@ -172,6 +172,10 @@ Every one of the following is an ordinary state, not an error:
 - **A missing file.** Logged as a warning, read as an empty list, rendered as an
   empty table. The dashboard does not 500 because a stock list has not been
   generated yet.
+- **A missing data directory.** The same ordinary no-data state for parsed
+  files. Direct `/data/...` requests return 404 while the directory is absent.
+  The mount checks again on later requests, so a directory created after
+  startup becomes servable without restarting the application.
 - **A stock with no `ti_CODE.csv`.** The stock pages redirect to the placeholder
   view with a 303. A code can appear in `stocks.txt` before its files exist.
 - **An empty, non-numeric or `NaN` field.** Converted to `0.0` by

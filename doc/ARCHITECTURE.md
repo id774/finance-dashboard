@@ -190,8 +190,15 @@ built for that, not defended against it:
 - An unparseable field becomes zero rather than an exception.
 - An unknown path is a 404, and a stock code with invalid characters is rejected
   by the route.
+- An absent configured data directory leaves page loaders in their ordinary
+  missing-file state and makes direct `/data/...` requests return 404; if the
+  directory appears later, the same process serves it without a restart.
 
-What is *not* tolerated is a broken configuration. A YAML syntax error in
-`config.yml` stops the process at startup, which is where a malformed
-configuration file should surface — a service that fails to start is visible in
-`systemctl status`, whereas one that silently ignored its settings is not.
+What is *not* tolerated is a broken configuration. A YAML syntax error, a
+non-mapping top level, a non-null named section that is not a mapping, or a
+selected non-null authentication/session string setting with a non-string value
+stops the process at startup, which is where a malformed configuration file
+should surface — a service that fails to start is visible in `systemctl
+status`, whereas one that silently ignored its settings is not. Missing or
+empty configuration files, null or omitted optional values and unknown keys
+remain tolerated.

@@ -144,8 +144,16 @@ main.py  ->  config.py  data.py  indicators.py  links.py  ->  formatting.py
 - A setting has a default, or a documented consequence for being unset. A new
   setting is added to `config.py`, the README table, and `DEPLOYMENT.md` where
   it affects the deployment, in the same change.
-- A missing configuration file is not an error. A malformed one stops the
-  process at startup rather than being silently ignored.
+- A missing or empty configuration file is not an error.
+- A YAML syntax error, a non-mapping top level, or a non-null auth/session/data
+  section that is not a mapping stops startup.
+- A non-null YAML value selected for auth.username, auth.password,
+  auth.password_sha256 or session.secret_key must be a string. Environment
+  overrides keep precedence, so an overridden YAML scalar is not separately
+  rejected.
+- Null or omitted optional values and unknown keys remain tolerated. Do not add
+  semantic validation of password-digest syntax, data-directory existence,
+  root-path form or unrelated values merely to make configuration stricter.
 - Credentials are compared with `hmac.compare_digest`, never with `==`.
 - No credential, key or digest is logged, rendered into a page, or written into
   an error message.
@@ -227,8 +235,11 @@ A change is judged by whether it:
 - The cache is cleared around a fixture, because the loaders cache per path.
 - Test data is invented. No real holding, price or portfolio appears in this
   repository.
-- New behaviour arrives with a test. A bug fix arrives with the test that would
-  have caught it.
+- New Python application behaviour arrives with a test. A Python bug fix arrives
+  with the test that would have caught it.
+- Do not add automated test code for shell scripts. Validate shell changes with
+  shell syntax checks and review or direct command-level verification of the
+  changed behaviour.
 
 ### 2.5 Documentation and Versioning
 

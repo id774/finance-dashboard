@@ -32,8 +32,12 @@
 #    - Show the data source and the last trading day on every page
 #    - Say so plainly when the provenance has not been recorded
 #    - Make no outbound request and hold no market data credential
+#    - Return 404 for /data while its directory is absent and serve it when it appears
 #
 #  Version History:
+#  v1.3 2026-09-12
+#       Cover an absent data directory and its later appearance without
+#       restarting the application.
 #  v1.2 2026-08-24
 #       Expect the provenance notice to name the provider and plan
 #       without a publication delay claim.
@@ -131,6 +135,23 @@ def test_data_files_require_authentication(settings):
     client = TestClient(create_app(settings))
     assert client.get("/data/stocks.txt").status_code == 401
     response = client.get("/data/stocks.txt", auth=("user", "pass"))
+    assert response.status_code == 200
+    assert "6758" in response.text
+
+
+def test_absent_data_directory_returns_404_and_can_appear_later(tmp_path):
+    directory = tmp_path / "later-data"
+    client = TestClient(
+        create_app(Settings(data_dir=str(directory), secret_key="test-secret"))
+    )
+
+    assert client.get("/").status_code == 200
+    assert client.get("/data/stocks.txt").status_code == 404
+
+    directory.mkdir()
+    (directory / "stocks.txt").write_text("6758,ソニーグループ\n", encoding="utf-8")
+
+    response = client.get("/data/stocks.txt")
     assert response.status_code == 200
     assert "6758" in response.text
 

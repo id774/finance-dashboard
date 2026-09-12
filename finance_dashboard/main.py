@@ -40,6 +40,12 @@
 #  because the generated files are the same information the pages show
 #  and protecting only the HTML would leave them open.
 #
+#  If the configured data directory itself is absent, page loaders still
+#  degrade to their ordinary missing-file state and direct /data requests
+#  return 404. The mount checks again on later requests, so a directory
+#  that appears after startup becomes servable without restarting the
+#  application.
+#
 #  The URL layout is the one the previous Sinatra version served, kept so
 #  that a bookmark survives the rewrite. A stock code arrives from the
 #  path and is held to CODE_PATTERN by the route itself before any
@@ -87,6 +93,9 @@
 #      Display version information and exit.
 #
 #  Version History:
+#  v1.2 2026-09-12
+#       Return 404 for /data while the configured data directory is absent
+#       and serve it when the directory appears without a restart.
 #  v1.1 2026-08-14
 #       Put the provenance of the generated data into the context of
 #       every page.
@@ -163,6 +172,21 @@ class BasicAuthMiddleware:
         return False
 
 
+class DataStaticFiles:
+    """Serve the generated directory when present and return 404 while absent."""
+
+    def __init__(self, directory: str) -> None:
+        self.directory = directory
+        self.files = StaticFiles(directory=directory, check_dir=False)
+
+    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
+        if not os.path.isdir(self.directory):
+            response = Response(status_code=404)
+            await response(scope, receive, send)
+            return
+        await self.files(scope, receive, send)
+
+
 def _recent_codes(request: Request) -> List[str]:
     """Return the recently viewed codes stored in the session."""
     recent = request.session.get("recent", [])
@@ -190,7 +214,7 @@ def create_app(settings: Optional[Settings] = None) -> FastAPI:
     app.state.settings = settings
 
     app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
-    app.mount("/data", StaticFiles(directory=settings.data_dir, check_dir=False), name="data")
+    app.mount("/data", DataStaticFiles(settings.data_dir), name="data")
 
     app.add_middleware(
         SessionMiddleware,
