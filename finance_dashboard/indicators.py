@@ -29,13 +29,17 @@
 #
 #  The column keys are the normalized header cells of ti_CODE.csv, which
 #  data.py produces by lowercasing each header and reducing it to
-#  [0-9a-z_]. A key naming a column the file does not carry renders empty
-#  rather than failing, so a table stays displayable against an older file.
+#  [0-9a-z_]. A missing numeric indicator key is passed through the
+#  existing formatting tolerance and renders as zero rather than failing.
+#  That is the same rule used for an empty or non-numeric field; this
+#  module does not invent a separate blank representation for an absent
+#  numeric column.
 #
 #  This module computes no indicator. The values are calculated by the
 #  data pipeline and read from disk; what is decided here is only how
-#  they are presented. The links point at third-party explanations of each
-#  indicator and are the only outbound URLs on a stock page.
+#  they are presented. The links here point at third-party explanations of
+#  each indicator. Stock-specific and shared reference links are defined
+#  separately in links.py and coexist with these links on stock pages.
 #
 #  Author: id774 (More info: https://id774.net)
 #  Source Code: https://github.com/id774/finance-dashboard

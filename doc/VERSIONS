@@ -5,6 +5,14 @@ v1.0.2 (Release Date: TBD)
 --------------------------
 - Preserve deployment ownership while granting the service group read-only
   application access.
+- Reject structurally invalid configuration before serving requests while
+  keeping missing, empty and unused optional settings tolerant.
+- Return 404 from /data while its directory is absent and serve it once it
+  appears without restarting the application.
+- Align dashboard contract fixtures and documentation with producer formats
+  and the application's existing numeric and outbound-link behaviour.
+- Clarify that shell scripts do not receive automated test code and that the
+  sample systemd deployment keeps secrets out of direct Environment= lines.
 
 v1.0.1 (2026-08-26)
 -------------------

@@ -16,8 +16,8 @@
 #  - STOCK_LINK_TEMPLATES: URL templates with a {code} placeholder, and in
 #    one case a {prefix} of the leading digit. stock_links() fills them in
 #    for the stock being viewed, so every stock page carries all of them.
-#  - REFERENCE_LINKS: fixed URLs that do not depend on a stock. Shown once
-#    on the index page.
+#  - REFERENCE_LINKS: fixed URLs that do not depend on a stock. The shared
+#    base template shows them in the footer on every page.
 #  - INDEX_LINKS: pairs of a code tuple and the links belonging to it.
 #    index_links() returns the links only for a code in the tuple, which
 #    is how a chart of the Nikkei is offered on the pages of the ETFs that

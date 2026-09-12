@@ -47,6 +47,8 @@
 #  - pytest, httpx (for the FastAPI test client)
 #
 #  Version History:
+#  v1.3 2026-09-12
+#       Match summary and indicator fixtures to the producer contract.
 #  v1.2 2026-08-24
 #       Update the provenance fixture to keep the source identity and
 #       data age as separate facts.
@@ -65,15 +67,21 @@ from finance_dashboard.main import create_app
 
 STOCKS = "6758,ソニーグループ\n1321,日経225連動型\n7203,トヨタ自動車\n"
 
-CORE30 = "\t".join(("Code", "Open", "High", "Low", "Close", "Diff", "Ratio", "RSI", "Name")) + "\n"
-CORE30 += "7203\t2000\t2100\t1990\t2050\t50\t2.50\t65.43\tトヨタ自動車\n"
-CORE30 += "6758\t1000\t1100\t990\t1050\t-20\t-1.90\t35.12\tソニーグループ\n"
+CORE30 = (
+    "Code\tOpen\tHigh\tLow\tClose\tChange\tRatio\trsi9\tName\n"
+    "7203\t2000\t2100\t1990\t2050\t50\t2.50\t65.43\tトヨタ自動車\n"
+    "6758\t1000\t1100\t990\t1050\t-20\t-1.90\t35.12\tソニーグループ\n"
+)
 
-PORTFOLIO = "Code\tOpen\tHigh\tLow\tClose\tDiff\tRatio\tTrend\tPredict\tName\n"
+SCREENING = (
+    "Code\tOpen\tHigh\tLow\tClose\tChange\tRatio\trsi14\tName\n"
+    "7203\t2000\t2100\t1990\t2050\t50\t2.50\t65.43\tトヨタ自動車\n"
+    "6758\t1000\t1100\t990\t1050\t-20\t-1.90\t35.12\tソニーグループ\n"
+)
+
+PORTFOLIO = "Code\tOpen\tHigh\tLow\tClose\tChange\tRatio\tTrend\tPred\tName\n"
 PORTFOLIO += "7203\t2000\t2100\t1990\t2050\t50\t2.50\tup\t2100\tトヨタ自動車\n"
 PORTFOLIO += "9432\t3000\t3100\t2990\t3050\t-10\t-0.33\tdown\t3000\t日本電信電話\n"
-
-SCREENING = CORE30
 
 # What the data pipeline writes beside the generated files: where the figures came
 # from, when the pipeline ran, and the last trading day they cover. The
@@ -87,15 +95,23 @@ DATA_SOURCE = (
 )
 
 INDICATOR_HEADER = (
-    "Date,Open,High,Low,Close,Adj_Close,Volume,EWMA5,EWMA25,EWMA50,EWMA75,EWMA200,"
-    "UpperBand,LowerBand,SAR,Ret_Index,RSI9,RSI14,MFI14,ROC10,ROC25,ROC50,ROC75,ROC150,"
-    "CCI14,ULTOSC,SLOWK,SLOWD,FASTK,FASTD,MACD,MACDSignal,MACDHist,WILLR14,VL,TR,ATR,NATR\n"
+    "Date,Open,High,Low,Close,Volume,Adj Close,sma5,sma25,sma50,sma75,sma200,ewma5,"
+    "ewma25,ewma50,ewma75,ewma200,upperband,middleband,lowerband,sar,ret_index,vol,"
+    "rsi9,rsi14,mfi14,roc10,roc25,roc50,roc75,roc150,cci14,ultosc,slowk,slowd,fastk,"
+    "fastd,macd,macdsignal,macdhist,willr14,mom10,mom25,tr,vl,atr,natr,v_rate,v_rate_p,"
+    "classified,predicted\n"
 )
 
 INDICATOR_ROW = (
-    "{date},1000,1100,900,1050,1050.5,12345,1010,1020,1030,1040,1050,1100,900,995,1.05,"
-    "72.5,68.1,85.2,1.5,-2.5,3.5,-4.5,5.5,120.5,71.2,85.1,15.2,90.3,10.4,1.5,1.2,0.3,"
-    "-5.5,6.5,150,12.34,1.23\n"
+    "{date},1000,1100,900,1050,12345,1050.5,1005,1015,1025,1035,1045,1010,1020,1030,"
+    "1040,1050,1100,1000,900,995,1.05,0.2,72.5,68.1,85.2,1.5,-2.5,3.5,-4.5,5.5,120.5,"
+    "71.2,85.1,15.2,90.3,10.4,1.5,1.2,0.3,-5.5,2.5,-1.5,150,6.5,12.34,1.23,25,1000,,\n"
+)
+
+INDICATOR_LAST_ROW = (
+    "{date},1000,1100,900,1050,12345,1050.5,1005,1015,1025,1035,1045,1010,1020,1030,"
+    "1040,1050,1100,1000,900,995,1.05,0.2,72.5,68.1,85.2,1.5,-2.5,3.5,-4.5,5.5,120.5,"
+    "71.2,85.1,15.2,90.3,10.4,1.5,1.2,0.3,-5.5,2.5,-1.5,150,6.5,12.34,1.23,25,1000,1,1060\n"
 )
 
 
@@ -109,8 +125,9 @@ def data_dir(tmp_path):
     (directory / "portfolio.csv").write_text(PORTFOLIO, encoding="utf-8")
     (directory / "screening_rsi14.csv").write_text(SCREENING, encoding="utf-8")
     series = INDICATOR_HEADER
-    for day in range(1, 21):
+    for day in range(1, 20):
         series += INDICATOR_ROW.format(date="2026-07-{:02d}".format(day))
+    series += INDICATOR_LAST_ROW.format(date="2026-07-20")
     (directory / "ti_6758.csv").write_text(series, encoding="utf-8")
     (directory / "ti_7203.csv").write_text(INDICATOR_HEADER, encoding="utf-8")
     (directory / "data_source.txt").write_text(DATA_SOURCE, encoding="utf-8")

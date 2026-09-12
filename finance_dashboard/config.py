@@ -26,12 +26,14 @@
 #  through hmac.compare_digest rather than ==, so a wrong password costs
 #  the same time as a right one.
 #
-#  Nothing here reads a data file or reaches the network. A missing YAML
-#  file is not an error, and one whose top level is not a mapping is
-#  reported and treated as absent, because every setting has a default or
-#  a documented consequence for being unset. A YAML syntax error is not
-#  caught here and stops the process at startup, which is where a
-#  malformed file should surface.
+#  Nothing here reads a data file or reaches the network. A missing or empty
+#  YAML file is not an error. A syntactically valid file whose top level or
+#  a non-null named section has an incompatible structure stops startup.
+#  Authentication credentials and the session secret are required to be
+#  strings only when their YAML values are actually selected after
+#  environment precedence. Unknown keys, omitted or null optional values,
+#  digest syntax, and data-directory existence are not made strict merely
+#  for validation.
 #
 #  Author: id774 (More info: https://id774.net)
 #  Source Code: https://github.com/id774/finance-dashboard
@@ -69,6 +71,9 @@
 #      default.
 #
 #  Version History:
+#  v1.1 2026-09-12
+#       Reject structurally invalid configuration and non-string selected
+#       authentication or session-secret values at startup.
 #  v1.0 2026-07-25
 #       Initial release.
 #
@@ -139,21 +144,38 @@ def _env(name: str, default: Optional[str] = None) -> Optional[str]:
 
 
 def _load_file(path: str) -> Dict[str, Any]:
-    """Load a YAML configuration file, returning an empty mapping when absent."""
+    """Load an optional YAML configuration file."""
     if not os.path.isfile(path):
         return {}
     with open(path, encoding="utf-8") as handle:
         loaded = yaml.safe_load(handle)
-    if not isinstance(loaded, dict):
-        logger.warning("Ignoring malformed configuration file: %s", path)
+    if loaded is None:
         return {}
+    if not isinstance(loaded, dict):
+        raise ValueError("Configuration file must be a mapping: {}".format(path))
     return loaded
 
 
 def _section(config: Dict[str, Any], name: str) -> Dict[str, Any]:
-    """Return a mapping section of the configuration."""
+    """Return an optional mapping section of the configuration."""
     section = config.get(name)
-    return section if isinstance(section, dict) else {}
+    if section is None:
+        return {}
+    if not isinstance(section, dict):
+        raise ValueError("Configuration section must be a mapping: {}".format(name))
+    return section
+
+
+def _optional_string(section: Dict[str, Any], section_name: str, key: str) -> Optional[str]:
+    """Return an optional string setting without coercing other YAML types."""
+    value = section.get(key)
+    if value is None:
+        return None
+    if not isinstance(value, str):
+        raise ValueError(
+            "Configuration value must be a string: {}.{}".format(section_name, key)
+        )
+    return value
 
 
 def load_settings(config_file: Optional[str] = None) -> Settings:
@@ -165,15 +187,16 @@ def load_settings(config_file: Optional[str] = None) -> Settings:
     data = _section(config, "data")
 
     data_dir = _env("DATA_DIR") or data.get("directory") or os.path.join(BASE_DIR, "public", "data")
-    secret_key = _env("SECRET_KEY") or session.get("secret_key")
+    secret_key = _env("SECRET_KEY") or _optional_string(session, "session", "secret_key")
     if not secret_key:
         logger.warning("Session secret key is not configured, generating a temporary one")
 
     settings = Settings(
         data_dir=os.path.abspath(os.path.expanduser(str(data_dir))),
-        username=_env("USERNAME") or auth.get("username"),
-        password=_env("PASSWORD") or auth.get("password"),
-        password_sha256=_env("PASSWORD_SHA256") or auth.get("password_sha256"),
+        username=_env("USERNAME") or _optional_string(auth, "auth", "username"),
+        password=_env("PASSWORD") or _optional_string(auth, "auth", "password"),
+        password_sha256=_env("PASSWORD_SHA256")
+        or _optional_string(auth, "auth", "password_sha256"),
         secret_key=secret_key,
         root_path=_env("ROOT_PATH", "") or "",
         session_max_age=int(_env("SESSION_MAX_AGE") or DEFAULT_SESSION_MAX_AGE),
