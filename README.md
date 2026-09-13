@@ -27,6 +27,10 @@ The arrow points one way. This repository never calls the J-Quants API, is never
 
 The application starts and serves without the pipeline installed; pointed at an empty directory it renders empty tables. See [Data Files](#3-data-files) and [`doc/DATA_CONTRACT.md`](doc/DATA_CONTRACT.md).
 
+This repository uses `master` as its primary branch name.
+
+The name is used solely as a technical identifier, following the long-standing convention historically used by Git. It does not express or imply any association with racism, slavery, discrimination, or any political or social ideology.
+
 ## Features
 
 - **A private view of your own analysis, not a service for anyone else**
@@ -335,7 +339,3 @@ For full details, please refer to [`doc/LICENSE.md`](doc/LICENSE.md). See also [
 The bundled third party assets keep their own MIT licenses, as noted above.
 
 Thank you for using and contributing to this repository!
-
-This repository uses `master` as its primary branch name.
-
-The name is used solely as a technical identifier, following the long-standing convention historically used by Git. It does not express or imply any association with racism, slavery, discrimination, or any political or social ideology.
