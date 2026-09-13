@@ -27,10 +27,6 @@ The arrow points one way. This repository never calls the J-Quants API, is never
 
 The application starts and serves without the pipeline installed; pointed at an empty directory it renders empty tables. See [Data Files](#3-data-files) and [`doc/DATA_CONTRACT.md`](doc/DATA_CONTRACT.md).
 
-This repository uses `master` as its primary branch name.
-
-The name is used solely as a technical identifier, following the long-standing convention historically used by Git. It does not express or imply any association with racism, slavery, discrimination, or any political or social ideology.
-
 ## Features
 
 - **A private view of your own analysis, not a service for anyone else**
@@ -63,7 +59,8 @@ The name is used solely as a technical identifier, following the long-standing c
 10. [Directory Structure](#10-directory-structure)
 11. [Documents](#11-documents)
 12. [Contribution](#12-contribution)
-13. [License](#13-license)
+13. [Primary Branch](#13-primary-branch)
+14. [License](#14-license)
 
 ---
 
@@ -78,7 +75,7 @@ These are design premises, not preferences, and the code and the tests are arran
 - **No continuous analysis service for others.** Providing an ongoing feed of analysis derived from that data to anyone else is equally out of scope, whether it is paid for or not.
 - **Not a public web service.** It is not intended to be published on the open internet without authentication. Run it on localhost, or behind a reverse proxy with Basic authentication, a VPN, or an IP restriction. See [Access Control](#6-access-control).
 - **`public/data` is a path, not a permission.** The directory is named that because the previous Sinatra application served its static files from `public/`. It does not mean the data in it may be made public, and renaming it changes nothing about the terms the data came under. It is kept because the deployment, the symbolic link and the `/data` route are all built on it, and a rename would break existing installations for no gain.
-- **Open source code, licensed data.** This repository is published under the GPL or the LGPL. That covers the source code in it and nothing else. It says nothing whatever about the market data the dashboard displays, which is governed by the provider's terms. See [License](#13-license).
+- **Open source code, licensed data.** This repository is published under the GPL or the LGPL. That covers the source code in it and nothing else. It says nothing whatever about the market data the dashboard displays, which is governed by the provider's terms. See [License](#14-license).
 - **No credentials, no market data in the repository.** No API key, no fetched price, no real portfolio is committed here. Every fixture in `test/` is invented.
 
 ---
@@ -329,7 +326,15 @@ Please follow the style used in this repository: English comments and documents,
 
 ---
 
-## 13. License
+## 13. Primary Branch
+
+This repository uses `master` as its primary branch name.
+
+The name is used solely as a technical identifier, following the long-standing convention historically used by Git. It does not express or imply any association with racism, slavery, discrimination, or any political or social ideology.
+
+---
+
+## 14. License
 
 **The source code** in this repository is dual licensed under the [GPL version 3](https://www.gnu.org/licenses/gpl-3.0.html) or the [LGPL version 3](https://www.gnu.org/licenses/lgpl-3.0.html), at your option.
 For full details, please refer to [`doc/LICENSE.md`](doc/LICENSE.md). See also [`doc/COPYING`](doc/COPYING) and [`doc/COPYING.LESSER`](doc/COPYING.LESSER) for the complete license texts.
