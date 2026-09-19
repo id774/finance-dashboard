@@ -165,6 +165,14 @@ main.py  ->  config.py  data.py  indicators.py  links.py  ->  formatting.py
   rotate.
 - A missing data file logs a warning naming the path. That warning is the first
   thing an operator greps for, and it is not lowered to debug.
+- Treat the state of an operation, whether processing continues, and whether a
+  message is emitted as separate decisions. A normal tolerated state, no-op, or
+  inapplicable path may be silent; it is not a warning merely because no work
+  was done.
+- Use a warning only for a degraded but recoverable condition that an operator
+  should know about. The missing-data-file warning above is such an explicit
+  repository contract and remains unchanged. Do not add messages merely to
+  record ordinary branch decisions.
 
 ### 1.8 Errors
 
@@ -176,6 +184,9 @@ main.py  ->  config.py  data.py  indicators.py  links.py  ->  formatting.py
   state.
 - An unknown path is a 404. A malformed code is rejected by the route.
 - No traceback, path or setting reaches the browser.
+- A condition that prevents the application from establishing a correct and
+  safe operating state stops the affected startup or request path. Do not turn
+  such a failure into a warning merely to keep the service moving.
 
 ### 1.9 Judging a Change
 
