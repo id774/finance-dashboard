@@ -9,10 +9,10 @@ v1.0.2 (Release Date: TBD)
   keeping missing, empty and unused optional settings tolerant.
 - Return 404 from /data while its directory is absent and serve it once it
   appears without restarting the application.
-- Align dashboard contract fixtures and documentation with producer formats
-  and the application's existing numeric and outbound-link behaviour.
-- Clarify that shell scripts do not receive automated test code and that the
-  sample systemd deployment keeps secrets out of direct Environment= lines.
+- Align data contract documentation with producer formats and existing
+  dashboard behavior.
+- Keep secret values out of direct Environment= lines in the sample systemd
+  deployment.
 
 v1.0.1 (2026-08-26)
 -------------------
