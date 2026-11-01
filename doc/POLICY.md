@@ -100,6 +100,14 @@ These lines are not crossed by a setting or by an extension.
   by a module above it.
 - The measure of this application is that it renders the pipeline's output
   faithfully and stays up while the pipeline rewrites underneath it.
+- Use `must`, `always`, and `never` only for invariants that admit no
+  reasonable exception. Express preferences and situational decisions with
+  `prefer`, `should`, or other qualified wording. Do not apply a rule literally
+  where doing so would defeat the repository's stated purpose, intended
+  behavior, compatibility, safety, or approved change scope. Where the
+  applicable specifications and policy leave a legitimate choice open, an
+  explicit maintainer decision governs that choice; general conventions do not
+  override it.
 
 ### 1.4 The Modules and the Direction of Dependency
 
@@ -199,6 +207,18 @@ A change is judged by whether it:
 - carries its documentation in the same commit;
 - passes `pytest` and `ruff check .`
 
+#### 1.9.1 Pull Request Scope and History
+
+A pull request carries one coherent higher-level purpose, which may require
+coordinated changes across several files or responsibilities. Do not split one
+approved purpose mechanically by individual finding, file, or review comment,
+and do not include unrelated cleanup, formatting, or feature work. Represent
+one coherent change as one commit and amend review corrections instead of
+accumulating follow-up commits; use `--force-with-lease` only on the branch
+under review when a safe history rewrite is required. Check the final branch
+against its base to remove abandoned intermediate wording and work. Merge only
+with explicit maintainer approval.
+
 ---
 
 ## 2. Python Policy
@@ -269,6 +289,15 @@ Every module carries a header block in this order: `Description`, the standard
 - The README is the entrance and `doc/` holds the detail. Do not answer the same
   question in both.
 - Comments, docstrings and documents are in English.
+- Write English explanatory prose in clear, natural sentences. Do not replace a
+  sentence with a label and a colon, a status prefix such as `Implement:` or
+  `Incompatible:`, a symbol, or an unexplained abbreviation. Apply this to
+  English prose in comments, docstrings, documentation, version histories,
+  release notes, commit messages, and pull request descriptions. This rule does
+  not alter the established forms of headings, list labels, tables, code,
+  configuration syntax, machine-readable fields, literal interface strings, or
+  non-English content required by the repository's purpose. Do not rewrite
+  historical entries or unrelated text merely to align their style.
 
 #### 2.5.1 When to Bump a Module Version
 
