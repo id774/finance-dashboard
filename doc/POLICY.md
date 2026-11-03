@@ -13,6 +13,14 @@ The Invariants below decide over the rest of it.
 
 ---
 
+## 0. Governing Principle
+
+**Simplicity is robustness.**
+
+This principle governs the following implementation and maintenance rules. It
+does not permit dropping required behavior, security, compatibility, or
+validation; satisfy those obligations without unnecessary complexity.
+
 ## 1. General Policy
 
 ### 1.1 Purpose and Scope
@@ -111,9 +119,8 @@ These lines are not crossed by a setting or by an extension.
 
 ### 1.4 The Modules and the Direction of Dependency
 
-```text
-main.py  ->  config.py  data.py  indicators.py  links.py  ->  formatting.py
-```
+The component topology is defined in
+[`ARCHITECTURE.md`](ARCHITECTURE.md). Preserve its dependency direction.
 
 - A module never imports one above it. `data.py` takes a directory and a code,
   never a `Request`.
@@ -468,10 +475,10 @@ Every module carries a header block in this order: `Description`, the standard
 
 ### 2.7 License
 
-This repository is dual licensed: GPL version 3 or LGPL version 3, at the
-recipient's option. The texts are [`COPYING`](COPYING) and
-[`COPYING.LESSER`](COPYING.LESSER), and [`LICENSE.md`](LICENSE.md) states the
-choice.
+Follow the applicable terms in [`LICENSE.md`](LICENSE.md),
+[`COPYING`](COPYING), and [`COPYING.LESSER`](COPYING.LESSER). Those documents
+are the authority for repository licensing; this policy governs how source
+headers, packaging metadata, and dependencies remain consistent with them.
 
 - Every source module carries the line
   `License: The GPL version 3, or LGPL version 3 (Dual License).` in its header
