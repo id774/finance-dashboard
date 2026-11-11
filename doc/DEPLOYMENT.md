@@ -1,8 +1,8 @@
 # Deployment
 
-Installing, running and operating the dashboard. For what it reads see
-[`DATA_CONTRACT.md`](DATA_CONTRACT.md); for how it is put together see
-[`ARCHITECTURE.md`](ARCHITECTURE.md).
+Installing, running and operating the dashboard. For the data it reads, see
+[`DATA_CONTRACT.md`](DATA_CONTRACT.md). For the application's architecture,
+see [`ARCHITECTURE.md`](ARCHITECTURE.md).
 
 The deployment this document describes is uvicorn behind Apache, managed by
 systemd, published under a path prefix over HTTPS:
@@ -20,7 +20,7 @@ Browser -> HTTPS -> Apache -> 127.0.0.1:3000 -> uvicorn -> FastAPI
 
 `deploy.sh` replaces code and restarts a service. It never writes into the data
 directory, and nothing in this application ever does. The pipeline owns that
-directory; this side only reads it.
+directory. This side only reads it.
 
 Deploying the dashboard therefore cannot disturb generated data, and
 regenerating data never requires a deployment.
@@ -142,7 +142,7 @@ as CSV.
 
 For the sample systemd deployment, keep Basic authentication credentials and
 the session secret in the protected config.yml. Do not put secret values
-directly in Environment= lines of the unit; the sample uses Environment= only
+directly in Environment= lines of the unit. The sample uses Environment= only
 for the non-secret root path. The FINANCE_DASHBOARD_* environment interface
 remains available when the launch environment injects values without storing
 them directly in the unit file.
@@ -217,7 +217,7 @@ needs it. There is no restart and no cache to clear.
 list is emptied, which is the whole consequence.
 
 **Change the password.** Change the digest and restart. Browsers cache Basic
-credentials aggressively; expect to have to close the window to be re-prompted.
+credentials aggressively. Expect to have to close the window to be re-prompted.
 
 ---
 
@@ -228,13 +228,13 @@ first. A YAML syntax error in `config.yml` stops the process at startup on
 purpose, and the traceback names the file and the line.
 
 **`Command not found` from `deploy.sh`.** One of `git`, `python3`, `sudo`,
-`systemctl`, `id`, `chgrp` or `chmod` is absent; the message names it.
+`systemctl`, `id`, `chgrp` or `chmod` is absent. The message names it.
 
 **`Service user does not exist` from `deploy.sh`.** `APP_USER` does not name an
-account on this host. Set it to the same user as `User=` in the systemd unit;
-its primary group must also match the unit's `Group=`.
+account on this host. Set it to the same user as `User=` in the systemd unit.
+Its primary group must also match the unit's `Group=`.
 
-**Every page is empty; tables show no rows.** The data directory is wrong or
+**Every page is empty and tables show no rows.** The data directory is wrong or
 unreadable. The log carries a warning naming each missing file. Confirm the
 resolved path and that the service user can read it:
 
@@ -244,7 +244,7 @@ sudo -u www-data ls -l /var/www/finance-dashboard/public/data | head
 ```
 
 A broken symlink and a wrong `FINANCE_DASHBOARD_DATA_DIR` look identical from
-the page; they are distinguished by the paths in the log.
+the page. They are distinguished by the paths in the log.
 
 **One stock shows the placeholder, the rest are fine.** Expected. That stock has
 no `ti_CODE.csv` yet, or it has no rows. Either it was added to `stocks.txt`
@@ -258,7 +258,7 @@ Check the pipeline's chart step.
 **Values look wrong, shifted by one column.** The summary files are read
 positionally. A column inserted or reordered on the producing side shifts every
 later value into the wrong name without raising. See
-[`DATA_CONTRACT.md`](DATA_CONTRACT.md) section 3.1; this is the failure that
+[`DATA_CONTRACT.md`](DATA_CONTRACT.md) section 3.1. This is the failure that
 document exists to prevent.
 
 **Links lose the path prefix.** `--root-path` and
@@ -267,7 +267,7 @@ Apache proxies. All three must name the same prefix.
 
 **Everything returns 401.** Credentials are configured and the browser is not
 sending them, or the digest does not match. `auth.password_sha256` is compared
-lowercased and stripped; regenerate it with the `printf | sha256sum` line above
+lowercased and stripped. Regenerate it with the `printf | sha256sum` line above
 rather than typing it.
 
 **Recently viewed empties on every page load.** No secret key is configured, so

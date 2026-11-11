@@ -19,7 +19,7 @@ The Invariants below decide over the rest of it.
 
 This principle governs the following implementation and maintenance rules. It
 does not permit dropping required behavior, security, compatibility, or
-validation; satisfy those obligations without unnecessary complexity.
+validation. Satisfy those obligations without unnecessary complexity.
 
 ## 1. General Policy
 
@@ -34,14 +34,14 @@ validation; satisfy those obligations without unnecessary complexity.
   figures originate from the J-Quants API under terms that permit personal
   analysis and prohibit redistributing the data or providing a continuing
   analysis service to a third party. This repository is published under the GPL
-  or the LGPL; that covers the source code and confers nothing whatever on the
+  or the LGPL. That covers the source code and confers nothing whatever on the
   data put through it. The two questions are answered by two different
   documents and must never be conflated in one.
-- **Consequences that are binding here.** The dashboard is not deployed to the
-  open internet without access control; `/data` is protected wherever the HTML
-  is; no API key is accepted, stored or read by this application; and no market
-  data, holding or credential is committed to this repository, including as a
-  test fixture.
+- **Consequences that are binding here.** The dashboard is not deployed
+  to the open internet without access control. The `/data` route is
+  protected wherever the HTML is protected. This application does not
+  accept, store, or read API keys. No market data, holding, or credential
+  is committed to this repository, including as a test fixture.
 - **`public/data` is a path, not a permission.** The name is inherited from the
   Sinatra application that served static files from `public/`. It carries no
   implication that the data may be published, and renaming it would change
@@ -60,7 +60,7 @@ validation; satisfy those obligations without unnecessary complexity.
   [`DATA_CONTRACT.md`](DATA_CONTRACT.md). How it is composed and what happens
   during a request belong to [`ARCHITECTURE.md`](ARCHITECTURE.md). How it is
   installed and operated belongs to [`DEPLOYMENT.md`](DEPLOYMENT.md). This
-  document does not restate them; it decides how they are carried out.
+  document does not restate them. It decides how they are carried out.
 
 ### 1.2 Invariants
 
@@ -82,15 +82,15 @@ These lines are not crossed by a setting or by an extension.
   served from this repository, so that the dashboard works on a host with no
   outbound access and no third party is told who is looking at it.
 - **Do not make an outbound request.** This application contacts nothing. The
-  external links on a page are hrefs the reader may follow; they are never
+  external links on a page are hrefs the reader may follow. They are never
   fetched, checked or proxied here. In particular it never calls the market
   data API the pipeline fetches from, and never holds its API key: a test
   asserts that no module here names the endpoint, the credential or an HTTP
   client.
 - **Do not present delayed data as current.** The source publishes in arrears.
   Every page states the source and the last trading day the data covers, taken
-  from `data_source.txt`. Where that is absent the page says the age is unknown;
-  no date is ever substituted for another, and no figure is carried forward,
+  from `data_source.txt`. Where that is absent the page says the age is unknown.
+  No date is ever substituted for another, and no figure is carried forward,
   interpolated or invented to fill a gap.
 - **Do not fail a page over a missing or malformed data file.** The pipeline and
   the dashboard are deployed and restarted independently. A missing file is a
@@ -114,7 +114,7 @@ These lines are not crossed by a setting or by an extension.
   where doing so would defeat the repository's stated purpose, intended
   behavior, compatibility, safety, or approved change scope. Where the
   applicable specifications and policy leave a legitimate choice open, an
-  explicit maintainer decision governs that choice; general conventions do not
+  explicit maintainer decision governs that choice. General conventions do not
   override it.
 
 ### 1.4 The Modules and the Direction of Dependency
@@ -134,8 +134,8 @@ The component topology is defined in
 - **`formatting.py` imports nothing from the package.** It is the bottom, and
   stays testable a value at a time.
 - Importing the package must have no side effect: no configuration read, no
-  directory resolved, no port bound. `create_app()` builds an application; the
-  module level `app` is constructed lazily.
+  directory resolved, no port bound. `create_app()` builds an application. The
+  module-level `app` is constructed lazily.
 
 ### 1.5 The Data Files
 
@@ -182,7 +182,7 @@ The component topology is defined in
   thing an operator greps for, and it is not lowered to debug.
 - Treat the state of an operation, whether processing continues, and whether a
   message is emitted as separate decisions. A normal tolerated state, no-op, or
-  inapplicable path may be silent; it is not a warning merely because no work
+  inapplicable path may be silent. It is not a warning merely because no work
   was done.
 - Use a warning only for a degraded but recoverable condition that an operator
   should know about. The missing-data-file warning above is such an explicit
@@ -221,7 +221,7 @@ coordinated changes across several files or responsibilities. Do not split one
 approved purpose mechanically by individual finding, file, or review comment,
 and do not include unrelated cleanup, formatting, or feature work. Represent
 one coherent change as one commit and amend review corrections instead of
-accumulating follow-up commits; use `--force-with-lease` only on the branch
+accumulating follow-up commits. Use `--force-with-lease` only on the branch
 under review when a safe history rewrite is required. Check the final branch
 against its base to remove abandoned intermediate wording and work. Merge only
 with explicit maintainer approval.
@@ -238,7 +238,7 @@ change a human maintainer's authority or the existing merge approval rule.
 ### 2.1 Structure
 
 - Python 3.9 or later. The floor is set by `requires-python` in
-  `pyproject.toml`; do not use syntax the floor does not have.
+  `pyproject.toml`. Do not use syntax the floor does not have.
 - Dependencies are declared in `pyproject.toml` with lower bounds, and installed
   with `pip install .`. There is no `requirements.txt`.
 - A new runtime dependency needs a reason beyond convenience. The dependency
@@ -259,7 +259,7 @@ change a human maintainer's authority or the existing merge approval rule.
 - Templates loop and print. A template that decides something is a module's
   responsibility that leaked.
 - The stylesheet is hand written and served as it is. The JavaScript this
-  repository wrote is one file; it is plain ES5-compatible script with no build
+  repository wrote is one file. It is a plain ES5-compatible script with no build
   step and no dependency beyond the vendored Grid.js.
 - Vendored third-party assets are not edited. They are replaced wholesale by a
   newer release, and their licenses are recorded in the README.
@@ -296,7 +296,7 @@ Every module carries a header block in this order: `Description`, the standard
   produces, and which modules or external systems it touches. It is not a list
   of the functions below it, which the code already carries.
 - Public functions carry a docstring. Self-evident code does not get a comment
-  restating it; a comment explains why, where the why is not obvious.
+  restating it. A comment explains why, where the why is not obvious.
 - Documentation is updated in the same change as the behaviour it describes.
 - The README is the entrance and `doc/` holds the detail. Do not answer the same
   question in both.
@@ -373,7 +373,7 @@ Every module carries a header block in this order: `Description`, the standard
 - An unreleased entry carries `(Release Date: TBD)`, and its version number
   stays provisional until it ships. An entry opened as
   `v1.0.1 (Release Date: TBD)` may be released under a different number once
-  what accumulated in it is known; which number it takes is decided then.
+  what accumulated in it is known. Its final number is decided then.
 - Replacing `TBD` with the actual release date is the release itself, not a
   change to record in the entry.
 - A repository that has not yet made its first release is in its initial
@@ -428,8 +428,8 @@ Every module carries a header block in this order: `Description`, the standard
   settled on a width and a layout of its own, predating this limit. There a
   new bullet is wrapped to that width and balanced against the lines already
   standing, so that the version history stays of a piece. Wrapping to hold an
-  established form does not overturn the two-line, 80-column limit above;
-  where a file has settled on no such form, that limit applies in full.
+  established form does not overturn the two-line, 80-column limit above.
+  Where a file has settled on no such form, that limit applies in full.
 
 ##### 2.5.4.2 Shortening a Long Entry
 
@@ -477,7 +477,7 @@ Every module carries a header block in this order: `Description`, the standard
 
 Follow the applicable terms in [`LICENSE.md`](LICENSE.md),
 [`COPYING`](COPYING), and [`COPYING.LESSER`](COPYING.LESSER). Those documents
-are the authority for repository licensing; this policy governs how source
+are the authority for repository licensing. This policy governs how source
 headers, packaging metadata, and dependencies remain consistent with them.
 
 - Every source module carries the line

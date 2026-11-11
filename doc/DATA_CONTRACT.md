@@ -27,7 +27,7 @@ share a directory of files.
 The market data provider appears at the top of that diagram and nowhere else in
 it. This application never reaches the J-Quants API, is never given its API key,
 and makes no outbound request while serving a page. Fetching is the pipeline's
-responsibility; `test/app_test.py` asserts that no module here so much as names
+responsibility. `test/app_test.py` asserts that no module here so much as names
 the endpoint, the credential or an HTTP client.
 
 - The data producer writes the directory and never reads anything this
@@ -71,7 +71,7 @@ business.
 
 Serving them is still serving market data. When the dashboard is reachable by
 anyone but its operator, the Basic authentication middleware wraps `/data` as
-well as the HTML for that reason; see the Access Control section of the README.
+well as the HTML for that reason. See the Access Control section of the README.
 
 ### 2.1 `data_source.txt`
 
@@ -149,8 +149,8 @@ the implementation is the contract: independent statements that must agree.
 
 A column this application does not know about is carried through and ignored.
 When a numeric column the presentation layer expects is absent, its existing
-numeric tolerance renders zero rather than failing. Reordering remains safe;
-renaming a consumed column remains unsafe.
+numeric tolerance renders zero rather than failing. Reordering remains safe.
+Renaming a consumed column remains unsafe.
 
 The keys the pages use are the ones named in
 [`finance_dashboard/indicators.py`](../finance_dashboard/indicators.py).
@@ -183,7 +183,7 @@ Every one of the following is an ordinary state, not an error:
   are empty by construction, because an indicator with a 25-day window has no
   value for the first 24 days.
 - **A partially written file.** A short read renders a short table. The pipeline
-  writes during its nightly run and this application may read mid-write; the
+  writes during its nightly run and this application may read mid-write. The
   next page view picks up the completed file.
 
 The conversion of missing and non-numeric values to `0.0` has a cost worth
@@ -197,7 +197,7 @@ a real zero.
 ## 5. How a change is noticed
 
 Files are cached per path, stamped with modification time and size. A file the
-pipeline regenerates is re-read on the next request that needs it; a file that
+pipeline regenerates is re-read on the next request that needs it. A file that
 has not changed is not re-parsed. No restart is required after a nightly run,
 and there is no polling.
 

@@ -2,13 +2,24 @@
 
 ## Overview
 
-**finance-dashboard** is a **private dashboard**: one person's view of their own investment analysis, on their own machine or behind their own access control. It renders CSV files and chart images produced by an external data pipeline, and holds no database of its own.
+**finance-dashboard** is a **private dashboard**: one person's view of their own
+investment analysis, on their own machine or behind their own access control. It
+renders CSV files and chart images produced by an external data pipeline, and
+holds no database of its own.
 
-It is not a public web service, and it is not a way of publishing market data. See [Purpose and Scope](#1-purpose-and-scope) before deploying it anywhere a stranger can reach.
+It is not a public web service, and it is not a way of publishing market data.
+See [Purpose and Scope](#1-purpose-and-scope) before deploying it anywhere a
+stranger can reach.
 
-The application is written in Python with FastAPI and Jinja2. Pages are rendered on the server, and the only client side dependency is a small table component, so no Node.js toolchain or build step is required.
+The application is written in Python with FastAPI and Jinja2. Pages are rendered
+on the server, and the only client-side dependency is a small table component,
+so no Node.js toolchain or build step is required.
 
-It only reads. The data pipeline fetches the prices, computes the indicators, trains the models, draws the charts and writes a directory of files; this application parses that directory and displays it. The two components share no code and no process — they share a directory, and the format of those files is the whole of the interface between them.
+It only reads. The data pipeline fetches the prices, computes the indicators,
+trains the models, draws the charts and writes a directory of files. This
+application parses that directory and displays it. The two components share no
+code and no process — they share a directory, and the format of those files is
+the whole of the interface between them.
 
 ```text
 J-Quants API (Free plan)
@@ -23,18 +34,24 @@ data pipeline  (batch, cron, 18:10 on weekdays)
 finance-dashboard  (FastAPI, read only)
 ```
 
-The arrow points one way. This repository never calls the J-Quants API, is never given its API key, and makes no outbound request of its own during a page view. Fetching market data is the pipeline's responsibility and stays there; a test asserts that no module here names the endpoint, the credential or an HTTP client.
+The arrow points one way. This repository never calls the J-Quants API, is never
+given its API key, and makes no outbound request of its own during a page view.
+Fetching market data is the pipeline's responsibility and stays there. A test
+asserts that no module here names the endpoint, the credential or an HTTP
+client.
 
-The application starts and serves without the pipeline installed; pointed at an empty directory it renders empty tables. See [Data Files](#3-data-files) and [`doc/DATA_CONTRACT.md`](doc/DATA_CONTRACT.md).
+The application starts and serves without the pipeline installed. When pointed
+at an empty directory, it renders empty tables. See [Data Files](#3-data-files)
+and [`doc/DATA_CONTRACT.md`](doc/DATA_CONTRACT.md).
 
 ## Features
 
 - **A private view of your own analysis, not a service for anyone else**
 - **A provenance and data-age notice on every page, with the last trading day shown**
-- **Server side rendering with FastAPI and Jinja2**
+- **Server-side rendering with FastAPI and Jinja2**
 - **No build step and no Node.js dependency**
 - **Sortable and searchable screening table**
-- **Chart, short term, long term, and time series views per stock**
+- **Chart, short-term, long-term, and time-series views per stock**
 - **Recently viewed codes kept in a signed session cookie**
 - **Optional Basic authentication with a plain or hashed password**
 - **File cache invalidated by modification time, so regenerated data appears without a restart**
@@ -66,48 +83,83 @@ The application starts and serves without the pipeline installed; pointed at an 
 
 ## 1. Purpose and Scope
 
-This is software for looking at your own investment analysis. It is written for one reader — the person who runs the pipeline that fills its data directory — and everything about it assumes that reader.
+This is software for looking at your own investment analysis. It is written for
+one reader — the person who runs the pipeline that fills its data directory —
+and everything about it assumes that reader.
 
 These are design premises, not preferences, and the code and the tests are arranged around them:
 
-- **Private use.** The dashboard exists so that its operator can read their own analysis. It is not a product, a service, or a publication.
-- **No redistribution of market data.** The figures on these pages come from a market data provider under terms that permit personal analysis and forbid redistribution. Serving them to a third party — as a page, as a download, as an API — is redistribution.
-- **No continuous analysis service for others.** Providing an ongoing feed of analysis derived from that data to anyone else is equally out of scope, whether it is paid for or not.
-- **Not a public web service.** It is not intended to be published on the open internet without authentication. Run it on localhost, or behind a reverse proxy with Basic authentication, a VPN, or an IP restriction. See [Access Control](#6-access-control).
-- **`public/data` is a path, not a permission.** The directory is named that because the previous Sinatra application served its static files from `public/`. It does not mean the data in it may be made public, and renaming it changes nothing about the terms the data came under. It is kept because the deployment, the symbolic link and the `/data` route are all built on it, and a rename would break existing installations for no gain.
-- **Open source code, licensed data.** This repository is published under the GPL or the LGPL. That covers the source code in it and nothing else. It says nothing whatever about the market data the dashboard displays, which is governed by the provider's terms. See [License](#14-license).
-- **No credentials, no market data in the repository.** No API key, no fetched price, no real portfolio is committed here. Every fixture in `test/` is invented.
+- **Private use.** The dashboard exists so that its operator can read their own
+  analysis. It is not a product, a service, or a publication.
+- **No redistribution of market data.** The figures on these pages come from a
+  market data provider under terms that permit personal analysis and forbid
+  redistribution. Serving them to a third party — as a page, as a download, as
+  an API — is redistribution.
+- **No continuous analysis service for others.** Providing an ongoing feed of
+  analysis derived from that data to anyone else is equally out of scope,
+  whether it is paid for or not.
+- **Not a public web service.** It is not intended to be published on the open
+  internet without authentication. Run it on localhost, or behind a reverse
+  proxy with Basic authentication, a VPN, or an IP restriction. See
+  [Access Control](#6-access-control).
+- **`public/data` is a path, not a permission.** The directory is named that
+  because the previous Sinatra application served its static files from
+  `public/`. It does not mean the data in it may be made public, and renaming it
+  changes nothing about the terms the data came under. It is kept because the
+  deployment, the symbolic link and the `/data` route are all built on it, and a
+  rename would break existing installations for no gain.
+- **Open source code, licensed data.** This repository is published under the
+  GPL or the LGPL. That covers the source code in it and nothing else. It says
+  nothing whatever about the market data the dashboard displays, which is
+  governed by the provider's terms. See [License](#14-license).
+- **No credentials, no market data in the repository.** No API key, no fetched
+  price, no real portfolio is committed here. Every fixture in `test/` is
+  invented.
 
 ---
 
 ## 2. Data Source and Delay
 
-Everything shown here originates from the **J-Quants API**, the market data service JPX Market Innovation & Research operates for individual investors, on its **Free plan**. The pipeline fetches it; this repository only reads what the pipeline wrote.
+Everything shown here originates from the **J-Quants API**, the market data
+service JPX Market Innovation & Research operates for individual investors, on
+its **Free plan**. The pipeline fetches it. This repository only reads what the
+pipeline wrote.
 
-**The figures are not live.** The pipeline may operate under a subscription whose published data lags the present. The dashboard does not encode that lag as a fixed number; it displays the last trading day recorded by the pipeline.
+**The figures are not live.** The pipeline may operate under a subscription
+whose published data lags the present. The dashboard does not encode that lag as
+a fixed number. It displays the last trading day recorded by the pipeline.
 
-Because a delayed figure that looks current is worse than no figure, every page carries a notice naming the source and the **last trading day** the data covers, beside the day the pipeline generated it. Those come from `data_source.txt`, which the data pipeline writes; when it is absent the notice says the age is unknown rather than assuming it is today.
+Because a delayed figure that looks current is worse than no figure, every page
+carries a notice naming the source and the **last trading day** the data covers,
+beside the day the pipeline generated it. Those come from `data_source.txt`,
+which the data pipeline writes. When it is absent the notice says the age is
+unknown rather than assuming it is today.
 
-The exact length of the delay is deliberately **not** repeated through this repository. It is a published property of a subscription plan that can change, and the pipeline configures it in one place. What is shown here is the last trading day itself, which is the fact a reader needs and cannot go stale.
+The exact length of the delay is deliberately **not** repeated through this
+repository. It is a published property of a subscription plan that can change,
+and the pipeline configures it in one place. What is shown here is the last
+trading day itself, which is the fact a reader needs and cannot go stale.
 
 ---
 
 ## 3. Data Files
 
-The dashboard only reads data. Files are generated outside this repository and placed in a single directory, which defaults to `public/data`.
+The dashboard only reads data. Files are generated outside this repository and
+placed in a single directory, which defaults to `public/data`.
 
 | File | Format | Content |
 |---|---|---|
 | `stocks.txt` | `code,name` | Full stock listing shown on the index page |
-| `data_source.txt` | Tab separated key and value | Where the data came from and its last trading day |
-| `topix_core30.csv` | Tab separated with a `Code` header | TOPIX Core30 summary |
-| `portfolio.csv` | Tab separated with a `Code` header | Portfolio summary |
-| `screening_rsi14.csv` | Tab separated with a `Code` header | RSI14 screening result |
-| `ti_CODE.csv` | Comma separated with a named header | Technical indicators of one stock |
-| `stock_CODE.csv` | Comma separated | Prices, linked from the stock pages |
+| `data_source.txt` | Tab-separated key and value | Where the data came from and its last trading day |
+| `topix_core30.csv` | Tab-separated with a `Code` header | TOPIX Core30 summary |
+| `portfolio.csv` | Tab-separated with a `Code` header | Portfolio summary |
+| `screening_rsi14.csv` | Tab-separated with a `Code` header | RSI14 screening result |
+| `ti_CODE.csv` | Comma-separated with a named header | Technical indicators of one stock |
+| `stock_CODE.csv` | Comma-separated | Prices, linked from the stock pages |
 | `chart_CODE.png`, `short_CODE.png`, `long_CODE.png` | PNG | Pre generated charts |
 
-Link the generated directory into the repository, or point the application at it with `FINANCE_DASHBOARD_DATA_DIR`.
+Link the generated directory into the repository, or point the application at it
+with `FINANCE_DASHBOARD_DATA_DIR`.
 
 ```bash
 ln -s /var/stock/data public/data
@@ -115,13 +167,28 @@ ln -s /var/stock/data public/data
 
 Three details are load bearing and easy to lose:
 
-- The summary files are **tab** separated and are read **positionally**. A column inserted or reordered on the producing side does not fail here; it shifts every later value into the wrong name. `ti_CODE.csv` is the only file read by header name.
-- A missing file is a warning and an empty table, never an error. The pipeline and the dashboard are deployed and restarted independently, and a file that has not been generated yet is an ordinary state.
-- Missing stock-level data and provenance are not invented to fill a gap. A stock with no indicator data renders the placeholder view, and an unrecorded last trading day renders as unknown. Numeric field parsing follows the tolerance rules in [`doc/DATA_CONTRACT.md`](doc/DATA_CONTRACT.md) rather than this no-data rule. No page ever shows a stale figure as though it were current, or today's date for data that does not reach it.
+- The summary files are **tab** separated and are read **positionally**. A
+  column inserted or reordered on the producing side does not fail here.
+  Instead, it shifts every later value into the wrong name. `ti_CODE.csv` is the
+  only file read by header name.
+- A missing file is a warning and an empty table, never an error. The pipeline
+  and the dashboard are deployed and restarted independently, and a file that
+  has not been generated yet is an ordinary state.
+- Missing stock-level data and provenance are not invented to fill a gap. A
+  stock with no indicator data renders the placeholder view, and an unrecorded
+  last trading day renders as unknown. Numeric field parsing follows the
+  tolerance rules in [`doc/DATA_CONTRACT.md`](doc/DATA_CONTRACT.md) rather than
+  this no-data rule. No page ever shows a stale figure as though it were
+  current, or today's date for data that does not reach it.
 
-`ref_index.csv` was linked from the index page by earlier versions and was never produced by the data pipeline. The link is gone; the reference indices behind it came from a data source this project no longer uses, and no replacement source has been adopted. See [`doc/DATA_CONTRACT.md`](doc/DATA_CONTRACT.md) for the withdrawn-file contract.
+`ref_index.csv` was linked from the index page by earlier versions and was never
+produced by the data pipeline. The link is gone. The reference indices behind it
+came from a data source this project no longer uses, and no replacement source
+has been adopted. See [`doc/DATA_CONTRACT.md`](doc/DATA_CONTRACT.md) for the
+withdrawn-file contract.
 
-[`doc/DATA_CONTRACT.md`](doc/DATA_CONTRACT.md) is the full description of what is read and the rules it is read by.
+[`doc/DATA_CONTRACT.md`](doc/DATA_CONTRACT.md) is the full description of what
+is read and the rules it is read by.
 
 ---
 
@@ -140,7 +207,8 @@ Install without `[dev]` for production, which omits the test and lint tools.
 
 ## 5. Configuration
 
-Settings are read from environment variables first, then from `config.yml` in the repository root. Copy the sample to start.
+Settings are read from environment variables first, then from `config.yml` in
+the repository root. Copy the sample to start.
 
 ```bash
 cp config.yml.sample config.yml
@@ -157,7 +225,9 @@ cp config.yml.sample config.yml
 | `FINANCE_DASHBOARD_SESSION_MAX_AGE` | - | `1209600` | Lifetime of the session cookie in seconds |
 | `FINANCE_DASHBOARD_ROOT_PATH` | - | empty | Path prefix when served under a sub directory |
 
-No J-Quants API key appears in this table, and none is accepted. This application does not fetch market data and has no use for the credential that does; it belongs to the pipeline and stays on the host that runs it.
+No J-Quants API key appears in this table, and none is accepted. This
+application does not fetch market data and has no use for the credential that
+does. It belongs to the pipeline and stays on the host that runs it.
 
 Generate a digest for `password_sha256` as follows.
 
@@ -169,9 +239,13 @@ printf '%s' 'your-password' | sha256sum
 
 ## 6. Access Control
 
-Authentication is enabled only when a user name and either a password or its SHA-256 digest are configured. **Without them the dashboard is served to anyone who can reach it.** That is the behaviour the previous Sinatra version had without a configuration file, and it is safe only because of where you run it.
+Authentication is enabled only when a user name and either a password or its
+SHA-256 digest are configured. **Without them the dashboard is served to anyone
+who can reach it.** That is the behaviour the previous Sinatra version had
+without a configuration file, and it is safe only because of where you run it.
 
-Pick whichever of these suits the host. Any one of them is enough; none of them is optional if the port is reachable from outside:
+Pick whichever of these suits the host. Any one of them is enough. None of them
+is optional if the port is reachable from outside:
 
 | Approach | When it fits |
 |---|---|
@@ -180,9 +254,14 @@ Pick whichever of these suits the host. Any one of them is enough; none of them 
 | Reverse proxy with its own authentication | Apache or nginx already terminates TLS and holds credentials |
 | VPN or IP restriction | The dashboard is reached from a fixed set of addresses |
 
-When Basic authentication is enabled it wraps **the whole site, including `/data`**. The generated files are the same information the pages show, and protecting only the HTML would leave the CSVs and charts open. Serving those files to someone else is redistributing market data obtained for personal use; see [Purpose and Scope](#1-purpose-and-scope).
+When Basic authentication is enabled it wraps **the whole site, including
+`/data`**. The generated files are the same information the pages show, and
+protecting only the HTML would leave the CSVs and charts open. Serving those
+files to someone else is redistributing market data obtained for personal use.
+See [Purpose and Scope](#1-purpose-and-scope).
 
-Set `FINANCE_DASHBOARD_SECRET_KEY` in any deployment that outlives one process, or every restart empties each reader's recently viewed list.
+Set `FINANCE_DASHBOARD_SECRET_KEY` in any deployment that outlives one process,
+or every restart empties each reader's recently viewed list.
 
 ---
 
@@ -192,9 +271,11 @@ Set `FINANCE_DASHBOARD_SECRET_KEY` in any deployment that outlives one process, 
 .venv/bin/python -m finance_dashboard.main --port 3000 --reload
 ```
 
-The same server can be started through the `Procfile` with `foreman start`, or directly with Uvicorn.
+The same server can be started through the `Procfile` with `foreman start`, or
+directly with Uvicorn.
 
-The `Procfile` binds to `0.0.0.0`. Use it only where access is controlled by one of the approaches described in [Access Control](#6-access-control).
+The `Procfile` binds to `0.0.0.0`. Use it only where access is controlled by one
+of the approaches described in [Access Control](#6-access-control).
 
 ```bash
 .venv/bin/uvicorn finance_dashboard.main:app --host 127.0.0.1 --port 3000
@@ -215,7 +296,8 @@ The `Procfile` binds to `0.0.0.0`. Use it only where access is controlled by one
 
 ## 8. Deployment
 
-Install the systemd unit and let Apache proxy to Uvicorn. The unit sample assumes the application is deployed in `/var/www/finance-dashboard`.
+Install the systemd unit and let Apache proxy to Uvicorn. The unit sample
+assumes the application is deployed in `/var/www/finance-dashboard`.
 
 ```bash
 sudo cp etc/finance-dashboard.service /etc/systemd/system/
@@ -242,13 +324,23 @@ status.
 ```
 
 Deployment-sensitive settings and their required relationships are
-documented in [`doc/DEPLOYMENT.md`](doc/DEPLOYMENT.md). `FINANCE_DASHBOARD_SECRET_KEY` must be set, or every restart empties each reader's recently viewed list. `FINANCE_DASHBOARD_ROOT_PATH` must match both the `--root-path` on the Uvicorn command line and the path Apache proxies, or generated links lose the prefix.
+documented in [`doc/DEPLOYMENT.md`](doc/DEPLOYMENT.md).
+`FINANCE_DASHBOARD_SECRET_KEY` must be set, or every restart empties each
+reader's recently viewed list. `FINANCE_DASHBOARD_ROOT_PATH` must match both the
+`--root-path` on the Uvicorn command line and the path Apache proxies, or
+generated links lose the prefix.
 
-Authentication is off unless credentials are configured, so an unconfigured dashboard is served to anyone who can reach it. Decide how it is protected before it listens on anything but localhost; [Access Control](#6-access-control) has the options.
+Authentication is off unless credentials are configured, so an unconfigured
+dashboard is served to anyone who can reach it. Decide how it is protected
+before it listens on anything but localhost. See
+[Access Control](#6-access-control) for the options.
 
-The dashboard needs read access to the generated directory and nothing else. It is not installed on the pipeline host's behalf and is not given the J-Quants API key.
+The dashboard needs read access to the generated directory and nothing else. It
+is not installed on the pipeline host's behalf and is not given the J-Quants API
+key.
 
-The whole procedure, the routine operations and what to check when something fails are in [`doc/DEPLOYMENT.md`](doc/DEPLOYMENT.md).
+The whole procedure, the routine operations and what to check when something
+fails are in [`doc/DEPLOYMENT.md`](doc/DEPLOYMENT.md).
 
 ---
 
@@ -259,14 +351,22 @@ The whole procedure, the routine operations and what to check when something fai
 .venv/bin/ruff check .
 ```
 
-The test suite covers the routes, the loaders and the indicator tables. Each builds its own data directory under a temporary path, so the real data files are never touched, `config.yml` is never read, and the suite runs on a host where the pipeline has never run. No test reaches the network. The suite also asserts that application modules do not name a market-data API endpoint, an API key, or an HTTP client.
+The test suite covers the routes, the loaders and the indicator tables. Each
+builds its own data directory under a temporary path, so the real data files are
+never touched, `config.yml` is never read, and the suite runs on a host where
+the pipeline has never run. No test reaches the network. The suite also asserts
+that application modules do not name a market-data API endpoint, an API key, or
+an HTTP client.
 
 The fixtures in `test/conftest.py` mirror the schemas and positional ordering
 defined by [`doc/DATA_CONTRACT.md`](doc/DATA_CONTRACT.md), including the
 summary files, `ti_CODE.csv`, and `data_source.txt`. A generated-format change
 updates the data contract and its matching fixtures in the same change.
 
-**All test data is invented.** No real holding, price or portfolio appears in this repository, and nothing obtained from the J-Quants API may be added as a fixture. The stock codes and names are well known issuers used as labels; every figure beside them was made up.
+**All test data is invented.** No real holding, price or portfolio appears in
+this repository, and nothing obtained from the J-Quants API may be added as a
+fixture. The stock codes and names are well-known issuers used as labels. Every
+figure beside them was made up.
 
 ---
 
@@ -292,9 +392,16 @@ updates the data contract and its matching fixtures in the same change.
 └── pyproject.toml       # Project metadata and dependencies
 ```
 
-Dependency points one way, and a module never imports one above it. `main.py` is the only module that knows about HTTP, `config.py` the only one that reads the environment, and `data.py` the only one that opens a generated file. [`doc/ARCHITECTURE.md`](doc/ARCHITECTURE.md) has the composition and what happens during a request.
+Dependency points one way, and a module never imports one above it. `main.py` is
+the only module that knows about HTTP, `config.py` the only one that reads the
+environment, and `data.py` the only one that opens a generated file.
+[`doc/ARCHITECTURE.md`](doc/ARCHITECTURE.md) has the composition and what
+happens during a request.
 
-Third party assets bundled under `finance_dashboard/static` are [Pico.css](https://picocss.com/) and [Grid.js](https://gridjs.io/), both distributed under the MIT license. They are vendored rather than fetched from a CDN so that the dashboard works on a host with no outbound access.
+Third-party assets bundled under `finance_dashboard/static` are
+[Pico.css](https://picocss.com/) and [Grid.js](https://gridjs.io/), both
+distributed under the MIT license. They are vendored rather than fetched from a
+CDN so that the dashboard works on a host with no outbound access.
 
 ---
 
@@ -322,7 +429,9 @@ Contributions are welcome. You can help by:
 - Improving the views or the deployment scripts
 - Adding tests for uncovered behavior
 
-Please follow the style used in this repository: English comments and documents, the module header each file carries, and documentation updated together with the code. [`doc/POLICY.md`](doc/POLICY.md) states the rules a change is judged by.
+Please follow the style used in this repository: English comments and documents,
+the module header each file carries, and documentation updated together with the
+code. [`doc/POLICY.md`](doc/POLICY.md) states the rules a change is judged by.
 
 ---
 
@@ -330,16 +439,30 @@ Please follow the style used in this repository: English comments and documents,
 
 This repository uses `master` as its primary branch name.
 
-The name is used solely as a technical identifier, following the long-standing convention historically used by Git. It does not express or imply any association with racism, slavery, discrimination, or any political or social ideology.
+The name is used solely as a technical identifier, following the long-standing
+convention historically used by Git. It does not express or imply any
+association with racism, slavery, discrimination, or any political or social
+ideology.
 
 ---
 
 ## 14. License
 
-**The source code** in this repository is dual licensed under the [GPL version 3](https://www.gnu.org/licenses/gpl-3.0.html) or the [LGPL version 3](https://www.gnu.org/licenses/lgpl-3.0.html), at your option.
-For full details, please refer to [`doc/LICENSE.md`](doc/LICENSE.md). See also [`doc/COPYING`](doc/COPYING) and [`doc/COPYING.LESSER`](doc/COPYING.LESSER) for the complete license texts.
+**The source code** in this repository is dual licensed under the
+[GPL version 3](https://www.gnu.org/licenses/gpl-3.0.html) or the
+[LGPL version 3](https://www.gnu.org/licenses/lgpl-3.0.html), at your option.
+For full details, please refer to [`doc/LICENSE.md`](doc/LICENSE.md). See also
+[`doc/COPYING`](doc/COPYING) and [`doc/COPYING.LESSER`](doc/COPYING.LESSER) for
+the complete license texts.
 
-**The market data this dashboard displays is not covered by that license and never becomes free to use because of it.** The prices, the indicators derived from them and the charts drawn from them originate from the J-Quants API and remain governed by that provider's terms of service, which permit personal analysis and prohibit redistributing the data or providing a continuing analysis service to third parties. Two separate questions: what you may do with this code, and what you may do with the data you put through it. The first is answered here; the second is answered by the provider.
+**The market data this dashboard displays is not covered by that license and
+never becomes free to use because of it.** The prices, the indicators derived
+from them and the charts drawn from them originate from the J-Quants API and
+remain governed by that provider's terms of service, which permit personal
+analysis and prohibit redistributing the data or providing a continuing analysis
+service to third parties. Two separate questions: what you may do with this
+code, and what you may do with the data you put through it. The first is
+answered here. The second is answered by the provider.
 
 The bundled third party assets keep their own MIT licenses, as noted above.
 

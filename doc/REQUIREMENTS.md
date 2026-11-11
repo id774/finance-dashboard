@@ -16,7 +16,7 @@ how the application is installed and operated belongs to
 [`DEPLOYMENT.md`](DEPLOYMENT.md).
 
 This separation is deliberate. This document may be read on its own to learn
-what the application is required to do; nothing in it is completed by a document
+what the application is required to do. Nothing in it is completed by a document
 in another repository.
 
 ## 2. Name
@@ -83,7 +83,7 @@ reverse proxy, and ordinarily under a path prefix rather than at a domain root.
 It also runs from a checkout on a laptop, bound to localhost, with nothing in
 front of it.
 
-The reader may be at a desk or on a phone; both are ordinary, and section 15.4
+The reader may be at a desk or on a phone. Both are ordinary, and section 15.4
 states what that requires.
 
 It must run on a host with **no outbound network access at all**, and it must
@@ -129,8 +129,8 @@ When that file is absent or a value is missing, the page must say the age is
 unknown rather than assume it is today.
 
 The length of the delay is deliberately **not** stated anywhere in this
-repository. It is a published property of a subscription plan and can change;
-the pipeline configures it in one place. The last trading day itself is the fact
+repository. It is a published property of a subscription plan and can change.
+The pipeline configures it in one place. The last trading day itself is the fact
 the reader needs, and it cannot go stale.
 
 ### 7.3 What is not an input
@@ -240,7 +240,7 @@ requirement that it ever should.
 
 - **Recently viewed codes** are held in a cookie signed with a configured secret
   key, bounded to a small number of the most recent, and clearable by the
-  reader. They are a convenience; losing them costs nothing.
+  reader. They are a convenience. Losing them costs nothing.
 - **A parsed-file cache** may exist per process as an optimization only.
   Emptying it must change nothing but the time of the next request.
 
@@ -318,7 +318,7 @@ page.
 ### 15.3 Maintainability
 
 - Dependency points one way, and a module never imports one above it.
-- One module knows about HTTP; one module reads the environment; one module
+- One module knows about HTTP. One module reads the environment. One module
   opens a generated file. A module's responsibility is stated in its header.
 - Documents are updated in the same commit as the code they describe.
 - The test suite runs offline, on a host where the pipeline has never run,
@@ -363,7 +363,7 @@ access, and no third party is to be told who is looking at it.
 
 **The basic design of this application is written in
 [`ARCHITECTURE.md`](ARCHITECTURE.md).** This document deliberately stops at
-what is required; that one states how the requirements are met.
+what is required. The architecture document states how the requirements are met.
 
 It covers the module composition and the direction of dependency, what each
 module is responsible for, one request from authentication through loading and
@@ -426,7 +426,7 @@ else to call. Each would be more machinery than the job justifies, and the job
 does not justify any of them.
 
 The constraint that it only reads is what keeps it small. A requirement that
-would make it write is not a feature request; it is a proposal to make it a
+would make it write is not a feature request. It is a proposal to make it a
 different application, and belongs in the pipeline instead.
 
 ## 22. Out of scope
