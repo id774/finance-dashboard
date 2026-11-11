@@ -77,7 +77,7 @@ The following properties are worth keeping:
   the process it runs in.
 
 `create_app(settings)` exists for that reason. Importing the package builds no
-application, reads no configuration and binds no port; the module level `app`
+application, reads no configuration and binds no port. The module-level `app`
 that uvicorn imports is constructed lazily by a module `__getattr__` on first
 access.
 
@@ -191,7 +191,7 @@ built for that, not defended against it:
 - An unknown path is a 404, and a stock code with invalid characters is rejected
   by the route.
 - An absent configured data directory leaves page loaders in their ordinary
-  missing-file state and makes direct `/data/...` requests return 404; if the
+  missing-file state and makes direct `/data/...` requests return 404. If the
   directory appears later, the same process serves it without a restart.
 
 What is *not* tolerated is a broken configuration. A YAML syntax error, a
