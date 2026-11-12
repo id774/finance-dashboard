@@ -75,9 +75,8 @@ and [`doc/DATA_CONTRACT.md`](doc/DATA_CONTRACT.md).
 9. [Testing](#9-testing)
 10. [Directory Structure](#10-directory-structure)
 11. [Documents](#11-documents)
-12. [Contribution](#12-contribution)
-13. [Primary Branch](#13-primary-branch)
-14. [License](#14-license)
+12. [Primary Branch](#12-primary-branch)
+13. [License](#13-license)
 
 ---
 
@@ -111,7 +110,7 @@ These are design premises, not preferences, and the code and the tests are arran
 - **Open source code, licensed data.** This repository is published under the
   GPL or the LGPL. That covers the source code in it and nothing else. It says
   nothing whatever about the market data the dashboard displays, which is
-  governed by the provider's terms. See [License](#14-license).
+  governed by the provider's terms. See [License](#13-license).
 - **No credentials, no market data in the repository.** No API key, no fetched
   price, no real portfolio is committed here. Every fixture in `test/` is
   invented.
@@ -422,20 +421,7 @@ the files the application reads.
 
 ---
 
-## 12. Contribution
-
-Contributions are welcome. You can help by:
-- Reporting bugs or feature requests
-- Improving the views or the deployment scripts
-- Adding tests for uncovered behavior
-
-Please follow the style used in this repository: English comments and documents,
-the module header each file carries, and documentation updated together with the
-code. [`doc/POLICY.md`](doc/POLICY.md) states the rules a change is judged by.
-
----
-
-## 13. Primary Branch
+## 12. Primary Branch
 
 This repository uses `master` as its primary branch name.
 
@@ -446,24 +432,31 @@ ideology.
 
 ---
 
-## 14. License
+## 13. License
 
-**The source code** in this repository is dual licensed under the
+### Source Code
+
+The source code in this repository is dual licensed under the
 [GPL version 3](https://www.gnu.org/licenses/gpl-3.0.html) or the
 [LGPL version 3](https://www.gnu.org/licenses/lgpl-3.0.html), at your option.
-For full details, please refer to [`doc/LICENSE.md`](doc/LICENSE.md). See also
-[`doc/COPYING`](doc/COPYING) and [`doc/COPYING.LESSER`](doc/COPYING.LESSER) for
-the complete license texts.
+For full details, please refer to [doc/LICENSE.md](doc/LICENSE.md). See also
+[doc/COPYING](doc/COPYING) and [doc/COPYING.LESSER](doc/COPYING.LESSER) for the
+complete license texts.
 
-**The market data this dashboard displays is not covered by that license and
-never becomes free to use because of it.** The prices, the indicators derived
-from them and the charts drawn from them originate from the J-Quants API and
-remain governed by that provider's terms of service, which permit personal
-analysis and prohibit redistributing the data or providing a continuing analysis
-service to third parties. Two separate questions: what you may do with this
-code, and what you may do with the data you put through it. The first is
-answered here. The second is answered by the provider.
+The bundled third-party assets retain their respective MIT licenses.
 
-The bundled third party assets keep their own MIT licenses, as noted above.
+### Market Data
 
-Thank you for using and contributing to this repository!
+The market data used by this software is not covered by the source code
+license.
+
+Prices, indicators derived from them, and charts based on them originate
+from the J-Quants API and remain subject to the provider's terms of service.
+Those terms permit personal investment analysis and prohibit redistributing
+the data or providing a continuing analysis service to third parties.
+
+Publishing the source code does not grant permission to publish the data.
+Nothing in the GPL or LGPL grants rights to the market data or its derived
+content.
+
+Read and follow the provider's terms of service before using this software.
